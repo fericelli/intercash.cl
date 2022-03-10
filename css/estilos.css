@@ -17,10 +17,21 @@ form{
 	margin:auto;
 	padding:0;
 	width:300px;
-	height:200px;
 	justify-content: space-around;
 }
 
+input{
+	width:300px;
+	margin:10px 0;
+}
+
+p{
+	display:none;
+	color:red;
+}
+.btn{
+	cursor:pointer;
+}
 .contenedorcarga{
 	position:fixed;
 	display:none;
@@ -33,6 +44,17 @@ form{
 #carga{
 	margin:auto;
 }
+#mensaje{
+	display:none;
+}
+table{
+	margin-top:20px;
+	width:80%;
+}
 tbody{
+	text-align:center;
+}
+
+th{
 	text-align:center;
 }
