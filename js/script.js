@@ -108,6 +108,7 @@ function cargardatos(){
 					}else{
 						$("tbody").html("<tr><td colspan='3'>Ningun datos almacenado</td>/tr>")
 					}
+						//}
 				}catch(eception){
 					$(".contenedorcarga").css("display","none");
 				}
