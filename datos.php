@@ -2,10 +2,10 @@
 	Class Datos{
 		private $Conexion;
 		function __construct(){
-			include("conexion.php");
-			$this->Conexion = new Conexion("ejemplo");
-			echo "[".$this->retorno()."]";
-			$this->Conexion->CerrarConexion();
+			///include("conexion.php");
+			//$this->Conexion = new Conexion("ejemplo");
+			//echo "[".$this->retorno()."]";
+			//$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
 			$consultar = $this->Conexion->Consultar("SELECT * FROM datos");
