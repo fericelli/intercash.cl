@@ -95,17 +95,21 @@ function cargardatos(){
 				$(".contenedorcarga").css("display","none");
 			},
 			success:function(respuesta){
-				//console.log(respuesta);
-				var objeto = JSON.parse(respuesta);
+				try{
+					//console.log(respuesta);
+					var objeto = JSON.parse(respuesta);
 				//console.log(objeto);
-				html = "";
-				for(var i = 0;i<objeto.length;i++){
-					html += "<tr><td>"+objeto[i].nombre+"</td><td>"+objeto[i].apellido+"</td><<td>"+objeto[i].edad+"</td>/tr>";
-				}
-				if(html!=""){
-					$("tbody").html(html);
-				}else{
-					$("tbody").html("<tr><td colspan='3'>Ningun datos almacenado</td>/tr>")
+					html = "";
+					for(var i = 0;i<objeto.length;i++){
+						html += "<tr><td>"+objeto[i].nombre+"</td><td>"+objeto[i].apellido+"</td><<td>"+objeto[i].edad+"</td>/tr>";
+					}
+					if(html!=""){
+						$("tbody").html(html);
+					}else{
+						$("tbody").html("<tr><td colspan='3'>Ningun datos almacenado</td>/tr>")
+					}
+				}catch(eception){
+					$(".contenedorcarga").css("display","none");
 				}
 				
 			},
