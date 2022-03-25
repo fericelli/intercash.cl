@@ -14,7 +14,7 @@
 			}else{
 				return "No se cargaron los datos";
 			}
-			//return $retorno;
+			////return $retorno;
 		} 
 	}
 	new CargarDatos();
