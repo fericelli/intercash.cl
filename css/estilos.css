@@ -107,6 +107,7 @@ header{
 #servicios{
     display: flex;
     justify-content: center;
+    justify-content: space-around;
     text-align: center;
     
 }
@@ -150,7 +151,7 @@ header{
     color: #6cc091;
 }
 /*Responsive*/
-@media(max-width: 768px){
+@media(max-width: 1000px){
     /*HEADER*/
     .icono-menu,
     .icono-derecha{
