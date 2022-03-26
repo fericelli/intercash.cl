@@ -27,6 +27,8 @@ header{
     padding: 0 10px;
     transition: 0.4s;
     display: flex;
+    font-size: 20px;
+    width: 100px;
     justify-content: space-around;
 }
 
@@ -149,7 +151,9 @@ header{
     color: #6cc091;
 }
 /*Responsive*/
-
+@media(max-width: 400px && min-width:200){
+    
+}
 @media(max-width: 400px){
     /*HEADER*/
     .icono-menu,
@@ -185,15 +189,6 @@ header{
     /*servicios*/
     #servicios{
         flex-direction: column;
-    }
-    
-}
-@media(min-width: 300px){
-    header{
-        font-size: 35px; 
-    }
-    #banner{
-        height: 500px;
     }
     
 }
