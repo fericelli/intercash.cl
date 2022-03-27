@@ -98,14 +98,15 @@ body{
         font-size: 20px;
     }
     .contact-wrapper{
-      display: flex;
+        display: flex;
+    }
+    .contact-form{
+        width: 200%;
     }
     .contact-wrapper > *{
         padding: 2em;
     }
-    .contact-info{
-        width: 30%;
-    }
+    
     .contact-info h4,
     .contact-info ul,
     .contact-info h4{
