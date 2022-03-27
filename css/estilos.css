@@ -5,7 +5,6 @@ body{
     background: #181818;
     color:#fff;
     font-family: 'Open Sans', sans-serif;
-    font-size: 50px;
     
 }
 
@@ -50,7 +49,6 @@ body{
 .contact-form form input,
 .contact-form form select,
 .contact-form form textarea{
-    font-size: 50px;
     width: 100%;
     padding: .7em;
     border: none;
