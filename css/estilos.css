@@ -46,6 +46,7 @@ body{
 
 .contact-form form button,
 .contact-form form input,
+.contact-form form select,
 .contact-form form textarea{
     width: 100%;
     padding: .7em;
