@@ -38,15 +38,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icono-facebook:before {
-  content: "\61";
-}
-.icono-twitter:before {
-  content: "\62";
-}
-.icono-instagram:before {
-  content: "\64";
-}
 .icono-izquierda:before {
   content: "\65";
 }
@@ -67,9 +58,6 @@
 }
 .icono-nuevo:before {
   content: "\6b";
-}
-.icono-youtube:before {
-  content: "\63";
 }
 .icono-inicio:before {
   content: "\6c";
@@ -95,40 +83,25 @@
 .icono-entradas:before {
   content: "\73";
 }
-.icono-pdf:before {
-  content: "\74";
-}
 .icono-descargar:before {
   content: "\75";
 }
 .icono-graficas:before {
   content: "\76";
 }
-.icono-graph:before {
-  content: "\77";
-}
 .icono-user-plus:before {
   content: "\78";
 }
-.icono-id-card:before {
+.icono-identificacion:before {
   content: "\79";
 }
-.icono-university:before {
-  content: "\7a";
-}
-.icono-language:before {
+.icono-lenguajes:before {
   content: "\41";
 }
-.icono-banknote:before {
+.icono-dinero:before {
   content: "\42";
 }
-.icono-money:before {
-  content: "\43";
-}
-.icono-paper-plane:before {
-  content: "\44";
-}
-.icono-check:before {
+.icono-bien:before {
   content: "\45";
 }
 .icono-sign-out:before {
@@ -173,7 +146,7 @@
 .icono-bebidas:before {
   content: "\4e";
 }
-.icono-ban:before {
+.icono-prohibido:before {
   content: "\54";
 }
 .icono-grid:before {
