@@ -95,12 +95,16 @@ body{
 @media(min-width:700px){
     body{
         padding: 0 4rem;
+        font-size: 20px;
     }
     .contact-wrapper{
-      
+      display: flex;
     }
     .contact-wrapper > *{
         padding: 2em;
+    }
+    .contact-info{
+        width: 30%;
     }
     .contact-info h4,
     .contact-info ul,
