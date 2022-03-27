@@ -173,3 +173,9 @@
 .icono-soporte:before {
   content: "\31";
 }
+.icono-localizar:before {
+  content: "\61";
+}
+.icono-whatsapp:before {
+  content: "\62";
+}
