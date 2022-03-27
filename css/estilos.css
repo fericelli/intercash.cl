@@ -62,6 +62,7 @@ body{
     text-transform: uppercase;
     padding: 1em;
     cursor: pointer;
+    font-size: 40px;
 }
 .contact-form button:hover,
 .contact-form button:focus{
@@ -92,6 +93,10 @@ body{
 @media(min-width:1000px){
     body{
         padding: 0 4rem;
+        font-size: 20px;
+    }
+    .contact-form form button{
+        
         font-size: 20px;
     }
     .contact-wrapper{
