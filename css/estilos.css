@@ -14,8 +14,6 @@ body{
     margin-left: auto;
     margin-right: auto;
     padding: 1.5em;
-    display: flex;
-    flex-direction: column;
 }
 .logo{
     text-align: center;
@@ -99,8 +97,7 @@ body{
         padding: 0 4rem;
     }
     .contact-wrapper{
-        display:grid;
-        grid-template-columns: 2fr 1fr;
+      
     }
     .contact-wrapper > *{
         padding: 2em;
@@ -108,7 +105,6 @@ body{
     .contact-info h4,
     .contact-info ul,
     .contact-info h4{
-        padding: 1em;
-        text-align: left;
+        
     }
 }
