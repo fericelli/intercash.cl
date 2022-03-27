@@ -6,7 +6,7 @@ body{
     color:#fff;
     font-family: 'Open Sans', sans-serif;
     padding: 0 1.5em;
-    font-size: 30px;
+    font-size: 45px;
 }
 
 .content{
@@ -89,7 +89,7 @@ body{
     padding: 0;
 }
 .contact-info ul li{
-    padding: 
+    padding: .3em;
 }
 /*pantallas grandes*/
 @media(min-width:700px){
