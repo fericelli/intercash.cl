@@ -1,11 +1,12 @@
 *{
 	box-sizing: border-box;
+    
 }
 body{
     background: #181818;
     color:#fff;
     font-family: 'Open Sans', sans-serif;
-    
+    font-size: 30px;
 }
 
 .content{
@@ -55,6 +56,7 @@ body{
     background: none;
     outline: 0;
     color:#fff;
+    font-size: 30px;
     border-bottom: 1px solid #d63021;
 }
 .contact-form form button{
