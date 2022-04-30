@@ -1,72 +1,23 @@
 <!DOCTYPE html>
-<html lang="es">
-	<head>
-		<title>Intercash.cl</title>
-		<meta http-equiv="Content-type" content="text/html" charset="utf-8" />
-		<meta name="viewport" contents="width=device.width, user-scalable=no, initial.scale=1, maximum.scale=1" />
-		<meta http-equiv="Last-Modified" content="0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="css/fonts.css">
-		<link rel="stylesheet" href="css/estilos.css">
-		<link rel="icon" type="image/png" href="imagenes/logo.jpg">
-		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-		<script type="text/javascript" src="js/script.js"></script>
-		
-	</head>
-	<body>
-		<div class="content">
-            <div class="logo">Intercash <span>.CL</span></div>
-            <div class="contact-wrapper">
-                <div class="contact-form">
-                    <h3>Solicitud</h3>
-                    <form>
-                        <p>
-                            <label for="nombres">Nombres</label>
-                            <input type="text" id="nombres">
-                        </p>
-                         <p>
-                            <label for="telefono">Teléfono</label>
-                            <input type="text" id="telefono">
-                        </p>
-                         <p>
-                            <label for="correo">Correo</label>
-                            <input type="text" id="correo">
-                        </p>
-                        <p>
-                            <label for="paiso">País origen del envio</label>
-                            <select  id="paiso"></select>
-                        </p>
-                         <p >
-                            <label for="paisd">País destino del envio</label>
-                            <select id="paid"></select>
-                        </p>
-                         <p class="block">
-                            <label for="dinero">Cantidad a enviar</label>
-                            <input id="dinero">
-                        </p>
-                        <p class="block">
-                            <label for="datos">Datos</label>
-                            <textarea></textarea>
-                        </p>
-                        <p class="block">
-                            <button>Solicitar</button>
-                        </p>
-                    </form>
-                </div>
-                <div class="contact-info">
-                    <h4>Mas información</h4>
-                    <ul>
-                        <li><i class="icono icono-localizar"></i> 
-                        Carmen 418, Santiago-Chile</li>
-                        <li><i class="icono icono-whatsapp"></i> +56 9 82928498</li>
-                        <li><i class="icono icono-mail-read"></i> contacto@intercash.cl</li>
-                    </ul>
-                    <p>Solicite su cambio con confianza ofrecemos las mejores tasa a partir de montos altos</p>
-                    <p>Intercash.cl</p>
-                </div>
-            </div>
-        </div>
-	</body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Formulario Registro</title>
+</head>
+<body>
+  <section class="form-register">
+    <h4>Formulario Registro</h4>
+    <input class="controls" type="text" name="nombres" id="nombres" placeholder="Ingrese su Nombre">
+    <input class="controls" type="text" name="apellidos" id="apellidos" placeholder="Ingrese su Apellido">
+    <input class="controls" type="email" name="correo" id="correo" placeholder="Ingrese su Correo">
+    <input class="controls" type="password" name="correo" id="correo" placeholder="Ingrese su Contraseña">
+    <p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>
+    <input class="botons" type="submit" value="Registrar">
+    <p><a href="#">¿Ya tengo Cuenta?</a></p>
+  </section>
+
+</body>
 </html>
