@@ -29,12 +29,12 @@
                     $retorno .= '"mensausuario":"Debe ser un correo Gmal",';
                 }
             }
-            $to = "fericelli.garcia@gmail.com";
-            $subject = "Asunto del email";
-            $message = "Este es mi primer envío de email con PHP";
             
-            mail($to, $subject, $message);
+            $to      = 'fericelli.garcia@gmail.com';
+            $subject = 'the subject';
+            $message = 'hello';
 
+            mail($to, $subject, $message);
             return substr($retorno,0,strlen($retorno)-1);
 
 

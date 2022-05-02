@@ -25,7 +25,6 @@ $(document).on("ready",function(){
 
     $("#cantidadenviar").keypress(function(e){
         $("#cantidadrecibir").val("");
-        
         if (e.keyCode === 13 && !e.shiftKey) {
             
             $("#cantidadenviar").blur();
@@ -49,7 +48,7 @@ $(document).on("ready",function(){
                 $.ajax({
                     url:"./php/tasas/informacion.php",
                     type: 'POST',
-                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
+                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$("#cantidadenviar").val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
@@ -62,7 +61,6 @@ $(document).on("ready",function(){
                         
                         json = JSON.parse(respuesta);
                         console.log(respuesta);
-                        console.log(JSON.parse(respuesta))
                         if(json[0].diponibilidad=="si"){
                             $(".usd").html(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
