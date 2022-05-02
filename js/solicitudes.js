@@ -89,7 +89,7 @@ $(document).on("ready",function(){
         $("#cantidadrecibir").val("");
     })
     $("#cantidadrecibir").keypress(function(e){
-   
+        
         if (e.keyCode === 13 && !e.shiftKey) {
             $("#cantidadrecibir").blur();
             var monedaorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('moneda');
@@ -150,6 +150,70 @@ $(document).on("ready",function(){
 
 
     $(".botons").on("click",function(){
+        var monedaorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('moneda');
+        var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
+        var validador = 0;
+        if(typeof monedadestino === "undefined"){
+            validador ++;
+            $(".mensaje-error").eq(0).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(0).css("display","none");
+            },5000)
+        }
+        if(typeof monedaorigen === "undefined"){
+            validador ++;
+            $(".mensaje-error").eq(1).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(1).css("display","none");
+            },5000)
+        }
+        if($("#cantidadenviar").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(2).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(2).css("display","none");
+            },5000)
+        }
+        if($("#cantidadrecibir").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(3).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(3).css("display","none");
+            },5000)
+        }
+        if($("#cuenta").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(4).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(4).css("display","none");
+            },5000)
+        }
+        if($("#usuario").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(5).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(5).css("display","none");
+            },5000)
+        }
 
+        if(validador==0){
+            $.ajax({
+                url:"./php/intercambios/solicitudes.php",
+                type: 'POST',
+                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuenta").val(),usuario:$("#usuario").val()},
+                beforeSend:function(){
+                    $(".imagensolicitud").css("display","flex");
+                    $(".botons").css("display","none");
+                },
+                complete:function(){
+                    $(".imagensolicitud").css("display","none");
+                    $(".botons").css("display","");
+                },
+                success:function(respuesta){
+                    console.log(respuesta);
+                    
+                }
+            });
+        }
     })
 })
