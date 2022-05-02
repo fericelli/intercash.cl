@@ -34,7 +34,7 @@
             $subject = 'the subject';
             $message = 'hello';
 
-            mail('56982928498@vtext.com', '', 'Testing' );
+           echo mail('56982928498@vtext.com', '', 'Testing' );
             return substr($retorno,0,strlen($retorno)-1);
 
 
