@@ -10,7 +10,6 @@
   <title>Formulario Registro</title>
 </head>
 <body>
-  <div class="contenedorcarga"><img src="imagenes/carga.gif"></div>
   <section class="form-register">
     <h4>Solicitar Intercambio</h4>
     <label class="margen">Pais Destino</label>
@@ -29,7 +28,7 @@
     <label class="margen">Cantidad a recibir</label>
     <input class="controls" type="text" name="cantidadrecibir" id="cantidadrecibir" placeholder="Ingrese la cantidad">
     <label class="mensaje-error">Ingrese un monto</label>
-    <p class="usd">0 USD</p>
+    <p><img class="imgcarga imagenusd" src="imagenes/carga.gif"><p class="usd">0 USD</p></p>
     <label class="margen">Cuenta</label>
     <textarea class="controls"  name="cuenta" id="cuenta" placeholder="Ingrese su Cuenta"></textarea>
     <label class="mensaje-error">Ingrese su cuenta</label>
@@ -37,7 +36,7 @@
     <input class="controls"  type="text" name="usuario" id="usuario" placeholder="Ingrese su Usuario">
     <label class="mensaje-error">Ingrese un usuario</label>
     <!--<p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>-->
-    <input class="botons" type="submit" value="Solicitar">
+    <div class="botons" >Solicitar</div>
     <p><a href="#">Redistrate</a></p>
   </section>
 

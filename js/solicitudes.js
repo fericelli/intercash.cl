@@ -51,10 +51,12 @@ $(document).on("ready",function(){
                     type: 'POST',
                     data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
                     beforeSend:function(){
-                        $(".contenedorcarga").css("display","flex");
+                        $(".imagenusd").css("display","flex");
+                        $(".usd").css("display","none");
                     },
                     complete:function(){
-                        $(".contenedorcarga").css("display","none");
+                        $(".imagenusd").css("display","none");
+                        $(".usd").css("display","flex");
                     },
                     success:function(respuesta){
                         
@@ -113,10 +115,12 @@ $(document).on("ready",function(){
                     type: 'POST',
                     data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
                     beforeSend:function(){
-                        $(".contenedorcarga").css("display","flex");
+                        $(".imagenusd").css("display","flex");
+                        $(".usd").css("display","none");
                     },
                     complete:function(){
-                        $(".contenedorcarga").css("display","none");
+                        $(".imagenusd").css("display","none");
+                        $(".usd").css("display","flex");
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
