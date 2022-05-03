@@ -207,9 +207,9 @@ $(document).on("ready",function(){
                 },
                 success:function(respuesta){
                     if(respuesta=="1"){
-                        $(".mensaje-correcto").eq(5).css("display","flex");
+                        $(".mensaje-correcto").css("display","flex");
                         setTimeout(function(){
-                            $(".mensaje-correcto").eq(5).css("display","none");
+                            $(".mensaje-correcto").css("display","none");
                         },5000)
                     }
                     
