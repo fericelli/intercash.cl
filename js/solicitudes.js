@@ -60,7 +60,6 @@ $(document).on("ready",function(){
                     success:function(respuesta){
                         
                         json = JSON.parse(respuesta);
-                        console.log(respuesta);
                         if(json[0].diponibilidad=="si"){
                             $(".usd").html(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
@@ -122,8 +121,6 @@ $(document).on("ready",function(){
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
-                        console.log(respuesta);
-                        console.log(JSON.parse(respuesta))
                         if(json[0].diponibilidad=="si"){
                             $(".usd").html(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
@@ -209,6 +206,7 @@ $(document).on("ready",function(){
                     $(".botons").css("display","");
                 },
                 success:function(respuesta){
+                    console.log(respuesta);
                     if(respuesta=="1"){
                         $(".mensaje-correcto").eq(5).css("display","flex");
                         setTimeout(function(){
