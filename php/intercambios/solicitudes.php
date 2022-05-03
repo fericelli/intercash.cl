@@ -30,9 +30,9 @@
                 }
             }
             
-            $message = '<p style="left:0">Solicistaste cambiar '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].'</p>
-            <p style="left:0">por '.$_POST["cantidadenviar"].' '.$_POST["monedadestino"].'</p>
-            <p style="left:0">Informacion de pago</p>
+            $message = '<p style="left:0"><h4>Solicistaste cambiar</h4> '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].'</p>
+            <p style="left:0"><h4>Por</h4> '.$_POST["cantidadenviar"].' '.$_POST["monedadestino"].'</p>
+            <p style="left:0"><h4>Informacion de pago</h4></p>
             <p style="left:0">'.$_POST["cuenta"]."</p>"; 
             $headers = "From: solicitud@intercash.cl" . "\r\n" ."Content-type:text/html;chrarset=UTF-8";
             echo mail($correo, 'Solicitud de Intercambio', $message,$headers);
