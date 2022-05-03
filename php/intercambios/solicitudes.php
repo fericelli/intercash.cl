@@ -30,13 +30,11 @@
                 }
             }
             
-             $headers = "From: mi@cuentadeemail.com" . "\r\n" . "CC: destinatarioencopia@email.com";
-            $subject = 'the subject';
             $message = '<p style="left:0">Solicistaste cambiar '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].'</p>
             <p style="left:0">por '.$_POST["cantidadenviar"].' '.$_POST["monedadestino"].'</p>
             <p style="left:0">Informacion de pago</p>
             <p style="left:0">'.$_POST["cuenta"]."</p>"; 
-            $headers = "From: solicitud@intercash.cl";
+            $headers = "From: solicitud@intercash.cl" . "\r\n" ."Content-type:text/html;chrarset=UTF-8";
             echo mail($correo, 'Solicitud de Intercambio', $message,$headers);
         } 
 	}
