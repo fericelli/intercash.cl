@@ -206,6 +206,7 @@ $(document).on("ready",function(){
                     $(".botons").css("display","");
                 },
                 success:function(respuesta){
+                    console.log(respuesta);
                     if(respuesta=="1"){
                         $(".mensaje-correcto").css("display","flex");
                         setTimeout(function(){
