@@ -32,10 +32,10 @@
             
              $headers = "From: mi@cuentadeemail.com" . "\r\n" . "CC: destinatarioencopia@email.com";
             $subject = 'the subject';
-            $message = 'Solicistaste cambiar '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].' 
-            por '.$_POST["cantidadrecibir"].' '.$_POST["monedadestino"].'
-            Informacion de pago
-            '.$_POST["cuenta"]; 
+            $message = '<p style="left:0">Solicistaste cambiar '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].'</p>
+            <p style="left:0">por '.$_POST["cantidadenviar"].' '.$_POST["monedadestino"].'</p>
+            <p style="left:0">Informacion de pago</p>
+            <p style="left:0">'.$_POST["cuenta"]."</p>"; 
             $headers = "From: solicitud@intercash.cl";
             echo mail($correo, 'Solicitud de Intercambio', $message,$headers);
         } 
