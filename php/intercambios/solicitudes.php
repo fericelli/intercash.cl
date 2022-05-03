@@ -30,14 +30,12 @@
                 }
             }
             
-            $to      = 'fericelli.garcia@gmail.com';
+             
             $subject = 'the subject';
-            $message = 'hello';
-
-           echo mail('56982928498@vtext.com', '', 'Testing' );
-            return substr($retorno,0,strlen($retorno)-1);
-
-
+            $message = 'Solicistaste cambiar '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].'\n 
+            por '.$_POST["cantidadrecibir"].' '.$_POST["monedadestino"].'\n
+            Informacion de pago \n'.$_POST["cuenta"]; 
+            echo mail($correo, 'Solicitud de Intercambio', $mensaje);
         } 
 	}
 	new Solicitudes();

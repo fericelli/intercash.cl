@@ -148,6 +148,7 @@ $(document).on("ready",function(){
 
 
     $(".botons").on("click",function(){
+        
         var monedaorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('moneda');
         var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
         var validador = 0;
@@ -208,7 +209,12 @@ $(document).on("ready",function(){
                     $(".botons").css("display","");
                 },
                 success:function(respuesta){
-                    console.log(respuesta);
+                    if(respuesta=="1"){
+                        $(".mensaje-correcto").eq(5).css("display","flex");
+                        setTimeout(function(){
+                            $(".mensaje-correcto").eq(5).css("display","none");
+                        },5000)
+                    }
                     
                 }
             });

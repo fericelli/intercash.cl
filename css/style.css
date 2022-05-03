@@ -84,3 +84,7 @@ body {
   display: none;
   color:#ff3f3f;
 }
+.mensaje-correcto{
+  display: none;
+  color:#26f50b;
+}
