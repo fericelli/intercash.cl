@@ -3,7 +3,7 @@
 		private $Conexion;
 		function __construct(){
 			include("../conexion.php");
-			$this->Conexion = new Conexion("u956446715_intercash");
+			$this->Conexion = new Conexion();
 			echo $this->retorno();
 			$this->Conexion->CerrarConexion();
 		}

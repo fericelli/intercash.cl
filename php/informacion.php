@@ -2,7 +2,7 @@
     Class Informacion{
         function __construct(){
             include("conexion.php");
-			$conexion = new Conexion("intercash.cl");
+			$conexion = new Conexion();
 
             $filtos = "AND intermediario='tito'";
             if($filtos!=""){

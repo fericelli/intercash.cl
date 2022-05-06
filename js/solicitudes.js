@@ -102,10 +102,10 @@ $(document).on("ready",function(){
                     success:function(respuesta){
                         
                         json = JSON.parse(respuesta);
-                        
+                        console.log(json);
                         $(".tasa").text(json[0].tasa+" Tasa");
+                        $(".usd").text(json[0].usd+" USD");
                         if(json[0].diponibilidad=="si"){
-                            $(".usd").text(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
                             $("#cantidadrecibir").val(json[0].dinerorecibir);
                         }else{
@@ -170,8 +170,8 @@ $(document).on("ready",function(){
                         json = JSON.parse(respuesta);
                         console.log(json);
                         $(".tasa").text(json[0].tasa+" Tasa");
+                        $(".usd").text(json[0].usd+" USD");
                         if(json[0].diponibilidad=="si"){
-                            $(".usd").text(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
                             $("#cantidadrecibir").val(json[0].dinerorecibir);
                         }else{
@@ -213,7 +213,7 @@ $(document).on("ready",function(){
                         if(json.cuentas.length>0){
                             html = "";
                             for(i=0;i<json.cuentas.length;i++){
-                                html += '<option cuenta="'+json.cuentas[i].cuenta+'" banco="'+json.cuentas[i].cuenta+'" tipo="'+json.cuentas[i].tipo+'" nombres="'+json.cuentas[i].nombres+'" ></option>';
+                                html += '<option cuenta="'+json.cuentas[i].cuenta+'" banco="'+json.cuentas[i].banco+'" tipo="'+json.cuentas[i].tipo+'" nombres="'+json.cuentas[i].nombres+'" values="'+json.cuentas[i].cuenta+'" identificacion="'+json.cuentas[i].identificacion+'"></option>';
                             }
                             $("#numerocuenta").html(html);
                         }
