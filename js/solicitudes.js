@@ -50,6 +50,7 @@ $(document).on("ready",function(){
                     console.log(json);
                     html = "";
                     html1 = "";
+                    console.log(json.bancos.length);
                     for(i=0;i<json.bancos.length;i++){
                         html += '<option codigo="'+json.bancos[i].codigo+'"  value="'+json.bancos[i].nombre+'"></option>';
                     }
@@ -206,14 +207,14 @@ $(document).on("ready",function(){
                         $(".cargacuenta").css("display","none");
                     },
                     success:function(respuesta){
-                        console.log(respuesta);
                         json = JSON.parse(respuesta);
+                        console.log(json);
                         if(json.cuentas.length>0){
                             html = "";
                             for(i=0;i<json.cuentas.length;i++){
-                                html += '<option cuenta="'+json.cuentas[i].cuenta+'" banco="'+json.cuentas[i].banco+'" tipo="'+json.cuentas[i].tipo+'" nombres="'+json.cuentas[i].nombres+'" values="'+json.cuentas[i].cuenta+'" identificacion="'+json.cuentas[i].identificacion+'"></option>';
+                                html += '<option cuenta="'+json.cuentas[i].cuenta+'" banco="'+json.cuentas[i].banco+'" tipo="'+json.cuentas[i].tipo+'" nombres="'+json.cuentas[i].nombres+'" value="'+json.cuentas[i].cuenta+'" identificacion="'+json.cuentas[i].identificacion+'"></option>';
                             }
-                            $("#numerocuenta").html(html);
+                            $("#cuenta").html(html);
                         }
                         
                     }
@@ -222,6 +223,24 @@ $(document).on("ready",function(){
                 $("#paisodestin").focus();
             }
             
+        }
+    })
+
+    $("#cuent").focusout(function(e){
+        var  banco = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('banco');
+        var  tipodecuenta = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('tipo');
+        var  nombres = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('nombres');
+        var  identificacion = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('identificacion');
+        if(typeof banco !== "undefined"){
+            $("#banc").attr("nombre",banco);
+            $("#banc").val(banco);
+            $("#tipodecuent").attr("nombre",tipodecuenta);
+            $("#tipodecuent").val(tipodecuenta);
+            $("#nombres").attr("nombre",nombres);
+            $("#nombres").val(nombres);
+            $("#identificacion").attr("nombre",identificacion);
+            $("#identificacion").val(identificacion);
+            $(".cuenta").attr("disabled","disabled");
         }
     })
 
