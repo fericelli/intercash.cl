@@ -102,7 +102,6 @@ $(document).on("ready",function(){
                     success:function(respuesta){
                         
                         json = JSON.parse(respuesta);
-                        console.log(json);
                         $(".tasa").text(json[0].tasa+" Tasa");
                         $(".usd").text(json[0].usd+" USD");
                         if(json[0].diponibilidad=="si"){
@@ -168,7 +167,6 @@ $(document).on("ready",function(){
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
-                        console.log(json);
                         $(".tasa").text(json[0].tasa+" Tasa");
                         $(".usd").text(json[0].usd+" USD");
                         if(json[0].diponibilidad=="si"){
