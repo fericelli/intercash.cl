@@ -22,7 +22,47 @@ $(document).on("ready",function(){
         }
     });
 
+    $("#paisodestin").focusout(function(){
+        var pais = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
+        if(typeof pais === "undefined"){
+            $(".mensaje-error").eq(0).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(0).css("display","none");
+            },5000)
+        }
+        if(typeof pais !== "undefined"){
+            $.ajax({
+                url:"./php/paises/bancos.php",
+                type: 'POST',
+                data: {pais:pais},
+                beforeSend:function(){
+                    $(".cargabancos").css("display","flex");
+                    $("#banc").css("display","none");
+                    $("#tipodecuent").css("display","none");
+                },
+                complete:function(){
+                    $(".cargabancos").css("display","none");
+                    $("#banc").css("display","flex");
+                    $("#tipodecuent").css("display","flex");
+                },
+                success:function(respuesta){
+                    json = JSON.parse(respuesta);
+                    console.log(json);
+                    html = "";
+                    html1 = "";
+                    for(i=0;i<json.bancos.length;i++){
+                        html += '<option codigo="'+json.bancos[i].codigo+'"  value="'+json.bancos[i].nombre+'"></option>';
+                    }
+                    for(i=0;i<json.tiposdecuenta.length;i++){
+                        html1 += '<option value="'+json.tiposdecuenta[i]+'"></option>';
+                    }
+                    $("#banco").html(html);
+                    $("#tipodecuenta").html(html1);
+                }
+            });
+        }
 
+    })
     $("#cantidadenviar").keypress(function(e){
         $("#cantidadrecibir").val("");
         if (e.keyCode === 13 && !e.shiftKey) {
@@ -52,16 +92,20 @@ $(document).on("ready",function(){
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
+                        $(".tasa").css("display","none");
                     },
                     complete:function(){
                         $(".imagenusd").css("display","none");
                         $(".usd").css("display","flex");
+                        $(".tasa").css("display","flex");
                     },
                     success:function(respuesta){
                         
                         json = JSON.parse(respuesta);
+                        
+                        $(".tasa").text(json[0].tasa+" Tasa");
                         if(json[0].diponibilidad=="si"){
-                            $(".usd").html(json[0].usd+" USD");
+                            $(".usd").text(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
                             $("#cantidadrecibir").val(json[0].dinerorecibir);
                         }else{
@@ -82,7 +126,8 @@ $(document).on("ready",function(){
     })
 
     $("#cantidadenviar").focusin(function(e){
-        $(".usd").html("0 USD");
+        $(".usd").text("0 USD");
+        $(".tasa").text("0 Tasa");
         $("#cantidadrecibir").val("");
     })
     $("#cantidadrecibir").keypress(function(e){
@@ -114,15 +159,19 @@ $(document).on("ready",function(){
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
+                        $(".tasa").css("display","none");
                     },
                     complete:function(){
                         $(".imagenusd").css("display","none");
                         $(".usd").css("display","flex");
+                        $(".tasa").css("display","flex");
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
+                        console.log(json);
+                        $(".tasa").text(json[0].tasa+" Tasa");
                         if(json[0].diponibilidad=="si"){
-                            $(".usd").html(json[0].usd+" USD");
+                            $(".usd").text(json[0].usd+" USD");
                             $("#cantidadenviar").val(json[0].dineroenviar);
                             $("#cantidadrecibir").val(json[0].dinerorecibir);
                         }else{
@@ -139,10 +188,44 @@ $(document).on("ready",function(){
         }
     })
     $("#cantidadrecibir").focusin(function(e){
-        $(".usd").html("0 USD");
+        $(".usd").text("0 USD");
+        $(".tasa").text("0 Tasa");
         $("#cantidadenviar").val("");
     })
-
+    $("#usuario").keypress(function(e){
+        if (e.keyCode === 13 && !e.shiftKey){
+            $("#cantidadrecibir").blur();
+            var pais = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
+            if(typeof pais !== "undefined"){
+                $.ajax({
+                    url:"./php/cuentas/usuarios.php",
+                    type: 'POST',
+                    data: {pais:pais,usuario:$(this).val()},
+                    beforeSend:function(){
+                        $(".cargacuenta").css("display","flex");
+                    },
+                    complete:function(){
+                        $(".cargacuenta").css("display","none");
+                    },
+                    success:function(respuesta){
+                        console.log(respuesta);
+                        json = JSON.parse(respuesta);
+                        if(json.cuentas.length>0){
+                            html = "";
+                            for(i=0;i<json.cuentas.length;i++){
+                                html += '<option cuenta="'+json.cuentas[i].cuenta+'" banco="'+json.cuentas[i].cuenta+'" tipo="'+json.cuentas[i].tipo+'" nombres="'+json.cuentas[i].nombres+'" ></option>';
+                            }
+                            $("#numerocuenta").html(html);
+                        }
+                        
+                    }
+                });
+            }else{
+                $("#paisodestin").focus();
+            }
+            
+        }
+    })
 
     $(".botons").on("click",function(){
         

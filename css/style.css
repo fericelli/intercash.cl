@@ -6,6 +6,8 @@
 
 body {
   background-image: url('../imagenes/fondo.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   display: flex;
 }
 .imgcarga{
@@ -14,7 +16,7 @@ body {
   height: 30px;
   margin: auto;
 }
-.usd{
+.usd,.tasa{
   display: flex;
   margin: auto;
 }
