@@ -16,7 +16,7 @@
                 $retorno .= '{"banco":"'.$datos[1].'","cuenta":"'.$datos[2].'","tipo":"'.$datos[3].'","nombres":"'.$datos[4].'","identificacion":"'.$datos[5].'"},';
             }
             if($validador==0){
-                $retorno.= "{}]";
+                $retorno.= "]";
             }else{
                 $retorno = substr($retorno,0,strlen($retorno)-1)."]";
             }

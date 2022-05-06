@@ -208,7 +208,6 @@ $(document).on("ready",function(){
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
-                        console.log(json);
                         if(json.cuentas.length>0){
                             html = "";
                             for(i=0;i<json.cuentas.length;i++){
@@ -225,7 +224,17 @@ $(document).on("ready",function(){
             
         }
     })
-
+    $("#cuent").focusin(function(e){
+        $("#banc").removeAttr("nombre");
+        $("#banc").val("");
+        $("#tipodecuent").removeAttr("nombre");
+        $("#tipodecuent").val("");
+        $("#nombres").removeAttr("nombre");
+        $("#nombres").val("");
+        $("#identificacion").removeAttr("nombre");
+        $("#identificacion").val("");
+        $(".cuenta").removeAttr("disabled");
+    })
     $("#cuent").focusout(function(e){
         var  banco = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('banco');
         var  tipodecuenta = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('tipo');
@@ -306,7 +315,6 @@ $(document).on("ready",function(){
                     $(".botons").css("display","");
                 },
                 success:function(respuesta){
-                    console.log(respuesta);
                     if(respuesta=="1"){
                         $(".mensaje-correcto").css("display","flex");
                         setTimeout(function(){
