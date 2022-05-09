@@ -99,11 +99,11 @@
                 
                 
                 ///echo "dinero comprado ".$dinerocomprado."\n";
-                echo "Moneda ".$monedascompra[0]."\n";
-                echo "satoshis invertidos ". number_format($satoshisinvertidos, 8)."\n";
-                echo "dinero disponible ".($dinerodisponible-$gastosmoneda)."\n";
-                echo "ganancia satoshis  ".number_format($gananciasatoshis, 8)."\n";
-                echo "ganancia moneda  ".$gananciadinero."\n";
+                echo "Moneda ".$monedascompra[0]."<br>";
+                echo "satoshis invertidos ". number_format($satoshisinvertidos, 8)."<br>";
+                echo "dinero disponible ".($dinerodisponible-$gastosmoneda)."<br>";
+                echo "ganancia satoshis  ".number_format($gananciasatoshis, 8)."<br>";
+                echo "ganancia moneda  ".$gananciadinero."<br>";
 
 
                 //echo $dinerodisponible/$satoshisinvertidos;
@@ -122,7 +122,7 @@
             
             $consultar = $conexion->Consultar("SELECT * FROM intercambios WHERE intermediario='tito'");
             while($datos = $conexion->Recorrido($consultar)){
-                var_dump($datos);
+                var_dump($datos)."<br>";
             }
             //var_dump($arraymonedasventas);
         }
