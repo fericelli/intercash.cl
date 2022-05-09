@@ -120,8 +120,10 @@
                 //break;
             }
             
-
-            
+            $consultar = $conexion->Consultar("SELECT * FROM intercambios WHERE intermediario='tito'");
+            while($datos = $conexion->Recorrido($consultar)){
+                //var_dump($datos);
+            }
             //var_dump($arraymonedasventas);
         }
     }
