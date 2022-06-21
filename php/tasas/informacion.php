@@ -8,20 +8,31 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-			$usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
-			$usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
-            $preciobtcdestino = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]."*btc_in_usd"))->{'data'}*1.1;
-            $consultar = $this->Conexion->Consultar("SELECT tasasporcentaje,decimalestasa FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."'");
+			
+            //$preciobtcdestino = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]."*btc_in_usd"))->{'data'};
+            $consultar = $this->Conexion->Consultar("SELECT tasasporcentaje,decimalestasa,anuncioventa,anunciocompra FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."'");
             $porcentaje = "1.10";
             $decimalestasa = "0";
+            $tasa = 0;
+            $usddestino = 0;
+            $usdorigen = 0;
             if($porcentajes = $this->Conexion->Recorrido($consultar)){
+                
+                $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
+			    $usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
                 if(strlen($porcentajes[0])==1){
                     $porcentaje = "1.0".$porcentajes[0];
                     
                 }else{
                     $porcentaje = "1.".$porcentajes[0];
                 }
+
+                if($porcentajes[2]<10 AND $porcentajes[3]>-10){
+                    $tasa = $usddestino*$porcentajes[2];
+                }
+                
                 $decimalestasa = $porcentajes[1];
+
             }
             
             if(isset($_POST["cantidadenviar"])){
