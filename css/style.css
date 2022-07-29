@@ -9,6 +9,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   display: flex;
+  flex-direction: column;
 }
 .imgcarga{
   display: none;

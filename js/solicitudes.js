@@ -225,6 +225,7 @@ $(document).on("ready",function(){
         }
     })
     $("#cuent").focusin(function(e){
+        $(this).val("");
         $("#banc").removeAttr("nombre");
         $("#banc").val("");
         $("#tipodecuent").removeAttr("nombre");
@@ -233,7 +234,7 @@ $(document).on("ready",function(){
         $("#nombres").val("");
         $("#identificacion").removeAttr("nombre");
         $("#identificacion").val("");
-        $(".cuenta").removeAttr("disabled");
+        $(".bloquecuen").removeAttr("disabled");
     })
     $("#cuent").focusout(function(e){
         var  banco = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('banco');
@@ -249,7 +250,7 @@ $(document).on("ready",function(){
             $("#nombres").val(nombres);
             $("#identificacion").attr("nombre",identificacion);
             $("#identificacion").val(identificacion);
-            $(".cuenta").attr("disabled","disabled");
+            $(".bloquecuen").attr("disabled","disabled");
         }
     })
 
@@ -286,26 +287,55 @@ $(document).on("ready",function(){
                 $(".mensaje-error").eq(3).css("display","none");
             },5000)
         }
-        if($("#cuenta").val()==""){
+        if($("#usuario").val()==""){
             validador ++;
             $(".mensaje-error").eq(4).css("display","flex");
             setTimeout(function(){
                 $(".mensaje-error").eq(4).css("display","none");
             },5000)
         }
-        if($("#usuario").val()==""){
+        if($("#cuent").val()==""){
             validador ++;
             $(".mensaje-error").eq(5).css("display","flex");
             setTimeout(function(){
                 $(".mensaje-error").eq(5).css("display","none");
             },5000)
         }
+        if($("#banc").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(6).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(6).css("display","none");
+            },5000)
+        }
+        if($("#tipodecuent").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(7).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(7).css("display","none");
+            },5000)
+        }
+        if($("#nombres").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(8).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(8).css("display","none");
+            },5000)
+        }
+        if($("#identificacion").val()==""){
+            validador ++;
+            $(".mensaje-error").eq(9).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(9).css("display","none");
+            },5000)
+        }
+        
 
         if(validador==0){
             $.ajax({
                 url:"./php/intercambios/solicitudes.php",
                 type: 'POST',
-                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuenta").val(),usuario:$("#usuario").val()},
+                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuent").val(),banco:$("#banc").val(),tipodecuenta:$("#tipodecuent").val(),nombres:$("#nombres").val(),usuario:$("#usuario").val(),identificacion:$("#identificacion").val()},
                 beforeSend:function(){
                     $(".imagensolicitud").css("display","flex");
                     $(".botons").css("display","none");
@@ -315,12 +345,16 @@ $(document).on("ready",function(){
                     $(".botons").css("display","");
                 },
                 success:function(respuesta){
-                    if(respuesta=="1"){
-                        $(".mensaje-correcto").css("display","flex");
-                        setTimeout(function(){
-                            $(".mensaje-correcto").css("display","none");
-                        },5000)
+                    json = JSON.parse(respuesta);
+                    console.log(json[0].mensausuario[1]);
+                    if(json[0].mensausuario[1]="correcto"){
+                        $(".mensaje-correcto").css("display","flex").text(json[0].mensausuario[0]);
+                    }else{
+                        $(".mensaje-error").eq(10).css("display","flex").text(json[0].mensausuario[0]);
                     }
+                    setTimeout(function(){
+                        $(".mensajesolicitud").css("display","none");
+                    },5000)
                     
                 }
             });
