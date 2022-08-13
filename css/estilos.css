@@ -7,6 +7,7 @@ body{
     font-family: 'Open Sans', sans-serif;
     padding: 0 1.5em;
     font-size: 40px;
+    margin: auto;
 }
 
 .content{
@@ -89,6 +90,10 @@ body{
 }
 .contact-info ul li{
     padding: .3em;
+}
+
+.mensajesolicitud{
+    text-align: center;
 }
 /*pantallas grandes*/
 @media(min-width:1000px){

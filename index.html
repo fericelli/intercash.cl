@@ -4,72 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://file.myfontastic.com/iKa94pqcdMLv4DmY2UYJVK/icons.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="js/solicitudes.js"></script>
+	<script type="text/javascript" src="js/sesion.js"></script>
   <title>Formulario Registro</title>
 </head>
 <body>
-  <section class="form-register">
-    <h4>Solicitar Intercambio</h4>
-    <label class="margen">Pais Destino</label>
-    <input class="controls" type="text" name="paisodestino" id="paisodestin" placeholder="Seleccione un país" list="paisodestino">
-    <datalist id="paisodestino">
-    </datalist>
-    <label class="mensaje-error" >Seleccione un País</label>
-    <label class="margen">Pais Origen</label>
-    <input class="controls" type="text" name="paisorigen" id="paisorige" placeholder="Seleccione un país" list="paisorigen">
-    <datalist id="paisorigen">
-    </datalist>
-    <label class="mensaje-error">Seleccione un País</label>
-    <label class="margen">Cantidad a enviar</label>
-    <input class="controls" type="text" name="cantidadenviar" id="cantidadenviar" placeholder="Ingrese la cantidad">
-    <label class="mensaje-error">Ingrese un monto</label>
-    <label class="margen">Cantidad a recibir</label>
-    <input class="controls" type="text" name="cantidadrecibir" id="cantidadrecibir" placeholder="Ingrese la cantidad">
-    <label class="mensaje-error">Ingrese un monto</label>
-    <div style="display:flex;justify-content: space-around;">
-        <img class="imgcarga imagenusd" src="imagenes/carga.gif">
-        <p class="usd">0 USD</p>
-        <p class="tasa">0 Tasa</p>
+  <div id="sidemenu" class="menu-collapsed">
+    <div id="header">
+      <div id="title"><span>Intercash.CL</span></div>
+      <div id="menu-btn" >
+        <i class=" iconos icono-menu"></i>
+      </div>
     </div>
-    <label class="margen">Usuario o correo</label>
-    <input class="controls"  type="text" name="usuario" id="usuario" placeholder="Ingrese su Usuario o Correo">
-    <label class="mensaje-error">Ingrese su usuario o correo</label>
-    <label class="margen"><h3>Cuenta</h3></label>
-    <label class="margen">Número o correo</label>
-    <input class="controls  cuenta" type="text" name="cuenta" id="cuent" placeholder="Ingrese su Cuenta" list="cuenta">
-    <datalist id="cuenta">
-    </datalist>
-    <img class="imgcarga cargacuenta" src="imagenes/carga.gif">
-    <label class="mensaje-error">Ingrese su numero o correo</label>
-    <label class="margen">Banco</label>
-    <input class="controls banco bloquecuen" type="text" name="banco" id="banc" placeholder="Ingrese su Banco" list="banco">
-    <datalist id="banco">
-    </datalist>
-    <img class="imgcarga cargabancos" src="imagenes/carga.gif">
-    <label class="mensaje-error">Ingrese el banco</label>
-    <label class="margen">Tipo de cuenta</label>
-    <input class="controls tipodecuenta bloquecuen" type="text" name="tipodecuenta" id="tipodecuent" placeholder="Ingrese tipo de la Cuenta" list="tipodecuenta">
-    <datalist id="tipodecuenta">
-    </datalist>
-    <img class="imgcarga cargabancos" src="imagenes/carga.gif">
-    <label class="mensaje-error">Ingrese el tipo de cuenta</label>
-    <label class="margen">Nombre y Apellido</label>
-    <input class="controls nombres bloquecuen" type="text" name="nombres" id="nombres" placeholder="Ingrese nombres de la Cuenta">
-    <label class="mensaje-error" >Ingrese el nombre y Apellido</label>
-    <label class="margen">N° Identificación</label>
-    <input class="controls identificacion bloquecuen" type="text" name="identificacion" id="identificacion" placeholder="Ingrese Identificación de la Cuenta">
-    <label class="mensaje-error">Ingrese el número de identificacion</label>
-    <div class="botons" >Solicitar</div>
-    <img class="imgcarga imagensolicitud" src="imagenes/carga.gif">
-    <label class="mensaje-correcto mensajesolicitud"></label>
-    <label class="mensaje-error mensajesolicitud"></label>
-    <p><a >Registrate</a></p>
-    
-    <!--<p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>-->
-  </section>
 
+    <div id="profile">
+      <div id="photo"><img src="imagenes/logo (1).png"></div>
+      <div id="name"><span>Javier</span></div>
+    </div>
+    <div id="menu-items">
+      <div class="item">
+        <a href="#">
+          <div class="icon"><i class=" iconos icono-graficas"></i></div>
+          <div class="title"><span>Patrimonio</span></div>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+  <div id="main-container">
+adaddadadda
+  </div>
 </body>
 </html>

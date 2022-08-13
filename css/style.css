@@ -3,90 +3,171 @@
 	padding:0;
 	box-sizing: border-box;
 }
+:root{
+  --width:300px;
+  --padding:10px;
+  --bgcolor:rgb(52,52,52);
+  --hovercolor:rgb(23,23,23);
+  --width-collapsed:50px;
+}
 
 body {
   background-image: url('../imagenes/fondo.jpg');
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+  margin-left: var(--width-collapsed);
   background-repeat: no-repeat;
   background-attachment: fixed;
-  display: flex;
-  flex-direction: column;
+  /*display: flex;
+  flex-direction: column;*/
 }
-.imgcarga{
-  display: none;
-  width: 30px;
-  height: 30px;
-  margin: auto;
+.body-expanded{
+  margin-left: var(--width);
 }
-.usd,.tasa{
-  display: flex;
-}
-.form-register {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  background: #24303c;
-  padding: 30px;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  font-family: 'calibri';
+#main-container{
   color: white;
-  box-shadow: 7px 13px 37px #000;
+  padding: 5px;
 }
 
-.form-register h4 {
-  font-size: 22px;
-}
-.margen{
-  margin-top: 10px;
-}
-.controls {
-  width: 100%;
-  background: #24303c;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #1f53c5;
-  font-family: 'calibri';
-  font-size: 18px;
+#sidemenu{
+  background-color: var(--bgcolor);
   color: white;
+  position: fixed;
+  height: 100%;
+  left: 0;
+  top: 0;
 }
-
-.form-register p {
-  text-align: center;
-  font-size: 18px;
-  line-height: 40px;
-}
-
-
-.form-register a {
+#sidemenu a{
   color: white;
   text-decoration: none;
 }
-
-.form-register a:hover {
-  color: white;
-  text-decoration: underline;
+/*HEADER*/
+#sidemenu #header{
+  box-sizing: border-box;
+  border-bottom: solid 1px var(--hovercolor);
+  display: flex;
+  justify-content: space-around;
 }
-
-.form-register .botons {
-  width: 100%;
-  background: #1f53c5;
+#sidemenu #header #title{
+  box-sizing: middle;
+  overflow: hidden;
+  
+  padding: 10px
+}
+#sidemenu #header #title,#sidemenu #header #menu-btn{
+  vertical-align: middle;
+}
+#sidemenu #header #menu-btn{
+  display: inline-block;
+}
+#sidemenu #header #menu-btn{
   cursor: pointer;
-  border: none;
-  text-align: center;
-  padding: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#sidemenu #header #menu-btn:hover{
+  background-color: var(--hovercolor);
+}
+#sidemenu #header #menu-btn .icono-menu{
   color: white;
-  margin: 16px 0;
-  font-size: 20px;
+  width: 50px;
+  height: 50px;
 }
-
-
-.mensaje-error{
-  display: none;
-  color:#ff3f3f;
+/*profile*/
+#sidemenu #profile{
+  border-bottom: solid 1px var(--hovercolor);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
 }
-.mensaje-correcto{
+#sidemenu #profile #photo{
+  box-sizing: border-box;
+  margin:  0 auto;
+}
+#sidemenu #profile img{
+  border-radius: 50%;
+}
+#sidemenu #profile #photo, #sidemenu #profile #name{
+  overflow: hidden;
+}
+/*item*/
+#sidemenu #menu-items{
+  overflow: hidden;
+}
+#sidemenu #menu-items .item{
+  display: inline-block;
+  width: 100%;
+}
+#sidemenu #menu-items .item .icon,
+#sidemenu #menu-items .item .title{ 
+  font-size: 14px;
+  vertical-align: middle;
+  overflow: hidden;
+}
+#sidemenu #menu-items .item a{
+  display: flex;
+  justify-content: space-around;
+}
+#sidemenu #menu-items .item a:hover{
+  background-color: var(--hovercolor);
+}
+#sidemenu #menu-items .item .icon{
+  box-sizing: border-box;
+  padding: var(--padding);
+  width: var(--width-collapsed);
+}
+#sidemenu #menu-items .item .icon i{
+  width: 100%;
+  font-size: 25px;
+}
+#sidemenu #menu-items .item .title{
+  padding: var(--padding) 0;
+}
+.menu-expanded{
+  width: var(--width);
+  box-shadow: 
+  0 0 10px rgba(0,0,0,0.5);
+  transition: width .8s;
+}
+.menu-expanded #header #title span{
+  width: cal(var(--width) - var(--width-collapsed) - 5px);
+  overflow: hidden; 
+  display: flex;
+  justify-content: space-around;
+}
+.menu-expanded #profile img{
+  
+  width: 150px;
+  height: 150px;
+}
+.menu-expanded #profile #name{
+  width: 100%;
+}
+.menu-collapsed{
+  width: var(--width-collapsed);
+  
+  transition: width .8s;
+}
+.menu-collapsed #menu-items .item .title{
   display: none;
-  color:#26f50b;
+}
+.menu-collapsed #header #title{
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+.menu-collapsed #profile img {
+  width: 50px;
+  height: 50px;
+}
+.menu-collapsed #profile #name {
+  
+  display: none;
+}
+.menu-collapsed .item{
+  width: 100px;
 }

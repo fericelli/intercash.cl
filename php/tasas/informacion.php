@@ -10,22 +10,30 @@
 		private function retorno(){
 			
             $preciobtcdestino = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]."*btc_in_usd"))->{'data'};
-            $consultar = $this->Conexion->Consultar("SELECT tasasporcentaje,decimalestasa,anuncioventa,anunciocompra,devaluacion FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."'");
+            $consultar = $this->Conexion->Consultar("SELECT tasasporcentaje,decimalestasa,anuncioventa,anunciocompra FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."'");
             $porcentaje = "1.10";
             $decimalestasa = "0";
             $tasa = 0;
             $usddestino = 0;
             $usdorigen = 0;
-            $davaludacion = 0;
+            $davaluacionorigen = 0;
+            $davaluaciondestino = 0;
             $tasausddestino=0;
+            $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
+			$usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
+			$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
+             $btcorigen = $usdorigen*$btcprecio;
+             $btcdestino = $usddestino*$btcprecio;
+
+            $consultardevaluacionorigen = $this->Conexion->Consultar("SELECT * FROM devalucacion WHERE moneda='".$_POST["monedaorigen"]."'");
+            if($devaluaciono = $this->Conexion->Recorrido($consultardevaluacionorigen)){
+                $davaluacionorigen = $devaluaciono[1];
+            }
+            $consultardevaluaciondestino = $this->Conexion->Consultar("SELECT * FROM devalucacion WHERE moneda='".$_POST["monedadestino"]."'");
+            if($devaluaciond = $this->Conexion->Recorrido($consultardevaluacionorigen)){
+                $davaluaciondestino = $devaluaciond[1];
+            }
             if($porcentajes = $this->Conexion->Recorrido($consultar)){
-                
-                $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
-			    $usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
-			    $btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-                $btcorigen = $usdorigen*$btcprecio;
-                $btcdestino = $usddestino*$btcprecio;
-                
                 if(strlen($porcentajes[0])==1){
                     $porcentaje = "1.0".$porcentajes[0];
                 }else{
@@ -59,11 +67,17 @@
                     } 
                     
                 }
-                $tasa = (($btcdestino)/$btcorigen)/$porcentaje;
+                
                 $decimalestasa = $porcentajes[1];
-                $tasausddestino = $usddestino + (($usddestino*$porcentajes[4])/100);
             }
             
+            $tasa = (($btcdestino)/$btcorigen)/$porcentaje;
+            $tasausddestino = $usddestino + (($usddestino*$davaluaciondestino)/100);
+            //echo floatval($decimalestasa)."v d".floatval($tasa);
+            if(floatval($decimalestasa)==0 AND floatval($tasa)<0){
+                echo "segseg";
+                $decimalestasa = 3; 
+            }
             if(isset($_POST["cantidadenviar"])){
                 $tasa = round($tasa,$decimalestasa);
                 $dinerorecibir = round($tasa*$_POST["cantidadenviar"], $_POST["decimaldestino"]);
