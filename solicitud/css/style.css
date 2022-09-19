@@ -5,7 +5,7 @@
 }
 
 body {
-  background-image: url('../imagenes/fondo.jpg');
+  /*background-image: url('../imagenes/fondo.jpg');*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   display: flex;

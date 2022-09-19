@@ -1,18 +1,22 @@
 <?php
-    Class Informacion{
+    Class Satoshis{
         function __construct(){
-            include("conexion.php");
+            include("../conexion.php");
 			$conexion = new Conexion();
-
-            $filtos = "AND intermediario='tito'";
+            $filtos = "";
+            if(isset($_POST["usuario"])){
+                $filtos = "AND intermediario='".$_POST["usuario"]."'";
+            }
+            
             if($filtos!=""){
                 $consultar = $conexion->Consultar("SELECT DISTINCT(monedacompra) FROM intercambios ".str_replace("AND", "WHERE", $filtos));
             }else{
                 $consultar = $conexion->Consultar("SELECT DISTINCT(monedacompra) FROM intercambios ".$filtos);
             }
-            $informacion = [];
             
+            $informacion = "["; 
             while($monedascompra = $conexion->Recorrido($consultar)){
+                $informacion .= '{"moneda":"'.$monedascompra[0].'",';
                 $consultar1 = $conexion->Consultar("SELECT DISTINCT(monedaventa) FROM intercambios WHERE monedacompra='".$monedascompra[0]."' ".$filtos);
                 $arraymonedasventas = [];
                 while($monedasventa = $conexion->Recorrido($consultar1)){
@@ -83,6 +87,7 @@
                     $gananciadinero = $dinerodisponible;
                     if($satoshisinvertidos>0){
                         $gananciasatoshis  = $satoshisinvertidos*-1;
+                        
                     }else{
                         $gananciasatoshis  = abs($satoshisinvertidos);
                     }
@@ -97,15 +102,18 @@
                     }
                 }
                 
+                if($satoshisinvertidos<0){
+                    $satoshisinvertidos = 0;
+                }
+
+                $informacion .= '"invertidosatoshi":"'.number_format($satoshisinvertidos, 8).'",
+                "dineroenviado":"'.$dinerorecibido.'",
+                "dinerodisponoble":"'.$dinerodisponible.'",
+                "gananciasatoshis":"'.number_format($gananciasatoshis, 8).'",
+                "gananciamoneda":"'.$gananciadinero.'"},';
                 
-                ///echo "dinero comprado ".$dinerocomprado."\n";
-                echo "Moneda ".$monedascompra[0]."<br>";
-                echo "satoshis invertidos ". number_format($satoshisinvertidos, 8)."<br>";
-                echo "dinero disponible ".($dinerodisponible-$gastosmoneda)."<br>";
-                echo "ganancia satoshis  ".number_format($gananciasatoshis, 8)."<br>";
-                echo "ganancia moneda  ".$gananciadinero."<br>";
 
-
+                
                 //echo $dinerodisponible/$satoshisinvertidos;
                 //print_r($conexion->Recorrido($consultaoperacionescompra)); 
                 /*var_dump($intercambios);
@@ -119,13 +127,11 @@
                 
                 //break;
             }
-            
-            $consultar = $conexion->Consultar("SELECT * FROM intercambios WHERE intermediario='tito'");
-            while($datos = $conexion->Recorrido($consultar)){
-                var_dump($datos)."<br>";
-            }
+            echo substr($informacion,0,strlen($informacion)-1)."]";
             //var_dump($arraymonedasventas);
         }
     }
-    new Informacion();
+    new Satoshis();
 ?>
+
+

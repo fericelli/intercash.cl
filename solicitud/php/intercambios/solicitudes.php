@@ -9,42 +9,36 @@
 		}
 		private function retorno(){
            // return var_dump($_POST);
-			$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios WHERE usuario='".$_POST["usuario"]."' OR correo='".$_POST["usuario"]."'");
-            $retorno = "{";
-            $correo = "";
-            if($usaurio = $this->Conexion->Recorrido($consultar)){
-                if($usaurio[3]){
-                    $correo = $usaurio[1];
-                }/*else{
-                    $retorno .= '"mensausuario":"Usuario no verificado",';
-                }*/
-            }else{
-                $validad = explode("@",$_POST["usuario"]);
-                if(count($validad)==2){
-                    if(trim($validad[1]) == "gmail.com" ){
-                        $correo = $_POST["usuario"];
-                    }else{
-                        $retorno .= '"mensausuario":["Debe ser un correo Gmal","error"],';
-                    }
-                }else{
-                    $retorno .= '"mensausuario":["Debe ser un correo Gmal","error"],';
-                }
+            $cantidad = 5;
+            if(isset($_POST["cantidad"])){
+                $cantidad = $_POST["cantidad"]+5;
             }
-            if(strlen($retorno)>0){
-                $message = '<p style="left:0"><h4>Solicistaste cambiar</h4> '.$_POST["cantidadrecibir"].' '.$_POST["monedaorigen"].'</p>
-                <p style="left:0"><h4>Por</h4> '.$_POST["cantidadenviar"].' '.$_POST["monedadestino"].'</p>
-                <p style="left:0"><h4>Informacion de pago</h4></p>
-                <p style="left:0">'.$_POST["cuenta"]."</p>"; 
-                $headers = "From: solicitud@intercash.cl" . "\r\n" ."Content-type:text/html;chrarset=UTF-8";
-                $correo =  mail($correo, 'Solicitud de Intercambio', $message,$headers);
-                //if($correo){
-                    $solicitar = $this->Conexion->Consultar("INSERT INTO solicitudes(monedadestino,monedaorigen,cantidadaenviar,cantidadarecibir,cuenta,banco,tipocuenta,nombres,identificacion,usuario,momento) VALUES ('".$_POST["monedadestino"]."','".$_POST["monedaorigen"]."','".$_POST["cantidadenviar"]."','".$_POST["cantidadrecibir"]."','".$_POST["cuenta"]."','".$_POST["banco"]."','".$_POST["tipodecuenta"]."','".$_POST["nombres"]."','".$_POST["identificacion"]."','".$_POST["usuario"]."','".date("Y-m-d H:i:s")."')");
-            // }
-                $retorno .= '"mensausuario":["Solicitud enviada","correcto"]';
+			$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE usuario='".$_POST["usuario"]."' LIMIT 0,".$cantidad."");
+            $retorno = "";
+            while($solicitudes = $this->Conexion->Recorrido($consultar)){
+                $datos = $solicitudes[5].".".
+                        $solicitudes[6]." ".$solicitudes[4].".". 
+                        $solicitudes[7].".".  
+                        $solicitudes[8];
+                $retorno .= '{
+                    "monedadestino":"'.$solicitudes[0].'",
+                    "monedaorigen":"'.$solicitudes[1].'",
+                    "cantidadenviar":"'.$solicitudes[2].'",
+                    "cantidadrecibir":"'.$solicitudes[3].'",
+                    "datos":"'.$datos.'",
+                    "estado":';
+
+                if($solicitudes[11]==NULL){
+                    $retorno .= '"pendiente",';
+                }else{
+                    $retorno .= '"../imagenes",';
+                }
+                $retorno .= '"momento":"'.$solicitudes[10].'"},';
             }
             
-
-           return $retorno."}";
+            
+            
+           return substr($retorno,0,strlen($retorno)-1)."";
         } 
 	}
 	new Solicitudes();

@@ -4,37 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://file.myfontastic.com/iKa94pqcdMLv4DmY2UYJVK/icons.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="js/sesion.js"></script>
+	<script type="text/javascript" src="js/iniciosesion.js"></script>
   <title>Formulario Registro</title>
 </head>
 <body>
-  <div id="sidemenu" class="menu-collapsed">
-    <div id="header">
-      <div id="title"><span>Intercash.CL</span></div>
-      <div id="menu-btn" >
-        <i class=" iconos icono-menu"></i>
-      </div>
-    </div>
+  <section class="form-register">
+    <h4>Iniciar sesion</h4>
+    <label class="margen">Usuario</label>
+    <input class="controls" type="text" name="usuario" id="usuario" placeholder="Ingresa su usuario" list="">
+    <label class="mensaje-error" >Ingrese su usuario</label>
+    <label class="margen">Contraseña</label>
+    <input class="controls" type="password" name="clave" id="clave" placeholder="Ingrese su contraseña" list="paisorigen">
+    <label class="mensaje-error" >Ingrese su contraseña</label>
+    <div class="botons" >Ingresar</div>
+    <img class="imgcarga imagensolicitud" src="imagenes/carga.gif">
+    <label class="mensaje-correcto mensajesolicitud"></label>
+    <label class="mensaje-error mensajesolicitud"></label>
+     <!--<p><a >Registrate</a></p>-->
+    
+    <!--<p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>-->
+  </section>
 
-    <div id="profile">
-      <div id="photo"><img src="imagenes/logo (1).png"></div>
-      <div id="name"><span>Javier</span></div>
-    </div>
-    <div id="menu-items">
-      <div class="item">
-        <a href="#">
-          <div class="icon"><i class=" iconos icono-graficas"></i></div>
-          <div class="title"><span>Patrimonio</span></div>
-        </a>
-      </div>
-      
-    </div>
-  </div>
-  <div id="main-container">
-adaddadadda
-  </div>
 </body>
 </html>

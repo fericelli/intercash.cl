@@ -16,7 +16,7 @@
                 $contador ++;
             }
             if($contador==0){
-                $retorno .= "{}],";
+                $retorno .= "],";
             }else{
                 $retorno = substr($retorno,0,strlen($retorno)-1)."],";
             }
