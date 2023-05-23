@@ -1,7 +1,7 @@
 <?php
     Class Satoshis{
         function __construct(){
-            include("../conexion.php");
+            include("../../../php/conexion.php");
 			$conexion = new Conexion();
             $filtos = "";
             if(isset($_POST["usuario"])){

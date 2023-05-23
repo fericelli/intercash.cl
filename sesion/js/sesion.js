@@ -311,7 +311,7 @@ $(document).on("ready",function(){
         }
         if(opcion=="intercambios"){
             $.ajax({
-                url:"./../php/intercambios/finalizados.php",
+                url:"./../solicitud/php/intercambios/finalizados.php",
                 type: 'POST',
                 data: {usuario:localStorage.getItem("usuario"),tipodeusuario:localStorage.tipousuario},
                 beforeSend:function(){
