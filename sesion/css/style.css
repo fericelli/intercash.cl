@@ -31,6 +31,7 @@ body {
   position: fixed;
     height: 100%;
     display: flex;
+    z-index: 1000;
 }
 #main-container{
   color: white;
@@ -44,6 +45,7 @@ body {
   height: 100%;
   left: 0;
   top: 0;
+  z-index: 100;
 }
 #sidemenu a{
   color: white;
@@ -108,6 +110,7 @@ body {
   border-top: solid 1px;
   border-bottom: solid 1px;
   padding: 5px 0;
+  cursor: pointer;
 }
 #sidemenu #menu-items .item .icon,
 #sidemenu #menu-items .item .title{ 

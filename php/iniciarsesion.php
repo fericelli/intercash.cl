@@ -12,8 +12,9 @@
              $consultar = $this->Conexion->Consultar("SELECT * FROM usuarios WHERE usuario='".$_POST["usuario"]."' OR correo='".$_POST["usuario"]."'");
              $retorno = "[";
              $correo = "";
-            if($this->Conexion->Recorrido($consultar)){
-                
+             $tipousaurio = "";
+            if($usaurio = $this->Conexion->Recorrido($consultar)){
+                $tipousaurio = $usaurio[5];
             }else{
                 $retorno .= '"Usuario no registrado","error"';
             }
@@ -27,7 +28,7 @@
             }
 
             if(strlen($retorno)==1){
-                $retorno .= '"Iniciando sesión","correcto"';
+                $retorno .= '"Iniciando sesión","correcto","'.$tipousaurio.'"';
             }
              
  

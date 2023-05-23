@@ -1,5 +1,5 @@
 <?php
-	Class Usuarios{
+	Class Pago{
 		private $Conexion;
 		function __construct(){
 			include("../conexion.php");
@@ -8,12 +8,14 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-            $consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE usuario='".$_POST["usuario"]."' AND pais='".$_POST["pais"]."' AND tipo='envio'");
+            
+            //return "SELECT iso2 FROM paises INNER JOIN cuentas ON pais=iso2 WHERE iso_moneda='".$_POST["monedaorigen"]."' AND tipo='pago'";
+            $consultar = $this->Conexion->Consultar("SELECT * FROM paises INNER JOIN cuentas ON pais=iso2 WHERE iso_moneda='".$_POST["monedaorigen"]."' AND tipo='pago'");
             $retorno = '{"cuentas":[';
             $validador = 0;
             while($datos = $this->Conexion->Recorrido($consultar )){
                 $validador ++;
-                $retorno .= '{"banco":"'.$datos[1].'","cuenta":"'.$datos[2].'","tipo":"'.$datos[3].'","nombres":"'.$datos[4].'","identificacion":"'.$datos[5].'"},';
+                $retorno .= '{"banco":"'.$datos[8].'","cuenta":"'.$datos[9].'","tipo":"'.$datos[10].'","nombres":"'.$datos[11].'","identificacion":"'.$datos[12].'","usuario":"'.$datos[13].'"},';
             }
             if($validador==0){
                 $retorno.= "]";
@@ -23,5 +25,5 @@
             return $retorno."}";
         }
 	}
-	new Usuarios();
+	new Pago();
 ?>

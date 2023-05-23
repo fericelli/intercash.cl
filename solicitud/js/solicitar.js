@@ -1,9 +1,43 @@
 //$(document).on("ready",function(){
     
-    dominio = location.origin;
+    
+    var URLactual = window.location;
+    var urlglobal = URLactual.href.replace("sesion/", "");
+    if(typeof localStorage.usuario !== "undefined" ){
 
+        if(localStorage.tipousuario=="administrador"){
+            $.ajax({
+                url:urlglobal+'/usuarios/php/usuarios.php',
+                beforeSend:function(){
+                    $(".contenedorcarga").css("display","flex");
+                },
+                complete:function(){
+                    $(".contenedorcarga").css("display","none");
+                },
+               
+                success:function(respuesta){
+                    json = JSON.parse(respuesta);
+                    html = "";
+                    for(i=0;i<json[0].length;i++){
+                        html += '<option usaurio="'+json[0][i]+'" value="'+json[0][i]+'"></option>';
+                    }
+                    
+                    //$("#paisodestino").html(html);
+                    $("#usuario").html(html);
+                }
+            });
+        }else{
+            $("#usuario").val(localStorage.usuario);  
+            $("#usuario").css("display","none");
+            $("label").eq(8).css("display","none");
+        }
+    }else{
+        
+    }
+
+    
     $.ajax({
-        url:dominio+'/intercash.cl/solicitud/php/paises/paisesorigen.php',
+        url:urlglobal+'/solicitud/php/paises/paisesorigen.php',
         beforeSend:function(){
             $(".contenedorcarga").css("display","flex");
         },
@@ -36,7 +70,7 @@
         }
         if(typeof moneda !== "undefined"){
             $.ajax({
-                url:dominio+'/intercash.cl/solicitud/php/paises/paisesdestino.php',
+                url:urlglobal+'/solicitud/php/paises/paisesdestino.php',
                 type: 'POST',
                 data: {moneda:moneda,pais:pais},
                 beforeSend:function(){
@@ -68,7 +102,7 @@
         }
         if(typeof pais !== "undefined"){
             $.ajax({
-                url:dominio+'/intercash.cl/solicitud/php/paises/bancos.php',
+                url:urlglobal+'/solicitud/php/paises/bancos.php',
                 type: 'POST',
                 data: {pais:pais},
                 beforeSend:function(){
@@ -123,7 +157,7 @@
                     }
                 });
             }else{
-                $("#paisodestin").focus();
+                //$("#paisodestin").focus();
             }
         }
     })
@@ -186,10 +220,18 @@
         }
     })
 
+    $("#paisorige").focusin(function(){
+        $(".usd").text("0 USD");
+        $(".tasa").text("0 Tasa");
+        $("#cantidadrecibir").val("");
+        $("#cantidadenviar").val("");
+    })
     $("#cantidadenviar").focusin(function(e){
         $(".usd").text("0 USD");
         $(".tasa").text("0 Tasa");
         $("#cantidadrecibir").val("");
+        
+        
     })
     $("#cantidadrecibir").focusout(function(e){
         
@@ -358,13 +400,25 @@
                 $(".mensaje-error").eq(9).css("display","none");
             },5000)
         }
+        var usuario = "";
+        if(typeof localStorage.usuario !== "undefined" ){
+            var usua = $('#usuario [value="' + $("#paisodestin").val() + '"]').val();
+            if(typeof usua !== "undefined"){
+                usuario = usua;
+            }else{
+                usuario = localStorage.usuario;
+            }
+            
+        }else{
+            usuario = $("#usuario").val();
+        }
         
 
         if(validador==0){
             $.ajax({
                 url:"./../solicitud/php/intercambios/solicitud.php",
                 type: 'POST',
-                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuent").val(),banco:$("#banc").val(),tipodecuenta:$("#tipodecuent").val(),nombres:$("#nombres").val(),usuario:$("#usuario").val(),identificacion:$("#identificacion").val()},
+                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuent").val(),banco:$("#banc").val(),tipodecuenta:$("#tipodecuent").val(),nombres:$("#nombres").val(),usuario:usuario,identificacion:$("#identificacion").val()},
                 beforeSend:function(){
                     $(".imagensolicitud").css("display","flex");
                     $(".botons").css("display","none");

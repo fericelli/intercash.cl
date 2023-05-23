@@ -38,9 +38,10 @@ $(document).on("ready",function(e){
                         $(".mensaje-correcto").css("display","flex").text(json[0]);
                         localStorage.sesioniniciada="iniciada";
                         localStorage.usuario=$("#usuario").val();
+                        localStorage.tipousuario = json[2];
                         var URLactual = window.location;
                         var url = URLactual.href+"/sesion";
-                        //console.log(URLactual);
+                        
                         setTimeout(function(){
                             location.href = url;
                         },6000)
@@ -51,7 +52,7 @@ $(document).on("ready",function(e){
                     }
                     setTimeout(function(){
                         $(".mensajesolicitud").css("display","none");
-                    },5000)
+                    },8000)
                     
                 }
             });
