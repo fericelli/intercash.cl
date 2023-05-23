@@ -7,7 +7,7 @@
 		private $Conectar;
 		
 		function __construct(){
-			$this->Conexiones("localhost","root","Appserv2324**","intercash.cl");
+			$this->Conexiones("localhost","u956446715_root","1Li?5ohY","u956446715_intercash");
 		}
 		private function Conexiones($S,$U,$C,$B){
 			$this->Servidor = $S;
