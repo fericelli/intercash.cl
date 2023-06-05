@@ -8,14 +8,13 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-            $cantidad = 5;
+           $cantidad = 5;
             if(isset($_POST["cantidad"])){
                 $cantidad = $_POST["cantidad"]+5;
                 $inicio = $_POST["cantidad"]-1;
             }else{
                 $inicio=0;
             }
-            echo "SELECT * FROM solicitudes LIMIT 0,".$cantidad."";
             if($_POST["tipodeusuario"]=="administrador"){
                 $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LIMIT 0,".$cantidad."");
             
@@ -66,7 +65,7 @@
                 "usuario":"'.$solicitudes[9].'",
                 "pagado":"'.$pagado.'"},';
             }
-            
+            echo substr($retorno,0,strlen($retorno)-1)."";
             
             
            return substr($retorno,0,strlen($retorno)-1)."";
