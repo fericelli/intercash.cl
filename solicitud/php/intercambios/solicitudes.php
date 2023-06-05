@@ -42,7 +42,7 @@
                 }else{
                     $retorno .= '"procesando",';
                 }
-                $registro = base64_encode($_POST["usuario"].$solicitudes[10]);
+                echo $registro = base64_encode($_POST["usuario"].$solicitudes[10]);
 
 
                 $retorno .= '"envios":[';
@@ -65,7 +65,7 @@
                 "usuario":"'.$solicitudes[9].'",
                 "pagado":"'.$pagado.'"},';
             }
-            echo substr($retorno,0,strlen($retorno)-1)."";
+            
             
             
            return substr($retorno,0,strlen($retorno)-1)."";
