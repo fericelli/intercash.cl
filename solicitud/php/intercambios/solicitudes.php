@@ -43,8 +43,7 @@
                 }else{
                     $retorno .= '"procesando",';
                 }
-                echo $registro = base64_encode($_POST["usuario"].$solicitudes[10]);
-
+                
 
                 $retorno .= '"envios":[';
                 $validar = 0;
