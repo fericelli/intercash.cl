@@ -16,6 +16,7 @@
             }else{
                 $inicio=0;
             }
+            echo "SELECT * FROM solicitudes LIMIT 0,".$cantidad."";
             if($_POST["tipodeusuario"]=="administrador"){
                 $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LIMIT 0,".$cantidad."");
             
