@@ -8,7 +8,6 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-            return var_dump($_POST);
             $cantidad = 5;
             if(isset($_POST["cantidad"])){
                 $cantidad = $_POST["cantidad"]+5;
