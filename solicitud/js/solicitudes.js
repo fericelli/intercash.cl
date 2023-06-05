@@ -25,11 +25,11 @@ if(typeof localStorage.usuario !== "undefined" ){
 }
 
     
-$(window).scroll(function(){
+/*$(window).scroll(function(){
     if($("html").height()-$("html").scrollTop()<=687){
         registros()
     }
-})
+})*/
 
     
     
