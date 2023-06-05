@@ -12,12 +12,15 @@
             $cantidad = 5;
             if(isset($_POST["cantidad"])){
                 $cantidad = $_POST["cantidad"]+5;
+                $inicio = $_POST["cantidad"]-1;
+            }else{
+                $inicio=0;
             }
             if($_POST["tipodeusuario"]=="administrador"){
-                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LIMIT 0,".$cantidad."");
+                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LIMIT ".$inicio.",".$cantidad."");
             
             }else{
-                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE usuario='".$_POST["usuario"]."' LIMIT 0,".$cantidad."");
+                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE usuario='".$_POST["usuario"]."' LIMIT ".$inicio.",".$cantidad."");
             
             }
 			$retorno = "";
@@ -33,7 +36,8 @@
                     "cantidadrecibir":"'.$solicitudes[3].'",
                     "datos":"'.$datos.'",
                     "estado":';
-
+                
+                    
                 if($solicitudes[11]==NULL){
                     $retorno .= '"pendiente",';
                 }else{
@@ -44,8 +48,10 @@
 
                 $retorno .= '"envios":[';
                 $validar = 0;
+                $pagado = 0;
                 $consulaimagen = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE solicitud='".$registro."' AND tipo='envios'");
                 while($envios = $this->Conexion->Recorrido($consulaimagen)){
+                    $pagado += $envios["cantidad"];
                     $validar ++;
                     $retorno .= '"envios/'.$registro.'/'.$envios[3].'",';
                 }
@@ -54,21 +60,11 @@
                 }else{
                     $retorno = substr($retorno,0,strlen($retorno)-1).'],';
                 }
-                $retorno .= '"pagos":[';
-                $validar = 0;
-                $consulaimagen = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE solicitud='".$registro."' AND tipo='pagos'");
-                while($envios = $this->Conexion->Recorrido($consulaimagen)){
-                    $validar ++;
-                    $retorno .= '"pagos/'.$registro.'/'.$envios[3].'",';
-                }
-                if($validar<1){
-                    $retorno .= "],";
-                }else{
-                    $retorno = substr($retorno,0,strlen($retorno)-1).'],';
-                }
+                
 
                 $retorno .= '"momento":"'.$solicitudes[10].'",
-                "usuario":"'.$solicitudes[9].'"},';
+                "usuario":"'.$solicitudes[9].'",
+                "pagado":"'.$pagado.'"},';
             }
             
             

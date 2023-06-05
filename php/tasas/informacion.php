@@ -9,7 +9,7 @@
 		}
 		private function retorno(){
 			
-            $preciobtcdestino = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]."*btc_in_usd"))->{'data'};
+           /* $preciobtcdestino = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]."*btc_in_usd"))->{'data'};
             $consultar = $this->Conexion->Consultar("SELECT tasasporcentaje,decimalestasa,anuncioventa,anunciocompra FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."'");
             $porcentaje = "1.10";
             $decimalestasa = "0";
@@ -22,8 +22,11 @@
             $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
 			$usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
 			$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-             $btcorigen = $usdorigen*$btcprecio;
-             $btcdestino = $usddestino*$btcprecio;
+            
+            $btcorigen = $usdorigen*$btcprecio;
+            $btcdestino = $usddestino*$btcprecio;
+
+            //return $btcprecio;
 
             $consultardevaluacionorigen = $this->Conexion->Consultar("SELECT * FROM devalucacion WHERE moneda='".$_POST["monedaorigen"]."'");
             if($devaluaciono = $this->Conexion->Recorrido($consultardevaluacionorigen)){
@@ -75,16 +78,31 @@
             $tasausddestino = $usddestino + (($usddestino*$davaluaciondestino)/100);
             //echo floatval($decimalestasa)."v d".floatval($tasa);
             if(floatval($decimalestasa)==0 AND floatval($tasa)<0){
-                echo "segseg";
                 $decimalestasa = 3; 
+            }*/
+
+            $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
+			
+            $tasa = 0;
+            $tasausddestino=0;
+            $decimalestasa = 0;
+            $consultar = $this->Conexion->Consultar("SELECT tasa,porcentaje,decimalestasa FROM tasas LEFT JOIN devaluacion ON monedaventa=moneda WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."'");
+            if($tasas = $this->Conexion->Recorrido($consultar)){
+                $tasa = $tasas[0];
+                $decimalestasa = $tasas[2];
+                if($tasas[1]>0){
+                    $tasausddestino = (($usddestino*$tasas[1])/100)+$usddestino;
+                }
             }
+            
             if(isset($_POST["cantidadenviar"])){
+                
                 $tasa = round($tasa,$decimalestasa);
                 $dinerorecibir = round($tasa*$_POST["cantidadenviar"], $_POST["decimaldestino"]);
                 $dineroenviar=round($_POST["cantidadenviar"],$_POST["decimalorigen"]);
                 $usd = ($dinerorecibir/$tasausddestino);
                 
-                if($preciobtcdestino*0.0001<$dinerorecibir){
+                if($preciobtcdestino*0.00001<$dinerorecibir){
                     $disponiblidad = "si";
                 }else{
                     $disponiblidad = "no";
@@ -95,7 +113,7 @@
                 "tasa":"'.$tasa.'",
                 "diponibilidad":"'.$disponiblidad.'"}';
             }else{
-                 $tasa = round($tasa,$decimalestasa);
+                
                 $dinerorecibir = round($_POST["cantidadrecibir"],$_POST["decimaldestino"]);
                 $dineroenviar = round($dinerorecibir/$tasa,$_POST["decimalorigen"]);
                 $usd = ($dinerorecibir/$tasausddestino);

@@ -94,3 +94,10 @@ body {
   width: 100%;
   text-align: center;
 }
+
+.barrafiltros{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}

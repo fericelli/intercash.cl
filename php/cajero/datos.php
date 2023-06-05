@@ -5,7 +5,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			$this->Conexion = new Conexion();
-			echo "[".$this->monedas().",".$this->cuantas()."]";
+			echo "[".$this->monedas().",".$this->cuantas().",".$this->cuentasretiro().",".$this->tipodecuenta()."]";
 			$this->Conexion->CerrarConexion();
 		}
 		private function monedas(){
@@ -47,7 +47,40 @@
 			if(strlen($retorno)>1){
 				return substr($retorno,0,strlen($retorno)-1)."]";
 			}else{
-				return $retorno."'SELECT * FROM paises WHERE receptor IS NOT NULL']";
+				return $retorno."]";
+			}
+		}
+
+		private function cuentasretiro(){
+			$retorno = "[";
+			$consulta2 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+            if($datos1 = $this->Conexion->Recorrido($consulta2)){
+				$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$datos1[0]."' AND usuario='".$_POST["usuario"]."' AND tipo='envio'");
+                while($cuenta = $this->Conexion->Recorrido($consultar)){
+					$retorno .= '{"banco":"'.$cuenta[1].'","cuenta":"'.$cuenta[2].'","tipodecuenta":"'.$cuenta[3].'","nombre":"'.$cuenta[4].'","identificacion":"'.$cuenta[5].'","usuario":"'.$cuenta[6].'"},';
+				}
+                
+            }
+			if(strlen($retorno)>1){
+				return substr($retorno,0,strlen($retorno)-1)."]";
+			}else{
+				return $retorno."]";
+			}
+		}
+		private function tipodecuenta(){
+			$retorno = "[";
+			$consulta2 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+            if($datos1 = $this->Conexion->Recorrido($consulta2)){
+				$consultar = $this->Conexion->Consultar("SELECT * FROM tiposdecuentas WHERE pais ='".$datos1[0]."'");
+                while($tiposdecuentas = $this->Conexion->Recorrido($consultar)){
+					$retorno .= '"'.$tiposdecuentas[1].'",';
+				}
+                
+            }
+			if(strlen($retorno)>1){
+				return substr($retorno,0,strlen($retorno)-1)."]";
+			}else{
+				return $retorno."]";
 			}
 		}
 	}

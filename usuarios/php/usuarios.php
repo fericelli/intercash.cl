@@ -15,7 +15,7 @@
             $retorno = "";
             while($usaurio = $this->Conexion->Recorrido($consultar)){
                 
-                $retorno .= '["'.$usaurio[0].'"],';
+                $retorno .= '"'.$usaurio[0].'",';
 
             }
             

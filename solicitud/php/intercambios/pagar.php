@@ -4,23 +4,24 @@
 		private $Conexion;
 		function __construct(){
 			include("../../php/conexion.php");
-			$this->Conexion = new Conexion();
+			$this->Conexion = new Conexion("intercash.cl");
 			echo "[".$this->retorno()."]";
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
            //return var_dump($_FILES['imagen']);
            
-           $formatos = array(".jpg",".png",".jepg");
-           $momento = date("Y-m-d H:i:s");
-           $ErrorArchivo = $_FILES['imagen']['error'];
-           $NombreArchivo = $_FILES['imagen']['name'];
-           $NombreTmpArchivo = $_FILES['imagen']['tmp_name'];
-           $ext = substr($_FILES['imagen']['name'],strrpos($_FILES['imagen']['name'], '.'));
-           if(in_array($ext, $formatos)){
-               if($ErrorArchivo>0){
+            $formatos = array(".jpg",".png",".jepg",".jpeg");
+            $momento = date("Y-m-d H:i:s");
+            $ErrorArchivo = $_FILES['imagen']['error'];
+            $NombreArchivo = $_FILES['imagen']['name'];
+            $NombreTmpArchivo = $_FILES['imagen']['tmp_name'];
+            $ext = substr($_FILES['imagen']['name'],strrpos($_FILES['imagen']['name'], '.'));
+                
+            if(in_array($ext, $formatos)){
+                if($ErrorArchivo>0){
                    return '"Intente Subir la Foto Nuevamente","error"';
-               }else{
+                }else{
                     try{
                         //$registro = str_replace(" ", "", $_GET["registro"]);
                         $registro = base64_encode($_GET["usuario"].$_GET["registro"]);
@@ -31,7 +32,7 @@
                         }
                         //return $NombreArchivo;
                         //return base64_decode($registro);
-                        $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png}',GLOB_BRACE));
+                        $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png,*.jpeg}',GLOB_BRACE));
                         $total_imagenes ++;
                         $directorio = $carpeta."/capture".$total_imagenes.$ext;
                     
