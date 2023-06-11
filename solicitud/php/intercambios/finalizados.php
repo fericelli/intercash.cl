@@ -12,16 +12,27 @@
             $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE intermediario='".$_POST["usuario"]."' OR usuario='".$_POST["usuario"]."' LIMIT 0,10");
             while($intercambios = $this->Conexion->Recorrido($consultar)){
                 $retorno .= '{
-                    "monedadestino":"'.$intercambios[1].'",
-                    "monedaorigen":"'.$intercambios[1].'",
-                    "cantidadenviar":"'.$intercambios[2].'",
-                    "cantidadrecibir":"'.$intercambios[0].'",
-                    "intermadiario":"'.$intercambios[0].'",
-                    "imegen":"../imagenes",
-                    "momento":"'.$intercambios[0].'"},';
+                    "monedadestino":"'.$intercambios["monedaventa"].'",
+                    "monedaorigen":"'.$intercambios["monedacompra"].'",
+                    "cantidadenviar":"'.$intercambios["montoventa"].'",
+                    "cantidadrecibir":"'.$intercambios["montocompra"].'",
+                    "intermadiario":"'.$intercambios["intermediario"].'",';
+                    $retorno .= '"imegen":[';
+                    $consultarscreensho = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE registro='".$intercambios["momento"]."' AND usuario='".$intercambios["usuario"]."'");
+                    $cantidad = 0;
+                    while($screenshot = $this->Conexion->Recorrido($consultarscreensho)){
+                        $cantidad ++;
+                        $retorno .= '"'.$screenshot["directorio"].'",';
+                    }
+                    if($cantidad==0){
+                        $retorno .= "],";
+                    }else{
+                        $retorno = substr($retorno,0,strlen($retorno)-1)."],";
+                    }
+                    $retorno .= '"momento":"'.$intercambios["momento"].'"},';
             }
             
-            return substr($retorno,0,strlen($retorno)-1)."";
+            return substr($retorno,0,strlen($retorno)-1);
         } 
 	}
 	new Finalizados();

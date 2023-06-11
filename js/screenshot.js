@@ -10,9 +10,4 @@ $(".secundaria").on("click",function(){
     $(".secundaria").removeClass("secundariaseleccion");
 
     $(this).addClass("secundariaseleccion");
-
-    
-
-    
-
 })

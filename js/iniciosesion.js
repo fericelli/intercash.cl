@@ -30,7 +30,6 @@ $(document).on("ready",function(e){
                 },
                 complete:function(){
                     $(".imagensolicitud").css("display","none");
-                    $(".botons").css("display","");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
@@ -40,8 +39,8 @@ $(document).on("ready",function(e){
                         localStorage.usuario=$("#usuario").val();
                         localStorage.tipousuario = json[2];
                         var URLactual = window.location;
-                        var url = URLactual.href+"/sesion";
-                        
+                        var url = URLactual.href+"sesion";
+                        $(".botons").css("display","none");
                         setTimeout(function(){
                             location.href = url;
                         },6000)

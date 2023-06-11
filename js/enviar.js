@@ -1,3 +1,66 @@
+$.ajax({
+    url:"../php/monedas/monedaoperaciones.php",
+    type:"POST",
+    data:{moneda:$("#enviar").attr("moneda")},
+    beforeSend:function(){
+        $(".imagenmoneda").css("display","flex");
+        $("#monedainter").css("display","none");
+    },
+    complete:function(){
+        $(".imagenmoneda").css("display","none");
+        $("#monedainter").css("display","flex");
+    },
+    error:function(){
+        alert("Ocurrio un error con la conexion");
+        $(".imagenmoneda").css("display","none");
+        $("#monedainter").css("display","flex");
+    },
+    success:function(data){
+        console.log(JSON.parse(data));
+        html = "";
+        for(i=0;i<JSON.parse(data)[0].length;i++){
+            html += '<option moneda="'+JSON.parse(data)[0][i].moneda+'" decimal="'+JSON.parse(data)[0][i].decimales+'" value="'+JSON.parse(data)[0][i].nombre+'">'+JSON.parse(data)[0][i].nombre+"</option>";
+        }
+        for(i=0;i<JSON.parse(data)[1].length;i++){
+            html += '<option moneda="'+JSON.parse(data)[1][i].moneda+'" decimal="'+JSON.parse(data)[1][i].decimales+'" value="'+JSON.parse(data)[1][i].nombre+'" >'+JSON.parse(data)[1][i].nombre+'</option>';
+        }
+        $("#monedaintercambio").html(html);
+        
+    }
+})
+
+$(".monto").keyup(function(){
+    if($.isNumeric($(this).val())===false && $(this).val()!=""){
+        $(this).val("");
+        $(".mensaje-error").eq(1).css("display","flex");
+        setTimeout(function(){
+            $(".mensaje-error").eq(1).css("display","none");
+        },3000)
+    }
+})
+$(".monedacambiada").keyup(function(){
+    if($.isNumeric($(this).val())===false && $(this).val()!=""){
+        $(this).val("");
+        $(".mensaje-error").eq(4).css("display","flex");
+        setTimeout(function(){
+            $(".mensaje-error").eq(4).css("display","none");
+        },3000)
+    }
+})
+$("#monedainter").on("change",function(){
+    var moneda = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('moneda');
+    var decimal = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('decimal');
+    
+    if(moneda==$("#enviar").attr("moneda")){
+        $(".margen").eq(5).css("display","none"); 
+        $(".controls").eq(2).css("display","none");
+    }else{
+        $(".margen").eq(5).css("display","flex"); 
+        $(".controls").eq(2).css("display","flex"); 
+    }
+    
+})
+
 $("#enviar").on("click",function(){
     validador = 0;
     if($(".monto").val()==""){
@@ -7,19 +70,41 @@ $("#enviar").on("click",function(){
             $(".mensaje-error").eq(0).css("display","none");
         },3000)
     }
+
+    var moneda = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('moneda');
+    var decimal = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('decimal');
     
-    if($.isNumeric($(".monto").val())===false){
-        validador ++;
-        $(".mensaje-error").eq(1).css("display","flex");
-        setTimeout(function(){
-            $(".mensaje-error").eq(1).css("display","none");
-        },3000)
-    }
-    if($(".imagen").val()==""){
-        validador ++;
+    if(typeof moneda === "undefined"){
+        
         $(".mensaje-error").eq(2).css("display","flex");
         setTimeout(function(){
             $(".mensaje-error").eq(2).css("display","none");
+        },3000)
+    }
+
+    
+
+    cambio = "";
+    if($(".controls").eq(2).css("display")!="none"){
+        cambio = $(".controls").eq(2).val();
+        if($(".controls").eq(2).val()==""){
+            validador ++;
+            $(".mensaje-error").eq(3).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(3).css("display","none");
+            },3000);
+        }
+            
+      
+    }else{
+        cambio = $(".monto").val();
+    }
+    
+    if($(".imagen").val()==""){
+        validador ++;
+        $(".mensaje-error").eq(5).css("display","flex");
+        setTimeout(function(){
+            $(".mensaje-error").eq(5).css("display","none");
         },3000)
     }
     total = parseFloat($("label").eq(0).text().split(" ")[2])-parseFloat($(".monto").val());
@@ -31,7 +116,7 @@ $("#enviar").on("click",function(){
             archivos.append((formulario.find('input[type="file"]:eq('+i+')').attr("name")),((formulario.find('input[type="file"]:eq('+i+')')[0]).files[0]));
         }
         $.ajax({
-            url:"./../php/envios/enviar.php?cantidad="+$(".monto").val()+"&usuario="+$(this).attr("usuario")+"&registro="+$(this).attr("registro")+"&pendiente="+$(this).attr("pendiente")+"&total="+$(this).attr("total"),
+            url:"./../php/envios/enviar.php?cantidad="+$(".monto").val()+"&usuario="+$(this).attr("usuario")+"&registro="+$(this).attr("registro")+"&pendiente="+$(this).attr("pendiente")+"&total="+$(this).attr("total")+"&operador="+localStorage.getItem("usuario")+"&moneda="+$(this).attr("moneda")+"&cambio="+cambio+"&monedacambio="+moneda,
             type:'POST',
             contentType:false,
             data:archivos,
@@ -51,31 +136,25 @@ $("#enviar").on("click",function(){
                 $(this).css("display","flex");
             },
             success:function(respuesta){
-                console.log(JSON.parse(respuesta));
-                
                 if(JSON.parse(respuesta)[1]=="error"){
+                    $(".mensajesolicitud").eq(1).text("display",JSON.parse(respuesta)[0]);
                     $(".mensajesolicitud").eq(1).css("display","flex");
-                    $(".mensajesolicitud").eq(1).text(JSON.parse(respuesta)[0]);
                 }else{
-                    $(".mensajesolicitud").eq(0).css("display","flex");
-                    $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0]);
+                    if(JSON.parse(respuesta)[1]=="success"){
+                         $(".mensajesolicitud").eq(0).css("display","flex");
+                         $(".mensajesolicitud").eq(0).text("display",JSON.parse(respuesta)[0]);
+                    }else{
+                        $("#enviar").remove();
+                        $(".mensajesolicitud").eq(0).css("display","flex");
+                        $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0][0]);
+                        setTimeout(function(){
+                            $(".salir").trigger("click");
+                        },6000)
+                    }
                 }
-                setTimeout(function(){
-                    $(".mensajesolicitud").css("display","none");
-                    $("input").val("");
-                },2000)
             }
         })
     }
-    console.log(total);
-    /*if($(".monto").val()!="" && $(".imagen").val()!=""){
-        
-    }*/
-    /*var formulario = $(".form-register"); 
-    var archivos = new FormData();
-    for(var i = 0; i < (formulario.find("input[type=file]").length); i++){
-        archivos.append((formulario.find('input[type="file"]:eq('+i+')').attr("name")),((formulario.find('input[type="file"]:eq('+i+')')[0]).files[0]));
-    }*/
 })
 $(".salir").on("click",function(){
     $.ajax({
@@ -92,7 +171,37 @@ $(".salir").on("click",function(){
 
         },
         success:function(data){
-            html = "<div class='barrafiltros'>";
+            var usuario = "";
+            if(typeof localStorage.usuario !== "undefined" ){
+                var usua = $('#usuario [value="' + $("#usuari").val() + '"]').val();
+                
+                if(typeof usua !== "undefined"){
+                    usuario = usua;
+                }else{
+                    usuario = localStorage.usuario;
+                }
+                
+            }else{
+                usuario = localStorage.usuario;
+            }
+
+            
+            $.ajax({
+                url:"./../solicitud/php/intercambios/solicitudes.php",
+                type: 'POST',
+                data: {usuario:usuario,tipodeusuario:localStorage.tipousuario},
+                beforeSend:function(){
+                    $(".contenido-imagen").css("display","flex");
+                },
+                complete:function(){
+                    $(".contenido-imagen").css("display","none");
+                    $(".imagencargasolicitud").css("display","none");
+                    
+
+                },
+                success:function(data){
+                    
+                    html = "<div class='barrafiltros'>";
                     if(localStorage.tipousuario=="administrador"){
                         html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
                         html += '<datalist id="usuario">';
@@ -121,7 +230,7 @@ $(".salir").on("click",function(){
                         
                     }
                     if(localStorage.tipousuario == "administrador"){
-                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
+                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"' ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
                         
                         //html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos envios icono-photo'></div>";
                         var imagen = "";
@@ -134,7 +243,7 @@ $(".salir").on("click",function(){
                         html += "</td>"; 
                         html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
                         html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
-                        html += "</td>";  
+                        html += "</td>"; 
                     }else{
                         html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-dinero pagar' title='Cancelar'></div></td>";  
                     }
@@ -145,6 +254,8 @@ $(".salir").on("click",function(){
                     
                     $("#main-container").html(html);
                     $("#usuari").val(usuario);
+                }
+            });
         }
     });
 })

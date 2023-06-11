@@ -17,10 +17,10 @@
                 $inicio=0;
             }
             if($_POST["tipodeusuario"]=="administrador"){
-                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LIMIT 0,".$cantidad."");
+                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE estado<>'finalizado' OR estado IS NULL  LIMIT 0,".$cantidad."");
             
             }else{
-                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE usuario='".$_POST["usuario"]."' LIMIT 0,".$cantidad."");
+                $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE usuario='".$_POST["usuario"]."' AND (estado<>'finalizado' OR estado IS NULL) LIMIT 0,".$cantidad."");
             
             }
 			$retorno = "";
@@ -34,25 +34,20 @@
                     "monedaorigen":"'.$solicitudes[1].'",
                     "cantidadenviar":"'.$solicitudes[2].'",
                     "cantidadrecibir":"'.$solicitudes[3].'",
-                    "datos":"'.$datos.'",
-                    "estado":';
-                
-                    
-                if($solicitudes[11]==NULL){
-                    $retorno .= '"pendiente",';
-                }else{
-                    $retorno .= '"procesando",';
-                }
+                    "datos":"'.$datos.'",';
                 
 
                 $retorno .= '"envios":[';
                 $validar = 0;
                 $pagado = 0;
-                $consulaimagen = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE solicitud='".$registro."' AND tipo='envios'");
+
+                $registro = base64_encode($solicitudes["usuario"].$solicitudes["momento"]);
+                //echo "SELECT * FROM screenshot WHERE directorio='".$registro."' AND tipo='envios'";
+                $consulaimagen = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE directorio='".$registro."' AND tipo='envios'");
                 while($envios = $this->Conexion->Recorrido($consulaimagen)){
                     $pagado += $envios["cantidad"];
                     $validar ++;
-                    $retorno .= '"envios/'.$registro.'/'.$envios[3].'",';
+                    $retorno .= '"'.$registro.'/'.$envios[3].'",';
                 }
                 if($validar<1){
                     $retorno .= "],";
@@ -60,7 +55,15 @@
                     $retorno = substr($retorno,0,strlen($retorno)-1).'],';
                 }
                 
-
+                
+                $retorno .= '"estado":';
+                
+                    
+                if($solicitudes[11]==NULL){
+                    $retorno .= '"pendiente",';
+                }else{
+                    $retorno .= '"'.$solicitudes[11].'",';
+                }
                 $retorno .= '"momento":"'.$solicitudes[10].'",
                 "usuario":"'.$solicitudes[9].'",
                 "pagado":"'.$pagado.'"},';

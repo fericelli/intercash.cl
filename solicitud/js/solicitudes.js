@@ -35,7 +35,7 @@ if(typeof localStorage.usuario !== "undefined" ){
     
 function registros(){
     var usuario = "";
-            if(typeof localStorage.usuario !== "undefined" ){
+            if(typeof localStorage.tipousuario !== "undefined" && localStorage.tipousuario =="administrador"){
                 var usua = $('#usuario [value="' + $("#usuari").val() + '"]').val();
                 
                 if(typeof usua !== "undefined"){
@@ -115,7 +115,6 @@ function registros(){
                     }
                     html += '</tbody></table></div><center><img class="imagencargasolicitud" style="display:none;width:30px;height:30px" src="../imagenes/carga.gif"></center><script src="./../solicitud/js/solicitudes.js"></script>';
                     
-                    console.log(html);
                     $("#main-container").html(html);
                     $("#usuari").val(usuario);
                 }
@@ -164,12 +163,22 @@ $(".enviar").on("click",function(){
         html += '<label class="margen">Monto pendiente '+pendiente+' '+monedadestino+'</label>';
         html += '<label class="margen">Screenshots</label>';
         html += '<div class="contenidocapture" style="overflow:hidden"><div class="imegen" >';
+        html += '<label class="margen">Ingrese el monto</label>';
         html += '<input class="controls monto" type="text"  placeholder="Catidad en '+monedadestino+'">';
+        html += '<label class="mensaje-error">Ingrese un monto</label>';
+        html += '<label class="mensaje-error">Debe ser numerico</label>';
+        html += '<label class="margen">Moneda de intercambio</label>';
+        html += '<input class="controls" id="monedainter" type="text"  placeholder="Seleccione una moneda" list="monedaintercambio">';
+        html += '<datalist id="monedaintercambio"></datalist>';
+        html += '<img class="imgcarga imagenmoneda" src="imagenes/carga.gif">';
+        html += '<label class="mensaje-error">Seleccione una moneda</label>';
+        html += '<label class="margen">Cantidad Vendida</label>';
+        html += '<input class="controls monedacambiada" type="text"  placeholder="Catidad vendida">';
         html += '<label class="mensaje-error">Ingrese un monto</label>';
         html += '<label class="mensaje-error">Debe ser numerico</label>';
         html += "<label class='margen'><input class='imagen' name='imagen' type='file'></div>";
         html += '<label class="mensaje-error">Ingrese el screenshot</label>';
-        html += '<div id="enviar" class="botons" registro="'+registro+'" moneda="'+monedadestino+'" usuario="'+usuario+'" pendiente="'+pendiente+'" total="'+cantidadrecibir+'">Ingresar</div>';
+        html += '<div id="enviar" class="botons" registro="'+registro+'" moneda="'+monedadestino+'" usuario="'+usuario+'" pendiente="'+pendiente+'" total="'+cantidadrecibir+'" >Ingresar</div>';
         html += '<img class="imgcarga imagensolicitud" src="imagenes/carga.gif">';
         
         html += '<label class="mensaje-correcto mensajesolicitud"></label>';
@@ -207,13 +216,16 @@ $(".envios").on("click",function(){
     monedaorigen = $("tbody tr:eq("+index+") td:eq(4)").attr("monedaorigen");
     cantidadenviar = $("tbody tr:eq("+index+") td:eq(4)").attr("cantidadenviar");
     usuario = $("tbody tr:eq("+index+") td:eq(4)").attr("usuario");
-    
-    imagenes = $("tbody tr:eq("+index+") td:eq(5)").attr("imagenes");
+    if(localStorage.tipousuario=="administrador"){
+        imagenes = $("tbody tr:eq("+index+") td:eq(4)").attr("imagenes");
+    }else{
+        imagenes = $("tbody tr:eq("+index+") td:eq(4)").attr("imagenes");
+    }
     
 
     envios = imagenes.split(",");
 
-    console.log(envios);
+    
     var URLactual = window.location;
     
     var url = URLactual.href.replace("/sesion/", "");
@@ -223,8 +235,14 @@ $(".envios").on("click",function(){
     html += '<img class="principal" src="'+url+'/'+envios[0]+'" alt=""></img>';
     html += '<a class="icono-descargar" href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;"></a>';
     html += '<div class="imegenes-peque">';
-    for(var i=0;i<envios.length;i++){
+    validar =0;
+    for(var i=0;i<envios.length-1;i++){
+        validar ++;
         html += '<img class="secundaria" src="'+url+'/'+envios[i]+'" alt=""></img>'
+    }
+
+    if(validar == 0){
+        html += '<img class="secundaria" src="'+url+'/'+envios[0]+'" alt=""></img>' 
     }
     html += '</div></div>';
     

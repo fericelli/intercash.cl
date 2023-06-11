@@ -25,7 +25,16 @@
                         //$registro = str_replace(" ", "", $_GET["registro"]);
                         $registro = base64_encode($_GET["usuario"].$_GET["registro"]);
                         //solicitud es el codigo imagen
-                        $carpeta = "./../../../imagenes/intercambios/envios/".$registro;
+
+                        $carpeta = "./../../imagenes/intercambios/envios/".$_GET["usuario"];
+                        if(!file_exists($carpeta)){
+                            mkdir($carpeta,0777, true);
+                        }
+                        $carpeta = "./../../imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d");
+                        if(!file_exists($carpeta)){
+                            mkdir($carpeta,0777, true);
+                        }
+                        $carpeta = "./../../imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d")."/".$registro;
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
@@ -33,25 +42,45 @@
                         //return base64_decode($registro);
                         $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png,*.jpeg}',GLOB_BRACE));
                         $total_imagenes ++;
-                        $directorio = $carpeta."/capture".$total_imagenes.$ext;
-                    
-                        //move_uploaded_file($NombreTmpArchivo,$directorio);
-                        //$this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre) VALUES ('".$registro."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."')");
-                        
+                       $imagen = $carpeta."/capture".$total_imagenes.$ext;
+                         $directorio = "imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
+                        //return "INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$registro."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."')";
+                        move_uploaded_file($NombreTmpArchivo,$imagen);
+                        $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
+                        $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,solicitud) VALUES ('".$_GET["monedacambio"]."','".$_GET["cambio"]."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."')");
                         $total = 0;
+                        $pendiente = 0;
+                        $moneda = "";
+                        
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
-                            $total = $_GET["cantidad"]-$_GET["pendiente"]+$_GET["total"];
-                            echo $_GET["cantidad"]."  ".$_GET["pendiente"]."   ".$_GET["total"]."\n";
-                            echo $total;
+                            
+                            if($_GET["cantidad"]>$_GET["pendiente"]){
+                                $total = $_GET["cantidad"]-$_GET["pendiente"]+$_GET["total"];
+                            }else{
+                                $total = $_GET["total"];
+                            }
+                            
+                            $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'");
+                            if($solicitudes = $this->Conexion->Recorrido($consultar)){
+                                $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$total."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
+                                $this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'");
+                                $moneda = $solicitudes["monedadestino"];
+                            }
+                            
+                            //echo $_GET["cantidad"]."  ".$_GET["pendiente"]."   ".$_GET["total"]."\n";
+                            //echo $total;
+                            return '["Remesa finalizada","finalizar"],["0"],["0"]';
+                        }else{
+                            $pendiente = $_GET["total"]-$_GET["cantidad"];
                         }
-                        return '"Screenshot Enviado","success"';
+                        return '["Screenshot Enviado","success"],["'.$pendiente.'"],["'.$_GET["moneda"].'"]';
                     }catch(Exception $e){
-                        return '"Error","error"';
+                        return '["Error","error"],["'.$e.'"]';
                     }
                     
                }
            }else{
-               return '"Formatos Permitidos Solo jpg y png","error"';
+               return '["Formatos Permitidos Solo jpg y png","error"],["'.$_GET["pendiente"].'"]';
            }
         } 
 	}

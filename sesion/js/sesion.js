@@ -14,7 +14,7 @@ $(document).on("ready",function(){
     const menu = document.querySelector("#sidemenu");
     
     $(".item").eq(0).append('<div class="selectormenu"></div>');
-    $(".item").css("display","none");
+    //$(".item").css("display","none");
     if( localStorage.tipousuario=="administrador"){
         $(".item").css("display","");
         html = "";
@@ -58,6 +58,8 @@ $(document).on("ready",function(){
             }
         });
     }
+    
+    
     
 
     
@@ -192,9 +194,9 @@ $(document).on("ready",function(){
                 html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
                 html += '<datalist id="usuario">';
                 html += '</datalist>';
-                html += '<label class="mensaje-error">Ingrese su usuario o correo</label>';
             }
             
+            html += '<select style="width:100px;font-size:20px"><option>-</option></select>'; 
             
             html += '</div>';
             html += '<div class="row m-0" style="justify-content:space-around">'; 
@@ -205,22 +207,21 @@ $(document).on("ready",function(){
             html += '<div class="col-md-8 ps-0 ">'; 
             html += '<p class="ps-3 textmuted fw-bold h6 mb-0">TOTAL RECIEVED</p>'; 
             html += '<p class="h1 fw-bold d-flex">'; 
-            html += '<span class=" fas fa-dollar-sign textmuted pe-1 h6 align-text-top mt-1"></span>84,254<span class="textmuted">.58</span>'; 
-            html += '<select style="width:100px;font-size:20px"><option>-</option></select>'; 
+            html += '<span class=" fas fa-dollar-sign textmuted pe-1 h6 align-text-top mt-1"></span><span id="entero"><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif"></span><span id="decimal" class="textmuted"></span>'; 
             html += '</p>'; 
             html += '<p class="ms-3 px-2 bg-green">+10% since last month</p>'; 
             html += '</div>'; 
             html += '<div class="col-md-4">'; 
             html += '<p class="p-blue">'; 
-            html += '<span class="fas fa-circle pe-2"></span>Pending'; 
+            html += '<span class="fas fa-circle pe-2"></span>Equivalente en Bitcoins'; 
             html += '</p>'; 
             html += '<p class="fw-bold mb-3">';
-            html += '<span class="fas fa-dollar-sign pe-1"></span>1254 <span class="textmuted">.50</span>'; 
+            html += '<span class="fas fa-dollar-sign pe-1"></span><span id="enterobtc"><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif"></span> <span id="decimalbtc" class="textmuted"></span>'; 
             html += '</p>'; 
-            html += '<p class="p-org">';
+            html += '<p style="display:none" class="p-org">';
             html += '<span class="fas fa-circle pe-2"></span>On drafts';
             html += '</p>';
-            html += '<p class="fw-bold">';
+            html += '<p style="display:none" class="fw-bold">';
             html += '<span class="fas fa-dollar-sign pe-1"></span>00<span class="textmuted">.00</span>';
             html += '</p>'; 
             html += '</div>'; 
@@ -273,7 +274,6 @@ $(document).on("ready",function(){
             
             html += '<script type="text/javascript" src="./../js/cajero.js"></script>';
             $("#main-container").html(html);
-            $(".contenido-imagen").css("display","none");
         }   
         if(opcion=="solicitudes"){   
             var usuario = "";
@@ -306,17 +306,24 @@ $(document).on("ready",function(){
                 },
                 success:function(data){
 
-                    html += "<div class='barrafiltros'>";
+                    html = "";
                     if(localStorage.tipousuario=="administrador"){
+                        html += "<div class='barrafiltros'>";
                         html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
                         html += '<datalist id="usuario">';
                         html += '</datalist>';
-                        html += '<label class="mensaje-error">Ingrese su usuario o correo</label>';
+                    
+                    
+                    
+                        html += '</div>';
+                        html += "<div class='table-responsive'><h2>Solicitudes</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Cuenta</th><th scope='col'>Estado</th><th scope='col'>Enviar</th><th scope='col'>Comprabantes</th></tr></thead><tbody>";
+                    }
+                    if(localStorage.tipousuario == "sociocomercial"){
+                        html += "<div class='table-responsive'><h2>Solicitudes</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Cuenta</th><th scope='col'>Estado</th><th scope='col'>Comprabantes</th></tr></thead><tbody>";
+                  
+
                     }
                     
-                    
-                    html += '</div>';
-                    html += "<div class='table-responsive'><h2>Solicitudes</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Cuenta</th><th scope='col'>Estado</th><th scope='col'>Enviar</th><th scope='col'>Comprabantes</th></tr></thead><tbody>";
                     for(i=0;i<JSON.parse(data).length;i++){
                         html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td><td>";
                         
@@ -335,7 +342,7 @@ $(document).on("ready",function(){
                         
                     }
                     if(localStorage.tipousuario == "administrador"){
-                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
+                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"' ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
                         
                         //html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos envios icono-photo'></div>";
                         var imagen = "";
@@ -343,14 +350,25 @@ $(document).on("ready",function(){
                             imagen += "imagenes/imagennidisponible.jpg";
                         }
                         for(j=0;j<JSON.parse(data)[i].envios.length;j++){
-                            imagen += "imagenes/intercambios/envios/"+JSON.parse(data)[i].envios[j];
+                            imagen += "imagenes/intercambios/envios/"+JSON.parse(data)[i].envios[j]+",";
                         }
                         html += "</td>"; 
                         html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
                         html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
                         html += "</td>"; 
-                    }else{
-                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-dinero pagar' title='Cancelar'></div></td>";  
+                    }
+                    if(localStorage.tipousuario == "sociocomercial"){
+                        var imagen = "";
+                        if(JSON.parse(data)[i].envios.length==0){
+                            imagen += "imagenes/imagennidisponible.jpg";
+                        }
+                        for(j=0;j<JSON.parse(data)[i].envios.length;j++){
+                            imagen += "imagenes/intercambios/envios/"+JSON.parse(data)[i].envios[j]+",";
+                        }
+                        html += "</td>"; 
+                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
+                        html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
+                        html += "</td>"; 
                     }
                     html += "</tr>";
                     
@@ -363,30 +381,70 @@ $(document).on("ready",function(){
             });
         }
         if(opcion=="intercambios"){
+            var usuario = "";
+            if(typeof localStorage.usuario !== "undefined" ){
+                var usua = $('#usuario [value="' + $("#usuari").val() + '"]').val();
+                
+                if(typeof usua !== "undefined"){
+                    usuario = usua;
+                }else{
+                    usuario = localStorage.usuario;
+                }
+                
+            }else{
+                usuario = localStorage.usuario;
+            }
+            fecha = new Date();
+            mes = (fecha.getMonth()+1).toString();
+            if(mes.length==1){
+                mes = "0"+mes;
+            }
+            dia = fecha.getDate().toString();
+            if(dia.length==1){
+                dia = "0"+dia;
+            }
+            fechahoy = fecha.getFullYear() + "-" + mes + "-" + dia;
             $.ajax({
-                url:"./../solicitud/php/intercambios/finalizados.php",
+                url:"./../php/intercambios/finalizados.php",
                 type: 'POST',
-                data: {usuario:localStorage.getItem("usuario"),tipodeusuario:localStorage.tipousuario},
+                data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,fecha:fechahoy},
                 beforeSend:function(){
                     $(".contenido-imagen").css("display","flex");
                 },
                 complete:function(){
                     $(".contenido-imagen").css("display","none");
-                    $(".imagencargasolicitud").css("display","none");
                 },
                 success:function(data){
-                    html = "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Imagen</th></tr></thead><tbody>";
+                    html = "<div class='barrafiltros'>";
+                    if(localStorage.tipousuario=="administrador"){
+                        html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
+                        html += '<datalist id="usuario">';
+                        html += '</datalist>';
+                    }
+                        
+                    html += '<input type="date">';   
+                    html += '</div>';
+                    html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Comprobantes</th></tr></thead><tbody>";
                     for(i=0;i<JSON.parse(data).length;i++){
                         html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
                         
-                        html += "<td registro='"+JSON.parse(data)[i].momento+"' ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' title='Descargar'></div></td>"; 
+                        var imagen = "";
+                        if(JSON.parse(data)[i].imegen.length==0){
+                            imagen += "imagenes/imagennidisponible.jpg";
+                        }
+                        for(j=0;j<JSON.parse(data)[i].imegen.length;j++){
+                            imagen += JSON.parse(data)[i].imegen[j]+",";
+                        }
+                        html += "<td ><div style='cursor:pointer'  imagenes='"+imagen+"' class='iconos icono-photo comprobante' title='Descargar'></div></td>"; 
                         
                         html += "</tr>";
                     
                     }
-                    html += '</tbody></table></div><center><img class="imagencargasolicitud" style="display:none;width:30px;height:30px" src="../imagenes/carga.gif"></center><script src="./../solicitud/js/finalizadas.js"></script>';
+                    html += '</tbody></table></div><center><script src="./../js/intercambios.js"></script>';
                     
                     $("#main-container").html(html);
+                    $("#usuari").val(usuario);
+                    $("input[type=date]").val(fechahoy);
                 }
             });
         }
@@ -473,6 +531,11 @@ $(document).on("ready",function(){
         $(".contenido-imagen").css("display","none");
         
     })
+
+
+    if(localStorage.tipousuario=="sociocomercial"){
+        $(".item").eq(0).trigger("click");
+    }
 });
 
 

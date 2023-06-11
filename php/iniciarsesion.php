@@ -22,6 +22,7 @@
             
             if(strlen($retorno)==1){
                 if($this->Conexion->Recorrido($consultar2)){
+                    
                 }else{
                     $retorno .= '"Contraseña incorrecta","error"';
                 }
@@ -29,6 +30,11 @@
 
             if(strlen($retorno)==1){
                 $retorno .= '"Iniciando sesión","correcto","'.$tipousaurio.'"';
+                session_start();
+                $_SESSION["tipousaurio"] = $tipousaurio;
+                $_SESSION["usuario"] = $_POST["usuario"];
+                $_SESSION["nombreusaurio"] = strtoupper($_POST["usuario"]);
+
             }
              
  
