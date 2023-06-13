@@ -38,20 +38,23 @@
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
-                        //return $NombreArchivo;
-                        //return base64_decode($registro);
                         $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png,*.jpeg}',GLOB_BRACE));
                         $total_imagenes ++;
                        $imagen = $carpeta."/capture".$total_imagenes.$ext;
                          $directorio = "imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
-                        //return "INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$registro."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."')";
-                        move_uploaded_file($NombreTmpArchivo,$imagen);
-                        $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
-                        $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,solicitud) VALUES ('".$_GET["monedacambio"]."','".$_GET["cambio"]."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."')");
+                        //move_uploaded_file($NombreTmpArchivo,$imagen);
+                        
+                       echo $tasa = number_format($_GET["cantidad"]/$_GET["cambio"],$_GET["decimal"],".","");
+
+                        //number_format($number, 2, ',', ' ');
+                       $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
+                        $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,solicitud,tasa) VALUES ('".$_GET["monedacambio"]."','".$_GET["cambio"]."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."')");
                         $total = 0;
                         $pendiente = 0;
                         $moneda = "";
                         
+                        
+
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
                             
                             if($_GET["cantidad"]>$_GET["pendiente"]){

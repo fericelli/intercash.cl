@@ -17,10 +17,10 @@
             }
 
 			$retorno = substr($retorno,0,strlen($retorno)-1)."],[";
-            $consulta2 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+            $consulta2 = $this->Conexion->Consultar("SELECT DISTINCT(monedacompra),paises.* FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra");
             while($datos1 = $this->Conexion->Recorrido($consulta2)){
                 
-                $retorno .= '{"iso_pais":"'.$datos1[0].'","moneda":"'.$datos1[3].'","decimales":"'.$datos1[4].'","nombre":"'.$datos1[2].'"},';
+                $retorno .= '{"iso_pais":"'.$datos1[1].'","moneda":"'.$datos1[0].'","decimales":"'.$datos1[5].'","nombre":"'.$datos1[3].'"},';
             }
             return substr($retorno,0,strlen($retorno)-1)."]";
 		} 

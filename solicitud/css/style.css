@@ -32,7 +32,11 @@ body {
   font-family: 'calibri';
   border: 1px solid #000;
 }
-
+.form-register img{
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
 .form-register h4 {
   font-size: 22px;
 }

@@ -15,49 +15,6 @@ $(document).on("ready",function(){
     
     $(".item").eq(0).append('<div class="selectormenu"></div>');
     //$(".item").css("display","none");
-    if( localStorage.tipousuario=="administrador"){
-        $(".item").css("display","");
-        html = "";
-        $.ajax({
-            url:"./php/informacion/satoshis.php",
-            type: 'POST',
-            data: {usuario:localStorage.getItem("usuario")},
-            beforeSend:function(){
-                $(".contenido-imagen").css("display","flex");
-            },
-            complete:function(){
-                $(".contenido-imagen").css("display","none");
-            },
-            success:function(data){
-                html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
-                for(i=0;i<JSON.parse(data).length;i++){
-                    html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].invertidosatoshi+"</td><td>"+JSON.parse(data)[i].gananciasatoshis+"</td><td>"+JSON.parse(data)[i].dinerodisponoble+"</td><td>"+JSON.parse(data)[i].dineroenviado+"</td></tr>";
-                }
-                html += '</tbody></table></div>';
-                $("#main-container").append(html);
-            }
-        });
-        $.ajax({
-            url:"./php/informacion/satoshis.php",
-            type: 'POST',
-            data: {usuario:localStorage.getItem("usuario")},
-            beforeSend:function(){
-                $(".contenido-imagen").css("display","flex");
-            },
-            complete:function(){
-                $(".contenido-imagen").css("display","none");
-            },
-            success:function(data){
-                html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
-                for(i=0;i<JSON.parse(data).length;i++){
-                    html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].invertidosatoshi+"</td><td>"+JSON.parse(data)[i].gananciasatoshis+"</td><td>"+JSON.parse(data)[i].dinerodisponoble+"</td><td>"+JSON.parse(data)[i].dineroenviado+"</td></tr>";
-                }
-                html += "</tbody></table></div>";
-                
-                $("#main-container").append(html);
-            }
-        });
-    }
     
     
     
@@ -121,9 +78,19 @@ $(document).on("ready",function(){
                 }
             });
         }
+        if(opcion=="tasas"){
+            html = "<div class='barrafiltros'>";
+            
+            html += '<select style="width:100px;font-size:20px;margin:auto"><option>-</option></select>'; 
+            html += '<div id="operar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Operar</div></div>'
+                    
+            html += '</div>';
+            html += '<script type="text/javascript" src="./../js/tasas.js"></script>';
+            $("#main-container").html(html);
+        }
         if(opcion=="solicitud"){ 
             $(".contenido-imagen").css("display","flex");
-            html = '<section class="form-register"><h4>Solicitar Intercambio</h4>';
+            html = '<section class="form-register"><img src="imagenes/logo (1).png"><h4>Solicitar Intercambio</h4>';
             html += '<label class="margen">Pais Origen</label>';
             html += '<input class="controls" type="text" name="paisorigen" id="paisorige" placeholder="Seleccione un país" list="paisorigen">';
             html += '<datalist id="paisorigen">';
@@ -191,12 +158,12 @@ $(document).on("ready",function(){
             $(".contenido-imagen").css("display","flex");
             html += "<div class='barrafiltros'>";
             if(localStorage.tipousuario=="administrador"){
-                html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
+                html += '<input style="width:100px;font-size:20px" type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
                 html += '<datalist id="usuario">';
                 html += '</datalist>';
             }
             
-            html += '<select style="width:100px;font-size:20px"><option>-</option></select>'; 
+            html += '<select style="width:100px;font-size:20px;margin:auto"><option>-</option></select>'; 
             
             html += '</div>';
             html += '<div class="row m-0" style="justify-content:space-around">'; 
@@ -380,6 +347,77 @@ $(document).on("ready",function(){
                 }
             });
         }
+        if(opcion=="operaciones"){
+            var usuario = "";
+            if(typeof localStorage.usuario !== "undefined" ){
+                var usua = $('#usuario [value="' + $("#usuari").val() + '"]').val();
+                
+                if(typeof usua !== "undefined"){
+                    usuario = usua;
+                }else{
+                    usuario = localStorage.usuario;
+                }
+                
+            }else{
+                usuario = localStorage.usuario;
+            }
+            fecha = new Date();
+            mes = (fecha.getMonth()+1).toString();
+            if(mes.length==1){
+                mes = "0"+mes;
+            }
+            dia = fecha.getDate().toString();
+            if(dia.length==1){
+                dia = "0"+dia;
+            }
+            fechahoy = fecha.getFullYear() + "-" + mes + "-" + dia;
+            $.ajax({
+                url:"./../php/intercambios/finalizados.php",
+                type: 'POST',
+                data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,fecha:fechahoy},
+                beforeSend:function(){
+                    $(".contenido-imagen").css("display","flex");
+                },
+                complete:function(){
+                    $(".contenido-imagen").css("display","none");
+                },
+                success:function(data){
+                    html = "<div class='barrafiltros'>";
+                    if(localStorage.tipousuario=="administrador"){
+                        html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
+                        html += '<datalist id="usuario">';
+                        html += '</datalist>';
+                    }
+                        
+                    html += '<input type="date">';   
+                    
+                    html += '<div id="operar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Operar</div></div>'
+                    
+                    html += '</div>';
+                    html += "<div class='table-responsive'><h2>Operaciones</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Cantidad</th><th scope='col'>Tipo</th></tr></thead><tbody>";
+                    for(i=0;i<JSON.parse(data).length;i++){
+                        html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
+                        
+                        var imagen = "";
+                        if(JSON.parse(data)[i].imegen.length==0){
+                            imagen += "imagenes/imagennidisponible.jpg";
+                        }
+                        for(j=0;j<JSON.parse(data)[i].imegen.length;j++){
+                            imagen += JSON.parse(data)[i].imegen[j]+",";
+                        }
+                        html += "<td ><div style='cursor:pointer'  imagenes='"+imagen+"' class='iconos icono-photo comprobante' title='Descargar'></div></td>"; 
+                        
+                        html += "</tr>";
+                    
+                    }
+                    html += '</tbody></table></div><center><script src="./../js/operaciones.js"></script>';
+                    
+                    $("#main-container").html(html);
+                    $("#usuari").val(usuario);
+                    $("input[type=date]").val(fechahoy);
+                }
+            });
+        }
         if(opcion=="intercambios"){
             var usuario = "";
             if(typeof localStorage.usuario !== "undefined" ){
@@ -533,9 +571,8 @@ $(document).on("ready",function(){
     })
 
 
-    if(localStorage.tipousuario=="sociocomercial"){
-        $(".item").eq(0).trigger("click");
-    }
+    $(".item").eq(0).trigger("click");
+    
 });
 
 

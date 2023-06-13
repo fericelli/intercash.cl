@@ -12,6 +12,30 @@
 </head>
 <body>
   <section class="form-register">
+    <img src="imagenes/logo (1).png">
+    <h4>Calculadora Envío</h4>
+    <label class="margen">Pais Origen</label>
+    <input class="controls" type="text" name="paisorigen" id="paisorige" placeholder="Seleccione un país" list="paisorigen">
+    <datalist id="paisorigen">
+    </datalist>
+    <label class="mensaje-error">Seleccione un País</label>
+    <label class="margen">Pais Destino</label>
+    <input class="controls" type="text" name="paisodestino" id="paisodestin" placeholder="Seleccione un país" list="paisodestino">
+    <datalist id="paisodestino">
+    </datalist>
+    <img class="imgcarga cargapaisdestino" src="imagenes/carga.gif">
+    <label class="mensaje-error" >Seleccione un País</label>
+    <label class="margen">Cantidad a enviar</label>
+    <input class="controls" type="text" name="cantidadenviar" id="cantidadenviar" placeholder="Ingrese la cantidad">
+    <label class="mensaje-error">Ingrese un monto</label>
+    <label class="margen">Cantidad a recibir</label>
+    <input class="controls" type="text" name="cantidadrecibir" id="cantidadrecibir" placeholder="Ingrese la cantidad">
+    <label class="mensaje-error">Ingrese un monto</label>
+    <div style="display:flex;justify-content: space-around;">
+    <img style="width: 30px;height: 30px;" class="imgcarga imagenusd" src="imagenes/carga.gif">
+    <p class="usd">0 USD</p>
+    <p class="tasa">0 Tasa</p>
+    </div>
     <h4>Iniciar sesion</h4>
     <label class="margen">Usuario</label>
     <input class="controls" type="text" name="usuario" id="usuario" placeholder="Ingresa su usuario">

@@ -22,64 +22,7 @@
             $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
 			$usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
 			$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-            
-            $btcorigen = $usdorigen*$btcprecio;
-            $btcdestino = $usddestino*$btcprecio;
-
-            //return $btcprecio;
-
-            $consultardevaluacionorigen = $this->Conexion->Consultar("SELECT * FROM devalucacion WHERE moneda='".$_POST["monedaorigen"]."'");
-            if($devaluaciono = $this->Conexion->Recorrido($consultardevaluacionorigen)){
-                $davaluacionorigen = $devaluaciono[1];
-            }
-            $consultardevaluaciondestino = $this->Conexion->Consultar("SELECT * FROM devalucacion WHERE moneda='".$_POST["monedadestino"]."'");
-            if($devaluaciond = $this->Conexion->Recorrido($consultardevaluacionorigen)){
-                $davaluaciondestino = $devaluaciond[1];
-            }
-            if($porcentajes = $this->Conexion->Recorrido($consultar)){
-                if(strlen($porcentajes[0])==1){
-                    $porcentaje = "1.0".$porcentajes[0];
-                }else{
-                    $porcentaje = "1.".$porcentajes[0];
-                }
-                if($porcentajes[2]>="0"){
-                    if($porcentajes[2]<10){
-                        $btcdestino = $btcdestino*(floatval("1.0".abs($porcentajes[2])));
-                    }else{
-                        $btcdestino = $btcdestino*(floatval("1.".abs($porcentajes[2]))); 
-                    }
-                }else{
-                    if($porcentajes[2]<10){
-                        $btcdestino = $btcdestino/(floatval("1.0".abs($porcentajes[2]))); 
-                    }else{
-                        $btcdestino = $btcdestino/(floatval("1.".abs($porcentajes[2]))); 
-                    }
-                    
-                }
-                if($porcentajes[3]>="0"){
-                    if($porcentajes[3]<10){
-                        $btcorigen = $btcorigen*(floatval("1.0".abs(($porcentajes[3]))));
-                    }else{
-                        $btcorigen = $btcorigen*(floatval("1.".abs($porcentajes[3])));
-                    }
-                }else{
-                    if($porcentajes[3]<10){
-                        $btcorigen = $btcorigen/(floatval("1.0".abs($porcentajes[3])));
-                    }else{
-                        $btcorigen = $btcorigen/(floatval("1.".abs($porcentajes[3])));
-                    } 
-                    
-                }
-                
-                $decimalestasa = $porcentajes[1];
-            }
-            
-            $tasa = (($btcdestino)/$btcorigen)/$porcentaje;
-            $tasausddestino = $usddestino + (($usddestino*$davaluaciondestino)/100);
-            //echo floatval($decimalestasa)."v d".floatval($tasa);
-            if(floatval($decimalestasa)==0 AND floatval($tasa)<0){
-                $decimalestasa = 3; 
-            }*/
+            */
 
             $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
 			
@@ -105,7 +48,7 @@
                 if($preciobtcdestino*0.00001<$dinerorecibir){
                     $disponiblidad = "si";
                 }else{
-                    $disponiblidad = "no";
+                    $disponiblidad = "si";
                 }
                 return '{"dineroenviar":"'.$dineroenviar.'",
                 "dinerorecibir":"'.$dinerorecibir.'",
@@ -120,7 +63,7 @@
                 if($preciobtcdestino*0.0001<$dinerorecibir){
                     $disponiblidad = "si";
                 }else{
-                    $disponiblidad = "no";
+                    $disponiblidad = "si";
                 }
                 return '{"dineroenviar":"'.$dineroenviar.'",
                 "dinerorecibir":"'.$dinerorecibir.'",

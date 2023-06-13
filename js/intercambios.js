@@ -173,7 +173,7 @@ $("#usuari").focusout(function(){
                     
                 html += '<input type="date">';   
                 html += '</div>';
-                html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Comprobantes</th></tr></thead><tbody>";
+                html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda comprada</th><th scope='col'>Contidad</th><th scope='col'>Tipo</th></tr></thead><tbody>";
                 for(i=0;i<JSON.parse(data).length;i++){
                     html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
                     
@@ -196,3 +196,4 @@ $("#usuari").focusout(function(){
             }
         });
 })
+

@@ -225,6 +225,8 @@
         $(".tasa").text("0 Tasa");
         $("#cantidadrecibir").val("");
         $("#cantidadenviar").val("");
+        
+        $("#paisodestin").val("");
     })
     $("#cantidadenviar").focusin(function(e){
         $(".usd").text("0 USD");
@@ -293,7 +295,13 @@
         $(".tasa").text("0 Tasa");
         $("#cantidadenviar").val("");
     })
-    
+    $("#paisodestin").focusin(function(){
+        $(".usd").text("0 USD");
+        $(".tasa").text("0 Tasa");
+        $("#cantidadenviar").val("");
+        $("#cantidadrecibir").val("");
+
+    })
     
     $("#cuent").focusin(function(e){
         $(this).val("");

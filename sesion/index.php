@@ -50,6 +50,12 @@
                     <div class="title"><span>Patrimonio</span></div>
                   </a>
                 </div>
+                <div class="item" opcion="tasas">
+                  <a>
+                    <div class="icon"><i class=" iconos icono-bitcoin"></i></div>
+                    <div class="title"><span>Tasas</span></div>
+                  </a>
+                </div>
                 <div class="item" opcion="solicitud">
                   <a>
                     <div class="icon"><i class=" iconos icono-dinero"></i></div>
@@ -69,6 +75,13 @@
                     <div class="title"><span>Solicitudes</span></div>
                   </a>
                 </div>
+                <div class="item" opcion="operaciones">
+                  <a>
+                    <div class="icon"><i class=" iconos icono-desktop"></i></div>
+                    <div class="title"><span>Operaciones</span></div>
+                  </a>
+                </div>
+                
                 <div class="item" opcion="intercambios">
                   <a>
                     <div class="icon"><i class=" iconos icono-texto"></i></div>

@@ -116,7 +116,7 @@ $("#enviar").on("click",function(){
             archivos.append((formulario.find('input[type="file"]:eq('+i+')').attr("name")),((formulario.find('input[type="file"]:eq('+i+')')[0]).files[0]));
         }
         $.ajax({
-            url:"./../php/envios/enviar.php?cantidad="+$(".monto").val()+"&usuario="+$(this).attr("usuario")+"&registro="+$(this).attr("registro")+"&pendiente="+$(this).attr("pendiente")+"&total="+$(this).attr("total")+"&operador="+localStorage.getItem("usuario")+"&moneda="+$(this).attr("moneda")+"&cambio="+cambio+"&monedacambio="+moneda,
+            url:"./../php/envios/enviar.php?cantidad="+$(".monto").val()+"&usuario="+$(this).attr("usuario")+"&registro="+$(this).attr("registro")+"&pendiente="+$(this).attr("pendiente")+"&total="+$(this).attr("total")+"&operador="+localStorage.getItem("usuario")+"&moneda="+$(this).attr("moneda")+"&cambio="+cambio+"&monedacambio="+moneda+"&decimal="+decimal,
             type:'POST',
             contentType:false,
             data:archivos,
