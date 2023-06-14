@@ -217,7 +217,7 @@ $(".envios").on("click",function(){
     cantidadenviar = $("tbody tr:eq("+index+") td:eq(4)").attr("cantidadenviar");
     usuario = $("tbody tr:eq("+index+") td:eq(4)").attr("usuario");
     if(localStorage.tipousuario=="administrador"){
-        imagenes = $("tbody tr:eq("+index+") td:eq(4)").attr("imagenes");
+        imagenes = $("tbody tr:eq("+index+") td:eq(5)").attr("imagenes");
     }else{
         imagenes = $("tbody tr:eq("+index+") td:eq(4)").attr("imagenes");
     }
