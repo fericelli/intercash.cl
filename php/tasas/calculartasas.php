@@ -19,7 +19,7 @@
                 echo $usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$json["monedaenvio"]["moneda"]))->{'data'};
                 echo $usdtorigen = $json["monedaenvio"]["tasausdt"];
 
-                $json["monedasdestino"]
+                $json["monedasdestino"];
 				if(strlen($retorno)>1){
 					return substr($retorno,0,strlen($retorno)-1)."]";
 				}else{
