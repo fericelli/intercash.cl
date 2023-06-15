@@ -79,14 +79,50 @@ $(document).on("ready",function(){
             });
         }
         if(opcion=="tasas"){
-            html = "<div class='barrafiltros'>";
+            $.ajax({
+                url:"./../php/tasas/datos.php",
+                type: 'POST',
+                data: {usuario:localStorage.usaurio},
+                beforeSend:function(){
+                    $(".contenido-imagen").css("display","flex");
+                },
+                complete:function(){
+                    $(".contenido-imagen").css("display","none");
+                },
+                success:function(data){
+                    console.log(JSON.parse(data));
+                    html = "<div class='barrafiltros'>";
+            
+                    html += '<select style="width:100px;font-size:20px;margin:auto">';
+                    for(i=0;i<JSON.parse(data)[0].length;i++){
+                        console.log(JSON.parse(data)[0][i].moneda);
+                        html += '<option nombre="'+JSON.parse(data)[0][i].nombre+'" moneda="'+JSON.parse(data)[0][i].moneda+'" pais="'+JSON.parse(data)[0][i].iso_pais+'" devaluacion="'+JSON.parse(data)[0][i].devaluacion+'" decimalesmoneda="'+JSON.parse(data)[0][i].decimalesmoneda+'">'+JSON.parse(data)[0][i].moneda+" "+JSON.parse(data)[0][i].nombre+'</option>'; 
+                    }
+                    html += '</select>'; 
+                    html += '<div style="display:flex;flex-direction:column"><label>Tasa USDT</label><input style="width:100px;font-size:20px;margin:auto" type="text" id="tasacompra" tasa="'+JSON.parse(data)[0][0].usdt+'" value="'+JSON.parse(data)[0][0].usdt+'"><div style="display:flex;flex-direction:row"><h5>USD : </h5><p>'+JSON.parse(data)[0][0].usd+'</p></div></div>';
+                    html += '<div id="calcular" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Calcular</div></div>'
+                    html += '<div id="agregar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Actualizar</div></div>'
+                    
+                    html += '</div>';
+                    html += "<div class='table-responsive'><h2></h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Pais/Moneda</th><th scope='col'>% Ganancia</th><th scope='col'>Tasa Usdt/USD</th><th scope='col'>Tasa Envio/Sujerida</th><th scope='col'>Decimales tasa</th></tr></thead><tbody>";
+                    for(i=0;i<JSON.parse(data)[1].length;i++){
+                        html += "<tr><td>"+JSON.parse(data)[1][i].iso_pais+"/"+JSON.parse(data)[1][i].moneda+"</td><td style='display:flex'><p>%</p><input value='"+JSON.parse(data)[1][i].tasasporcentaje+"'></td><td><input type='text' value='"+JSON.parse(data)[1][i].usdt+"'><p>"+JSON.parse(data)[1][i].usd+"</p></td><td><input type='text' value='"+JSON.parse(data)[1][i].tasa+"'><p>"+JSON.parse(data)[1][i].tasasugerida+"</p></td><td ><input type='text' value='"+JSON.parse(data)[1][i].decimalestasa+"'></td></tr>"
+                    }
+                    html += '</tbody></table></div><center><script src="./../js/tasas.js"></script>';
+                    
+                    $("#main-container").html(html);
+                }
+            });
+            /*html = "<div class='barrafiltros'>";
             
             html += '<select style="width:100px;font-size:20px;margin:auto"><option>-</option></select>'; 
             html += '<div id="operar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Operar</div></div>'
                     
             html += '</div>';
+            html += '<div class="table-responsive">';
+            html += '</div>';
             html += '<script type="text/javascript" src="./../js/tasas.js"></script>';
-            $("#main-container").html(html);
+            $("#main-container").html(html);*/
         }
         if(opcion=="solicitud"){ 
             $(".contenido-imagen").css("display","flex");
