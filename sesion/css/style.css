@@ -225,3 +225,13 @@ select{
 .table-responsive h2{
   text-align: center;
 }
+.barrafiltros{
+  width: 100%;
+  display: flex;
+  padding: 5px;
+  overflow-x: auto;
+}
+
+.barrafiltros input,.barrafiltros select,.barrafiltros div{
+  margin: auto 10px;
+}

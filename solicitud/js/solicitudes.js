@@ -188,7 +188,7 @@ $(".enviar").on("click",function(){
         html += "</section></div>";
         
         html += '<script type="text/javascript" src="./../js/enviar.js"></script>';
-        $("#main-container").html(html)
+        $("#main-container").html(html);
        /* $.ajax({
             url:"./../solicitud/php/intercambios/finalizar.php",
             type: 'POST',

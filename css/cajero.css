@@ -16,16 +16,7 @@ p {
     justify-content: space-around;
 }
 
-.barrafiltros{
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding: 5px;
-}
 
-.barrafiltros input{
-    margin: auto;
-}
 .box-right {
     background-color: white;
     border-radius: 15px

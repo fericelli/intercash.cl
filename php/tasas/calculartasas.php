@@ -12,18 +12,24 @@
             try{
 				
 				$sql = "";
-                $retorno = "[";
+                $retorno = "";
 				$json = json_decode($_POST["datos"],TRUE);
 				//var_dump($json);
 
-                echo $usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$json["monedaenvio"]["moneda"]))->{'data'};
-                echo $usdtorigen = $json["monedaenvio"]["tasausdt"];
+                 $usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$json["monedaenvio"]["moneda"]))->{'data'};
+                 $usdtorigen = $json["monedaenvio"]["tasausdt"];
+                 
+                //echo (($usdtorigen-$usdorigen)*100)/$usdorigen;exit;
+                //var_dump($json["monedasdestino"]);
+                for($i=0;$i<count($json["monedasdestino"]);$i++){
+                    $retorno .= '"'.number_format(($json["monedasdestino"][$i]["tasausdt"]/$usdtorigen)/floatval("1.".str_replace(".","",$json["monedasdestino"][$i]["ganancia"])),$json["monedasdestino"][$i]["decimalestasa"],".","").'",';
+                }
+                //echo $json["monedasdestino"][0]["tasausdt"];
 
-                $json["monedasdestino"];
 				if(strlen($retorno)>1){
-					return substr($retorno,0,strlen($retorno)-1)."]";
+					return substr($retorno,0,strlen($retorno)-1)."";
 				}else{
-					return "]";
+					return "";
 				}
 
             }catch(Exception $e){

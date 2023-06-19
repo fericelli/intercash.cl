@@ -34,8 +34,12 @@
                 $tasa = $tasas[0];
                 $decimalestasa = $tasas[2];
                 if($tasas[1]>0){
-                    $tasausddestino = (($usddestino*$tasas[1])/100)+$usddestino;
+                    $tasausddestino = $usddestino*floatval("1.".str_replace(".","",$tasas[1]));//(($usddestino*$tasas[1])/100)+$usddestino;
+                }else{
+                    $tasausddestino = $usddestino;
                 }
+            }else{
+                $tasausddestino = $usddestino;
             }
             
             if(isset($_POST["cantidadenviar"])){
