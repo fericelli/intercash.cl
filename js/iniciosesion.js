@@ -98,9 +98,11 @@ $(document).on("ready",function(e){
                 data: {moneda:moneda,pais:pais},
                 beforeSend:function(){
                     $(".cargapaisdestino").css("display","flex");
+                    $("#paisodestin").css("display","none");
                 },
                 complete:function(){
                     $(".cargapaisdestino").css("display","none");
+                    $("#paisodestin").css("display","flex");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
@@ -178,6 +180,7 @@ $(document).on("ready",function(e){
         $("#cantidadrecibir").val("");
         $("#cantidadenviar").val("");
         $("#paisodestin").val("");
+        
     })
     $("#cantidadenviar").focusin(function(e){
         $(".usd").text("0 USD");
