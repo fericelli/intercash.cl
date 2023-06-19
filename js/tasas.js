@@ -119,6 +119,35 @@ $("#actualizar").on("click",function(){
     });
 })
 
-$("#afregar").on("click",function(){
-    
+$("#agregar").on("click",function(){
+    html = "<div style='margin:auto;width:100%;display:flex'>";
+    html += "<div class='salir icono-izquierda' style='cursor:pointer;border-radius:50%;padding:9px;background-color:rgb(52,52,52);color:#fff;position:absolute;right:2px'></div>";
+    html += '<section class="form-register"><h4>Agregar tasas</h4>';
+    html += '<label class="margen">Seleccione el pais origen</label>'; 
+    html += '<input class="controls" id="paisorig" type="text"  placeholder="Seleccione un pais">';
+    html += '<datalist id="paisorigen"></datalist>';
+    html += '<img class="imgcarga" src="imagenes/carga.gif">';
+    html += '<label class="mensaje-error">Seleccione un pais</label>';
+    html += '<label class="margen">Seleccione el pais destino</label>'; 
+    html += '<input class="controls" id="paisdesti" type="text"  placeholder="Seleccione un pais">';
+    html += '<datalist id="paisdestino"></datalist>';
+    html += '<img class="imgcarga" src="imagenes/carga.gif">';
+    html += '<label class="mensaje-error">Seleccione un pais</label>';
+    html += '<label class="margen">Ingrese el porcentaje</label>'; 
+    html += '<input class="controls porcentajeganancia" type="text"  placeholder="Ingrece el pocentaje">';
+    html += '<label class="mensaje-error">Debe ser numero</label>';
+    html += '<label class="mensaje-error">Ingrece el pocentaje</label>';
+    html += '<label class="margen">Ingrese los decimales de la tasa</label>'; 
+    html += '<input class="controls porcentajeganancia" type="text"  placeholder="Ingrese los decimales de la tasa">';
+    html += '<label class="mensaje-error">Debe ser numero</label>';
+    html += '<label class="mensaje-error"Ingrese los decimales de la tasa</label>';
+
+    html += '<div id="agregar" class="botons">Agregar</div>';
+    html += '<img class="imgcarga" src="imagenes/carga.gif">';
+    html += '<label class="mensaje-correcto"></label>';
+    html += '<label class="mensaje-error"></label>';
+    html += '</div>';
+    html += "</section></div>";
+    html += '<script type="text/javascript" src="./../js/agregartasa.js"></script>';
+    $("#main-container").html(html)
 })

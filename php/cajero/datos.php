@@ -113,13 +113,13 @@
 							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["moneda"]))->{'data'};
 				
 							$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-							$ganancia = ($intercambios[0]*$intercambios[1])/100;
-							$ganancia = $ganancia/$usd;
-							$ganancia = $ganancia/$btcprecio;
+							$ganancia = (floatval($intercambios[0])*floatval($intercambios[1]))/100;
+							$gananciabtc = $ganancia/$usd;
+							$gananciabtc = $gananciabtc/$btcprecio;
 							
 
-							$retorno .= '"'.number_format(($intercambios[0]*$intercambios[1])/100, 2, ',', '.').'",';
-							$retorno .= '"'.number_format(  $ganancia    , 8, ',', '.'  ).'",';
+							$retorno .= '"'.number_format($ganancia, 2, ',', '.').'",';
+							$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'",';
 						}
 
 						
@@ -140,13 +140,14 @@
 							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$datos["iso_moneda"]))->{'data'};
 				
 							$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-							$ganancia = ($intercambios[0]*$intercambios[1])/100;
-							$ganancia = $ganancia/$usd;
-							$ganancia = $ganancia/$btcprecio;
+							
+							$ganancia = (floatval($intercambios[0])*floatval($intercambios[1]))/100;
+							$gananciabtc = $ganancia/$usd;
+							$gananciabtc = $gananciabtc/$btcprecio;
 							
 
-							$retorno .= '"'.number_format(($intercambios[0]*$intercambios[1])/100, 2, ',', '.').'",';
-							$retorno .= '"'.number_format(  $ganancia    , 8, ',', '.'  ).'",';
+							$retorno .= '"'.number_format($ganancia, 2, ',', '.').'",';
+							$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'",';
 						}
 
 						

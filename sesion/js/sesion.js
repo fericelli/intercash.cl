@@ -102,7 +102,7 @@ $(document).on("ready",function(){
                     html += '<div style="display:flex;flex-direction:column"><label>Tasa USDT</label><input style="width:100px;font-size:20px;margin:auto" type="text" id="tasacompra" tasa="'+JSON.parse(data)[0][0].usdt+'" value="'+JSON.parse(data)[0][0].usdt+'"><div style="display:flex;flex-direction:row"><h5>USD</h5><p>:</p><p>'+JSON.parse(data)[0][0].usd+'</p></div></div>';
                     html += '<div id="calcular" style="height:35px; padding:0px 10px;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Calcular</div></div>'
                     html += '<div id="actualizar" style="height:35px; padding:0px 10px;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Actualizar</div></div>'
-                    html += '<div id="agragar" style="height:35px; padding:0px 10px;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Actualizar</div></div>'
+                    html += '<div id="agregar" style="height:35px; padding:0px 10px;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Actualizar</div></div>'
                     
                     html += '</div>';
                     html += "<div class='table-responsive'><h2></h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Pais/Moneda</th><th scope='col'>% Ganancia</th><th scope='col'>Tasa Usdt/USD</th><th scope='col'>Tasa Envio/Sujerida</th><th scope='col'>Decimales tasa</th></tr></thead><tbody>";

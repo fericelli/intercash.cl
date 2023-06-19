@@ -367,24 +367,7 @@
                 $(".mensaje-error").eq(3).css("display","none");
             },5000)
         }
-        if(localStorage.tipousuario!="administrador"){
-            var usuar = $('#usuario [value="' + $("#usuari").val() + '"]').attr('usuario');
-            if(typeof usuar === "undefined"){
-                validador ++;
-                $(".mensaje-error").eq(4).css("display","flex");
-                setTimeout(function(){
-                    $(".mensaje-error").eq(4).css("display","none");
-                },5000)
-            }
-        }else{
-            if($("#usuari").val()==""){
-                validador ++;
-                $(".mensaje-error").eq(4).css("display","flex");
-                setTimeout(function(){
-                    $(".mensaje-error").eq(4).css("display","none");
-                },5000)
-            }
-        }
+        
         //
         
         if($("#cuent").val()==""){
