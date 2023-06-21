@@ -40,8 +40,8 @@ $(".comprobante").on("click",function(){
     
         
     html = '<div class="contenido-screeshot"><div class="icono-izquierda " style="color: #fff;font-size: 30px;left: 15px;top: 15px; cursor: pointer;"></div>';
-    html += '<img class="principal" src="'+url+'/'+envios[0]+'" alt=""></img>';
-    html += '<a class="icono-descargar" href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;"></a>';
+    html += '<a class="icono-descargar" href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;"><img class="principal" src="'+url+'/'+envios[0]+'" alt=""></img></a>';
+    html += '';
     html += '<div class="imegenes-peque">';
     validar =0;
     for(var i=0;i<envios.length-1;i++){
