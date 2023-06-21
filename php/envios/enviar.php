@@ -42,9 +42,9 @@
                         $total_imagenes ++;
                        $imagen = $carpeta."/capture".$total_imagenes.$ext;
                          $directorio = "imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
-                        //move_uploaded_file($NombreTmpArchivo,$imagen);
+                        move_uploaded_file($NombreTmpArchivo,$imagen);
                         
-                       echo $tasa = number_format($_GET["cantidad"]/$_GET["cambio"],$_GET["decimal"],".","");
+                       //echo $tasa = number_format($_GET["cantidad"]/$_GET["cambio"],$_GET["decimal"],".","");
 
                         //number_format($number, 2, ',', ' ');
                        $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");

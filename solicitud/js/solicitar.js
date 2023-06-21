@@ -504,7 +504,6 @@
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
-                    console.log(json);
                     if(json.cuentas.length>0){
                         html = "";
                         for(i=0;i<json.cuentas.length;i++){
