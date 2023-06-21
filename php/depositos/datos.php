@@ -12,9 +12,9 @@
             try{
                 $retorno = "";
 				if($_POST["tipodeusuario"]=="administrador"){
-					$consular = $this->Conexion->Consultar("SELECT * FROM depositos");
+					$consular = $this->Conexion->Consultar("SELECT * FROM depositos WHERE confirmado IS NULL");
 				}else{
-					$consular = $this->Conexion->Consultar("SELECT * FROM depositos WHERE usuariocuenta='".$_POST["usuario"]."' OR usuario='".$_POST["usuario"]."'");
+					$consular = $this->Conexion->Consultar("SELECT * FROM depositos WHERE (usuariocuenta='".$_POST["usuario"]."' OR usuario='".$_POST["usuario"]."') AND confirmado IS NULL");
 				}
 
 				while($depositos = $this->Conexion->Recorrido($consular)){

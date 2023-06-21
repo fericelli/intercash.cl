@@ -227,6 +227,7 @@
         $("#cantidadenviar").val("");
         
         $("#paisodestin").val("");
+        $("#paisodestino").html("");
     })
     $("#cantidadenviar").focusin(function(e){
         $(".usd").text("0 USD");
