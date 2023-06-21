@@ -17,7 +17,7 @@
     display: flex;
     justify-content: space-around;
     padding-top: 10px;
-    overflow-y: auto;
+    overflow-x: auto;
 }
 
 
