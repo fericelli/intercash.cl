@@ -47,7 +47,6 @@ function datos(){
                 tipocuenta += "<option  value='"+json[3][i]+"'>"+json[3][i]+"</option>";
             }
             $("#tipocuentaenvio").html(tipocuenta);
-            console.log(json);
             $("#entero").text(json[4][0].split(",")[0]);
             $("#decimal").text(","+json[4][0].split(",")[1]);
             $("#enterobtc").text(json[4][1].split(",")[0]);

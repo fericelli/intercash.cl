@@ -39,8 +39,9 @@ $(".comprobante").on("click",function(){
     var url = URLactual.href.replace("/sesion/", "");
     
         
-    html = '<div class="contenido-screeshot"><div class="icono-izquierda " style="color: #fff;font-size: 30px;left: 15px;top: 15px; cursor: pointer;"></div>';
-    html += '<a href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;"><img class="principal" src="'+url+'/'+envios[0]+'" alt=""></img></a>';
+    html = '<div class="contenido-screeshot"><div style="display:flex;flex-direction:column"><div class="icono-izquierda " style="color: #fff;font-size: 30px;left: 15px;top: 15px; cursor: pointer;"></div>';
+    html += '<a class="icono-descargar" href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;text-decoration:none;"></a></div>';
+    html += '<img class="principal" src="'+url+'/'+envios[0]+'" alt=""></img>';
     html += '';
     html += '<div class="imegenes-peque">';
     validar =0;
@@ -173,7 +174,7 @@ $("#usuari").focusout(function(){
                     
                 html += '<input type="date">';   
                 html += '</div>';
-                html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda comprada</th><th scope='col'>Contidad</th><th scope='col'>Tipo</th></tr></thead><tbody>";
+                html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Comprobantes</th></tr></thead><tbody>";
                 for(i=0;i<JSON.parse(data).length;i++){
                     html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
                     

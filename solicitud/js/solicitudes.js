@@ -230,10 +230,10 @@ $(".envios").on("click",function(){
     
     var url = URLactual.href.replace("/sesion/", "");
     
-        
-    html = '<div class="contenido-screeshot"><div class="icono-izquierda " style="color: #fff;font-size: 30px;left: 15px;top: 15px; cursor: pointer;"></div>';
+    html = '<div class="contenido-screeshot"><div style="display:flex;flex-direction:column"><div class="icono-izquierda " style="color: #fff;font-size: 30px;left: 15px;top: 15px; cursor: pointer;"></div>';
+    html += '<a class="icono-descargar" href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;text-decoration:none;"></a></div>';
+    
     html += '<img class="principal" src="'+url+'/'+envios[0]+'" alt=""></img>';
-    html += '<a class="icono-descargar" href="'+url+'/'+envios[0]+'" download style="color: #fff;font-size: 30px;right: 15px;top: 15px;cursor: pointer;"></a>';
     html += '<div class="imegenes-peque">';
     validar =0;
     for(var i=0;i<envios.length-1;i++){
