@@ -23,7 +23,7 @@ $(document).on("ready",function(e){
             $.ajax({
                 url:"./php/iniciarsesion.php",
                 type: 'POST',
-                data: {usuario:$("#usuario").val(),clave:$("#clave").val()},
+                data: {usuario:$("#usuario").val().toLowerCase(),clave:$("#clave").val()},
                 beforeSend:function(){
                     $(".imagensolicitud").css("display","flex");
                     $(".botons").css("display","none");

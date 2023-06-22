@@ -28,4 +28,23 @@ $.ajax({
         $("#monedacompra").html(html);      
     }
 })
+$("input[type=radio]").eq(0).prop('checked',"checked");
 
+/*$("input[type=radio]").on("click",function(){
+    $("input[type=radio]").eq($("input[type=radio]").index(this)-1).removeAttr('checked');
+    
+   $("input[type=radio]").eq($("input[type=radio]").index(this)).prop('checked',"checked");
+    
+})*/
+
+
+$(".monto").keyup(function(){
+    if(!$.isNumeric($(this).val())){
+        $(this).val("");
+    }
+});
+$(".cantidadintercambio").keyup(function(){
+    if(!$.isNumeric($(this).val())){
+        $(this).val("");
+    }
+});

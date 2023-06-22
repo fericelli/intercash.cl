@@ -444,7 +444,6 @@
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
-                    console.log(json[0].mensausuario[1]);
                     if(json[0].mensausuario[1]="correcto"){
                         $(".mensaje-correcto").css("display","flex").text(json[0].mensausuario[0]);
                         
