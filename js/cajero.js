@@ -227,7 +227,6 @@ $("button").eq(0).on("click", function(e){
                     $(this).css("display","flex");
                 },
                 success:function(respuesta){
-                    console.log(JSON.parse(respuesta));
                     if(JSON.parse(respuesta)[1]=="success"){
                         $(".enviado").css("display","flex");
                         setTimeout(function(){
