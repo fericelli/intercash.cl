@@ -3,7 +3,7 @@ $(document).on("ready",function(){
     var URLactual = window.location;
     
     
-    if(localStorage.getItem('usuario')== null){
+    if(localStorage.getItem('usuario')== null ||$(".item").length==0 ){
         
         setTimeout(function(){
             location.href = URLactual.href.replace("sesion/", "")
