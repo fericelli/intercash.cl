@@ -17,7 +17,7 @@
             }
 
 			$retorno = substr($retorno,0,strlen($retorno)-1)."],[";
-            $consulta2 = $this->Conexion->Consultar("SELECT DISTINCT(monedacompra),paises.* FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra");
+            $consulta2 = $this->Conexion->Consultar("SELECT DISTINCT(monedacompra),paises.* FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra WHERE recertor IS NOT NULL");
             while($datos1 = $this->Conexion->Recorrido($consulta2)){
                 
                 $retorno .= '{"iso_pais":"'.$datos1[1].'","moneda":"'.$datos1[0].'","decimales":"'.$datos1[5].'","nombre":"'.$datos1[3].'"},';
