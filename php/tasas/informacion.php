@@ -29,7 +29,7 @@
             $tasa = 0;
             $tasausddestino=0;
             $decimalestasa = 0;
-            $consultar = $this->Conexion->Consultar("SELECT tasa,porcentaje,decimalestasa FROM tasas LEFT JOIN devaluacion ON monedaventa=moneda WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."' AND paisorigen='".$_POST["paisorigen"]."' AND paisdestino='".$_POST["paisdestino"]."'");
+           $consultar = $this->Conexion->Consultar("SELECT tasa,porcentaje,decimalestasa FROM tasas LEFT JOIN devaluacion ON monedaventa=moneda WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."' AND paisorigen='".$_POST["paisorigen"]."' AND paisdestino='".$_POST["paisdestino"]."'");
             if($tasas = $this->Conexion->Recorrido($consultar)){
                 $tasa = $tasas[0];
                 $decimalestasa = $tasas[2];

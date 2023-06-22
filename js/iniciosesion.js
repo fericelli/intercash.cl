@@ -123,6 +123,8 @@ $(document).on("ready",function(e){
             var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
             var decimalorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('decimales');
             var decimaldestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('decimales');
+            var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
+            var paisdestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
             if(typeof monedadestino === "undefined"){
                 $(".mensaje-error").eq(0).css("display","flex");
                 setTimeout(function(){
@@ -139,7 +141,7 @@ $(document).on("ready",function(e){
                 $.ajax({
                     url:URLactual+"php/tasas/informacion.php",
                     type: 'POST',
-                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$("#cantidadenviar").val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
+                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$("#cantidadenviar").val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino,paisorigen:paisorigen,paisdestino:paisdestino},
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
@@ -196,6 +198,8 @@ $(document).on("ready",function(e){
             var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
             var decimalorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('decimales');
             var decimaldestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('decimales');
+            var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
+            var paisdestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
             if(typeof monedadestino === "undefined"){
                 $(".mensaje-error").eq(0).css("display","flex");
                 setTimeout(function(){
@@ -213,7 +217,7 @@ $(document).on("ready",function(e){
                 $.ajax({
                     url:URLactual+"/php/tasas/informacion.php",
                     type: 'POST',
-                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
+                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino,paisorigen:paisorigen,paisdestino:paisdestino},
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
