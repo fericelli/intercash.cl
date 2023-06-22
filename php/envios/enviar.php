@@ -81,6 +81,7 @@
                                     }
 
                                 }
+                                $this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
                             }
                             
                             
