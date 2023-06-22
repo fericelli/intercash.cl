@@ -30,6 +30,7 @@ $(document).on("ready",function(e){
                 },
                 complete:function(){
                     $(".imagensolicitud").css("display","none");
+                    $(".botons").css("display","flex");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
