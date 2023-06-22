@@ -25,8 +25,7 @@
             */
 
             $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
-			return "SELECT tasa,porcentaje,decimalestasa FROM tasas LEFT JOIN devaluacion ON monedaventa=moneda WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."' AND paisorigen='".$_POST["paisorigen"]."' AND paisdestino='".$_POST["paisdestino"]."'";
-            $tasa = 0;
+			$tasa = 0;
             $tasausddestino=0;
             $decimalestasa = 0;
            $consultar = $this->Conexion->Consultar("SELECT tasa,porcentaje,decimalestasa FROM tasas LEFT JOIN devaluacion ON monedaventa=moneda WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."' AND paisorigen='".$_POST["paisorigen"]."' AND paisdestino='".$_POST["paisdestino"]."'");
