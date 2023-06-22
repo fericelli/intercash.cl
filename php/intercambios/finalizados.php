@@ -12,7 +12,6 @@
             
             if($_POST["tipodeusuario"]=="administrador" AND $_POST["usuario"]==""){
 
-                return "SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%'";
                 $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%'");
             }else{
                 $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%' AND (usuario='".$_POST["usuario"]."' OR intermediario='".$_POST["usuario"]."')");
