@@ -8,7 +8,7 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-			$consultar = $this->Conexion->Consultar("SELECT * FROM paises");
+			$consultar = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
             
             $retorno = "[";
 

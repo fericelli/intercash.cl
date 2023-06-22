@@ -460,13 +460,13 @@ $(document).on("ready",function(){
         }
         if(opcion=="intercambios"){
             var usuario = "";
-            if(typeof localStorage.usuario !== "undefined" ){
+            if(localStorage.tipodeusuario == "administrador" ){
                 var usua = $('#usuario [value="' + $("#usuari").val() + '"]').val();
                 
                 if(typeof usua !== "undefined"){
                     usuario = usua;
                 }else{
-                    usuario = localStorage.usuario;
+                    usuario = "";
                 }
                 
             }else{

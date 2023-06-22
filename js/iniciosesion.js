@@ -43,6 +43,7 @@ $(document).on("ready",function(e){
                         var url = URLactual.href+"sesion";
                         $(".botons").css("display","none");
                         setTimeout(function(){
+                            $(".botons").css("display","flex");
                             location.href = url;
                         },6000)
                         
