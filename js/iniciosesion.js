@@ -47,7 +47,7 @@ $(document).on("ready",function(e){
                         
                         
                     }else{
-                        $(".mensaje-error").eq(2).css("display","flex").text(json[0]);
+                        $(".mensaje-error").eq(6).css("display","flex").text(json[0]);
                     }
                     setTimeout(function(){
                         $(".mensajesolicitud").css("display","none");
