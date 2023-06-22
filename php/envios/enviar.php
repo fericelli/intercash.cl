@@ -74,7 +74,7 @@
                                 $tasa =  $montorecibir/$montoenvio;
                                 while($operaciones = $this->Conexion->Recorrido($consulta)){
                                     $montoenviado = $operaciones["monto"]*$operaciones["tasa"];
-                                    $consultas = $this->Conexion->Consultar("SELECT *,ABS((".$montoenviado.")-cantidad) diferencia FROM operaciones LEFT JOIN `screenshot` ON registro=solicitud WHERE operaciones.usuario='".$_GET["usuario"]."' AND solicitud='".$_GET["registro"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1");
+                                    $consultas = $this->Conexion->Consultar("SELECT *,(".$montoenviado."-cantidad) diferencia FROM operaciones LEFT JOIN `screenshot` ON registro=solicitud WHERE operaciones.usuario='".$_GET["usuario"]."' AND solicitud='".$_GET["registro"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1");
                                     if($monto = $this->Conexion->Recorrido($consultas)){
                                         $dinero = $monto["cantidad"]/$tasa;
                                         $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$dinero."',paisintercambio='".$solicitudes["iso2"]."' WHERE momento='".$monto["momento"]."'");
@@ -82,6 +82,7 @@
 
                                 }
                                 $this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
+                                $this->Conexion->Consultar("INSERT INTO intecambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."') ");
                             }
                             
                             

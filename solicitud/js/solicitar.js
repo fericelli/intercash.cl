@@ -73,10 +73,12 @@
                 type: 'POST',
                 data: {moneda:moneda,pais:pais},
                 beforeSend:function(){
+                    $("#paisodestin").css("display","none");
                     $(".cargapaisdestino").css("display","flex");
                 },
                 complete:function(){
                     $(".cargapaisdestino").css("display","none");
+                    $("#paisodestin").css("display","flex");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
@@ -146,7 +148,6 @@
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
-                        console.log(json);
                         if(json.cuentas.length>0){
                             html = "";
                             for(i=0;i<json.cuentas.length;i++){
@@ -168,6 +169,9 @@
             var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
             var decimalorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('decimales');
             var decimaldestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('decimales');
+            var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
+            var paisdestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
+
             if(typeof monedadestino === "undefined"){
                 $(".mensaje-error").eq(0).css("display","flex");
                 setTimeout(function(){
@@ -184,7 +188,7 @@
                 $.ajax({
                     url:urlglobal+"php/tasas/informacion.php",
                     type: 'POST',
-                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$("#cantidadenviar").val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
+                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadenviar:$("#cantidadenviar").val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino,paisorigen:paisorigen,paisdestino:paisdestino},
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
@@ -243,6 +247,9 @@
             var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
             var decimalorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('decimales');
             var decimaldestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('decimales');
+            
+            var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
+            var paisdestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
             if(typeof monedadestino === "undefined"){
                 $(".mensaje-error").eq(0).css("display","flex");
                 setTimeout(function(){
@@ -260,7 +267,7 @@
                 $.ajax({
                     url:urlglobal+"/php/tasas/informacion.php",
                     type: 'POST',
-                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino},
+                    data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$(this).val(),decimalorigen:decimalorigen,decimaldestino:decimaldestino,paisorigen:paisorigen,paisdestino:paisdestino},
                     beforeSend:function(){
                         $(".imagenusd").css("display","flex");
                         $(".usd").css("display","none");
@@ -339,6 +346,8 @@
         var monedaorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('moneda');
         var monedadestino = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('moneda');
         var paisodestin = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
+        
+        var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
         var validador = 0;
         if(typeof monedadestino === "undefined"){
             validador ++;
@@ -424,7 +433,7 @@
             $.ajax({
                 url:"./../solicitud/php/intercambios/solicitud.php",
                 type: 'POST',
-                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuent").val(),banco:$("#banc").val(),tipodecuenta:$("#tipodecuent").val(),nombres:$("#nombres").val(),usuario:usuario,identificacion:$("#identificacion").val(),pais:paisodestin},
+                data: {monedaorigen:monedaorigen,monedadestino:monedadestino,cantidadrecibir:$("#cantidadrecibir").val(),cantidadenviar:$("#cantidadenviar").val(),cuenta:$("#cuent").val(),banco:$("#banc").val(),tipodecuenta:$("#tipodecuent").val(),nombres:$("#nombres").val(),usuario:usuario,identificacion:$("#identificacion").val(),paisdestino:paisodestin,paisorigen:paisorigen},
                 beforeSend:function(){
                     $(".imagensolicitud").css("display","flex");
                     $(".botons").css("display","none");

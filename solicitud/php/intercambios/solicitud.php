@@ -39,11 +39,11 @@
                     $headers = "From: solicitud@intercash.cl" . "\r\n" ."Content-type:text/html;chrarset=UTF-8";
                     $correo =  mail($correo, 'Solicitud de Intercambio', $message,$headers);
                     
-                    $solicitar = $this->Conexion->Consultar("INSERT INTO solicitudes(monedadestino,monedaorigen,cantidadaenviar,cantidadarecibir,cuenta,banco,tipocuenta,nombres,identificacion,usuario,momento) VALUES ('".$_POST["monedadestino"]."','".$_POST["monedaorigen"]."','".$_POST["cantidadenviar"]."','".$_POST["cantidadrecibir"]."','".$_POST["cuenta"]."','".$_POST["banco"]."','".$_POST["tipodecuenta"]."','".$_POST["nombres"]."','".$_POST["identificacion"]."','".$_POST["usuario"]."','".date("Y-m-d H:i:s")."')");
+                    $solicitar = $this->Conexion->Consultar("INSERT INTO solicitudes(monedadestino,monedaorigen,cantidadaenviar,cantidadarecibir,cuenta,banco,tipocuenta,nombres,identificacion,usuario,momento,paisorigen,paisdestino) VALUES ('".$_POST["monedadestino"]."','".$_POST["monedaorigen"]."','".$_POST["cantidadenviar"]."','".$_POST["cantidadrecibir"]."','".$_POST["cuenta"]."','".$_POST["banco"]."','".$_POST["tipodecuenta"]."','".$_POST["nombres"]."','".$_POST["identificacion"]."','".$_POST["usuario"]."','".date("Y-m-d H:i:s")."','".$_POST["paisorigen"]."','".$_POST["paisdestino"]."')");
                     
-                    $consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais='".$_POST["pais"]."' AND banco='".$_POST["banco"]."' AND cuenta='".$_POST["cuenta"]."' AND usuario='".$_POST["usuario"]."'");
+                    $consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais='".$_POST["paisdestino"]."' AND banco='".$_POST["banco"]."' AND cuenta='".$_POST["cuenta"]."' AND usuario='".$_POST["usuario"]."'");
                     if(!$this->Conexion->Recorrido($consultar)){
-                        $this->Conexion->Consultar("INSERT INTO cuentas (pais,banco,cuenta,tipodecuenta,nombres,identificacion,usuario,tipo) VALUES ('".$_POST["pais"]."','".$_POST["banco"]."','".$_POST["cuenta"]."','".$_POST["tipodecuenta"]."','".$_POST["nombres"]."','".$_POST["identificacion"]."','".$_POST["usuario"]."','envio')");
+                        $this->Conexion->Consultar("INSERT INTO cuentas (pais,banco,cuenta,tipodecuenta,nombres,identificacion,usuario,tipo) VALUES ('".$_POST["paisdestino"]."','".$_POST["banco"]."','".$_POST["cuenta"]."','".$_POST["tipodecuenta"]."','".$_POST["nombres"]."','".$_POST["identificacion"]."','".$_POST["usuario"]."','envio')");
                     }
                     $retorno .= '"mensausuario":["Solicitud enviada","correcto"]';
                 }
