@@ -77,7 +77,7 @@
                                     $consultas = $this->Conexion->Consultar("SELECT *,ABS((".$montoenviado.")-cantidad) diferencia FROM operaciones LEFT JOIN `screenshot` ON registro=solicitud WHERE operaciones.usuario='".$_GET["usuario"]."' AND solicitud='".$_GET["registro"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1");
                                     if($monto = $this->Conexion->Recorrido($consultas)){
                                         $dinero = $monto["cantidad"]/$tasa;
-                                        $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$dinero."' WHERE momento='".$monto["momento"]."'");
+                                        $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$dinero."',paisintercambio='".$solicitudes["iso2"]."' WHERE momento='".$monto["momento"]."'");
                                     }
 
                                 }
