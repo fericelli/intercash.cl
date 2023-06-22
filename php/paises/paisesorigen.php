@@ -17,6 +17,7 @@
             }
 
 			$retorno = substr($retorno,0,strlen($retorno)-1)."],[";
+			return "SELECT DISTINCT(monedacompra),paises.* FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra WHERE recertor IS NOT NULL";
             $consulta2 = $this->Conexion->Consultar("SELECT DISTINCT(monedacompra),paises.* FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra WHERE recertor IS NOT NULL");
             while($datos1 = $this->Conexion->Recorrido($consulta2)){
                 
