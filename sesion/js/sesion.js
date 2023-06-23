@@ -14,14 +14,6 @@ $(document).on("ready",function(){
     const menu = document.querySelector("#sidemenu");
     
     $(".item").eq(0).append('<div class="selectormenu"></div>');
-    //$(".item").css("display","none");
-    
-    
-   /* $.ajax({
-        url:"../php/validarsesion.php",
-        type:"POST",
-        data:{}
-    })*/
     
 
     
@@ -117,16 +109,7 @@ $(document).on("ready",function(){
                     $("#main-container").html(html);
                 }
             });
-            /*html = "<div class='barrafiltros'>";
             
-            html += '<select style="width:100px;font-size:20px;margin:auto"><option>-</option></select>'; 
-            html += '<div id="operar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Operar</div></div>'
-                    
-            html += '</div>';
-            html += '<div class="table-responsive">';
-            html += '</div>';
-            html += '<script type="text/javascript" src="./../js/tasas.js"></script>';
-            $("#main-container").html(html);*/
         }
         if(opcion=="solicitud"){ 
             $(".contenido-imagen").css("display","flex");

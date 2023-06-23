@@ -14,7 +14,7 @@
 
                 $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%'");
             }else{
-                $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%' AND (usuario='".$_POST["usuario"]."' OR intermediario='".$_POST["usuario"]."')");
+                $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%' AND intermediario='".$_POST["usuario"]."'");
             }
             
 

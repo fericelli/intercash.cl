@@ -25,7 +25,7 @@ $("#operar").on("click",function(){
         html += '<label class="mensaje-error">Debe ser numerico</label>';
         html += "<label class='margen'><input class='imagen' name='imagen' type='file'></div>";
         html += '<label class="mensaje-error">Ingrese el screenshot</label>';
-        html += '<div id="enviar" class="botons" >Ingresar</div>';
+        html += '<div id="operar" class="botons" >Ingresar</div>';
         html += '<img class="imgcarga imagensolicitud" src="imagenes/carga.gif">';
         
         html += '<label class="mensaje-correcto mensajesolicitud"></label>';

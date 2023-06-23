@@ -41,10 +41,22 @@ $("input[type=radio]").eq(0).prop('checked',"checked");
 $(".monto").keyup(function(){
     if(!$.isNumeric($(this).val())){
         $(this).val("");
+        $(".mensaje-error").eq(2).css("display","flex");
+        setInterval(function(){
+            $(".mensaje-error").eq(2).css("display","none");
+        },2000);
     }
 });
 $(".cantidadintercambio").keyup(function(){
     if(!$.isNumeric($(this).val())){
         $(this).val("");
+        $(".mensaje-error").eq(5).css("display","flex");
+        setInterval(function(){
+            $(".mensaje-error").eq(5).css("display","none");
+        },2000);
     }
 });
+
+$("#operar").on("click",function(){
+    
+})
