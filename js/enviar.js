@@ -1,7 +1,7 @@
 $.ajax({
     url:"../php/monedas/monedaenvios.php",
     type:"POST",
-    data:{moneda:$("#enviar").attr("moneda")},
+    data:{registro:$("#enviar").attr("registro"),usuario:$("#enviar").attr("usuario")},
     beforeSend:function(){
         $(".imagenmoneda").css("display","flex");
         $("#monedainter").css("display","none");
