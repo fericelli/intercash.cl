@@ -87,7 +87,7 @@ function registros(){
                         
                         
                     if(JSON.parse(data)[i].estado=="pendiente"){
-                        html += "<td registro='"+JSON.parse(data)[i].momento+"' ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-borrar eliminarsolicitud' title='Cancelar'></div></td>"; 
+                        html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-borrar eliminarsolicitud' title='Cancelar'></div></td>"; 
                     }else{
                         html += '<td><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif" title="Procesando"></td>';
                         
@@ -125,11 +125,11 @@ $(".eliminarsolicitud").on("click",function(){
         
         index= $(".eliminarsolicitud").index(this);
         registro = $("tbody tr:eq("+index+") td:eq(3)").attr("registro");
-        console.log(index);
+        usuariosolicitud = $("tbody tr:eq("+index+") td:eq(3)").attr("usuario");
         $.ajax({
             url:"./../solicitud/php/intercambios/eliminar.php",
             type: 'POST',
-            data: {usuario:localStorage.getItem("usuario"),momento:registro},
+            data: {usuario:localStorage.getItem("usuario"),momento:registro,usuariosolicitud:usuariosolicitud},
             beforeSend:function(){
                 $("tbody tr:eq("+index+") td:eq(3) div").css("display","none");
                 $("tbody tr:eq("+index+") td:eq(3)").append('<img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif">');
