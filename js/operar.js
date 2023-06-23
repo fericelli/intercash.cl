@@ -5,10 +5,12 @@ $.ajax({
     beforeSend:function(){
         $(".imagenmoneda").css("display","flex");
         $("#monedainter").css("display","none");
+        $("#monedacomp").css("display","none");
     },
     complete:function(){
         $(".imagenmoneda").css("display","none");
         $("#monedainter").css("display","flex");
+        $("#monedacomp").css("display","flex");
     },
     error:function(){
         alert("Ocurrio un error con la conexion");
@@ -104,7 +106,7 @@ $("#operar").on("click",function(){
         },2000);  
     }
     if(validador>0){
-        
+
     }
 
 })
