@@ -37,7 +37,7 @@ $(document).on("ready",function(e){
                     if(json[1]=="correcto"){
                         $(".mensaje-correcto").css("display","flex").text(json[0]);
                         localStorage.sesioniniciada="iniciada";
-                        localStorage.usuario=$("#usuario").val().toLowerCase();
+                        localStorage.usuario=$("#usuario").val().toLowerCase().trim();
                         localStorage.tipousuario = json[2];
                         var URLactual = window.location;
                         var url = URLactual.href+"sesion";

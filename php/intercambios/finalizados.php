@@ -10,8 +10,7 @@
 		private function retorno(){
             $retorno = "";
             
-            if($_POST["tipodeusuario"]=="administrador"){
-
+            if($_POST["tipodeusuario"]=="administrador" AND trim($_POST["usuariosesion"])==$_POST["usuario"]){
                 $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%'");
             }else{
                 $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento LIKE '".$_POST["fecha"]."%' AND intermediario='".$_POST["usuario"]."'");

@@ -105,8 +105,51 @@ $("#operar").on("click",function(){
             $(".mensaje-error").eq(6).css("display","none");
         },2000);  
     }
-    if(validador>0){
-
+    if(validador==0){
+        var formulario = $(".form-register"); 
+        var archivos = new FormData();
+        for(var i = 0; i < (formulario.find("input[type=file]").length); i++){
+            archivos.append((formulario.find('input[type="file"]:eq('+i+')').attr("name")),((formulario.find('input[type="file"]:eq('+i+')')[0]).files[0]));
+        }
+        $.ajax({
+            url:"./../php/operaciones/operar.php?pais="+pais+"&moneda="+moneda+"&decimalmoneda="+decimal+"&cripto="+cripto+"&decimalcripto="+decimalcripto,
+            type:'POST',
+            contentType:false,
+            data:archivos,
+            processData:false,
+            data:archivos,
+            beforeSend:function(){
+                $(".imagensolicitud").css("display","flex");
+                $(this).css("display","none");
+            },
+            complete:function(){
+                $(".imagensolicitud").css("display","none");
+                $(this).css("display","flex");
+            },
+            error:function(){
+                alert("Ocurrio un error con la conexion");
+                $(".imagensolicitud").css("display","none");
+                $(this).css("display","flex");
+            },
+            success:function(respuesta){
+                if(JSON.parse(respuesta)[1]=="error"){
+                    $(".mensajesolicitud").eq(1).text("display",JSON.parse(respuesta)[0]);
+                    $(".mensajesolicitud").eq(1).css("display","flex");
+                }else{
+                    if(JSON.parse(respuesta)[1]=="success"){
+                         $(".mensajesolicitud").eq(0).css("display","flex");
+                         $(".mensajesolicitud").eq(0).text("display",JSON.parse(respuesta)[0]);
+                    }else{
+                        $("#enviar").remove();
+                        $(".mensajesolicitud").eq(0).css("display","flex");
+                        $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0][0]);
+                        setTimeout(function(){
+                            $(".salir").trigger("click");
+                        },6000)
+                    }
+                }
+            }
+        })
     }
 
 })

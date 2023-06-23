@@ -95,7 +95,7 @@ $("input[type=date]").focusout(function(){
         $.ajax({
             url:"./../php/intercambios/finalizados.php",
             type: 'POST',
-            data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,fecha:fechabusqueda},
+            data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,usuariosesion:localStorage.usuario,fecha:fechabusqueda},
             beforeSend:function(){
                 $(".contenido-imagen").css("display","flex");
             },
@@ -157,7 +157,7 @@ $("#usuari").focusout(function(){
         $.ajax({
             url:"./../php/intercambios/finalizados.php",
             type: 'POST',
-            data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,fecha:fechabusqueda},
+            data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,usuariosesion:localStorage.usuario,fecha:fechabusqueda},
             beforeSend:function(){
                 $(".contenido-imagen").css("display","flex");
             },

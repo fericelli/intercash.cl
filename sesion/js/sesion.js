@@ -449,7 +449,7 @@ $(document).on("ready",function(){
                 if(typeof usua !== "undefined"){
                     usuario = usua;
                 }else{
-                    usuario = "";
+                    usuario = localStorage.usuario;
                 }
                 
             }else{
@@ -468,7 +468,7 @@ $(document).on("ready",function(){
             $.ajax({
                 url:"./../php/intercambios/finalizados.php",
                 type: 'POST',
-                data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,fecha:fechahoy},
+                data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,usuariosesion:localStorage.usuario,fecha:fechahoy},
                 beforeSend:function(){
                     $(".contenido-imagen").css("display","flex");
                 },

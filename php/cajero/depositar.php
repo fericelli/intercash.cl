@@ -28,11 +28,11 @@
                         //$registro = base64_encode($_GET["usuariocuenta"]);
                         //solicitud es el codigo imagen
                        // $carpeta = "./../../imagenes/depositos/".base64_encode($_GET["usuariocuenta"].explode(" ", $registro)[0]);
-                        $carpeta = "./../../imagenes/depositos/".$_GET["usuario"];
+                        $carpeta = "./../../imagenes/depositos/".str_replace(' ','',strtolower($_GET["usuario"]));
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
-                        $carpeta = "./../../imagenes/depositos/".$_GET["usuario"]."/".explode(" ", $registro)[0];
+                        $carpeta = "./../../imagenes/depositos/".str_replace(' ','',strtolower($_GET["usuario"]))."/".explode(" ", $registro)[0];
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
@@ -48,9 +48,9 @@
                     
                         move_uploaded_file($NombreTmpArchivo,$directorio);
                         //$imagen = "/imagenes/depositos/".base64_encode($_GET["usuariocuenta"].explode(" ", $registro)[0])."/capture".$total_imagenes.$ext;
-                        $imagen = "imagenes/depositos/".$_GET["usuario"]."/".explode(" ", $registro)[0]."/capture".$total_imagenes.$ext;
+                        $imagen = "imagenes/depositos/".str_replace(' ','',strtolower($_GET["usuario"]))."/".explode(" ", $registro)[0]."/capture".$total_imagenes.$ext;
                         
-                        $this->Conexion->Consultar("INSERT INTO depositos (momento,cantidad,banco,tipodecuenta,cuenta,nombre,identificacion,usuariocuenta,usuario,directorio,pais,moneda) VALUES ('".$registro."','".$_GET["cantidad"]."','".$_GET["banco"]."','".$_GET["tipodecuenta"]."','".$_GET["cuenta"]."','".$_GET["nombre"]."','".$_GET["identificacion"]."','".$_GET["usuariocuenta"]."','".$_GET["usuario"]."','".$imagen."','".$_GET["pais"]."','".$_GET["moneda"]."')");
+                        $this->Conexion->Consultar("INSERT INTO depositos (momento,cantidad,banco,tipodecuenta,cuenta,nombre,identificacion,usuariocuenta,usuario,directorio,pais,moneda) VALUES ('".$registro."','".$_GET["cantidad"]."','".$_GET["banco"]."','".$_GET["tipodecuenta"]."','".$_GET["cuenta"]."','".$_GET["nombre"]."','".$_GET["identificacion"]."','".$_GET["usuariocuenta"]."','".str_replace(' ','',strtolower($_GET["usuario"]))."','".$imagen."','".$_GET["pais"]."','".$_GET["moneda"]."')");
                         
                         return '"Deposito enviado","success"';
                     }catch(Exception $e){

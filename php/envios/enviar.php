@@ -23,25 +23,25 @@
                }else{
                     try{
                         //$registro = str_replace(" ", "", $_GET["registro"]);
-                        $registro = base64_encode($_GET["usuario"].$_GET["registro"]);
+                        $registro = base64_encode(str_replace(' ','',strtolower($_GET["usuario"])).$_GET["registro"]);
                         //solicitud es el codigo imagen
 
-                        $carpeta = "./../../imagenes/intercambios/envios/".$_GET["usuario"];
+                        $carpeta = "./../../imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]));
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
-                        $carpeta = "./../../imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d");
+                        $carpeta = "./../../imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d");
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
-                        $carpeta = "./../../imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d")."/".$registro;
+                        $carpeta = "./../../imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/".$registro;
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
                         $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png,*.jpeg}',GLOB_BRACE));
                         $total_imagenes ++;
                        $imagen = $carpeta."/capture".$total_imagenes.$ext;
-                         $directorio = "imagenes/intercambios/envios/".$_GET["usuario"]."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
+                         $directorio = "imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
                         move_uploaded_file($NombreTmpArchivo,$imagen);
                         
                        $tasa = number_format($_GET["cantidad"]/$_GET["cambio"],$_GET["decimal"],".","");
