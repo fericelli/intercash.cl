@@ -21,7 +21,6 @@
             if(isset($_POST["moneda"])){
                 $consultapais =$this->Conexion->Consultar("SELECT nombremoneda,iso_moneda,decimalesmoneda FROM paises WHERE iso_moneda='".$_POST["moneda"]."'");
             }else{
-                return "SELECT DISTINCT monedacompra,nombremoneda,decimalesmoneda,iso2 FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra";
                 $consultapais =$this->Conexion->Consultar("SELECT DISTINCT monedacompra,nombremoneda,decimalesmoneda,iso2 FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra WHERE paises.receptor IS NOT NULL");
             }
             while($moneda = $this->Conexion->Recorrido($consultapais)){
