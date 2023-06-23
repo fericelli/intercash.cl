@@ -114,7 +114,7 @@ $("input[type=date]").focusout(function(){
                 html += '</div>';
                 html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Comprobantes</th></tr></thead><tbody>";
                 for(i=0;i<JSON.parse(data).length;i++){
-                    html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
+                    html += "<tr><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedadestino+"</td>";
                     
                     var imagen = "";
                     if(JSON.parse(data)[i].imegen.length==0){
@@ -176,7 +176,7 @@ $("#usuari").focusout(function(){
                 html += '</div>';
                 html += "<div class='table-responsive'><h2>Intercambios</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero enviado</th><th scope='col'>Dinero a recibir</th><th scope='col'>Comprobantes</th></tr></thead><tbody>";
                 for(i=0;i<JSON.parse(data).length;i++){
-                    html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
+                    html += "<tr><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedadestino+"</td>";
                     
                     var imagen = "";
                     if(JSON.parse(data)[i].imegen.length==0){
