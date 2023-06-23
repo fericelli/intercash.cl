@@ -64,7 +64,7 @@
                                 $total = $_GET["total"];
                             }
                             
-                            $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON iso_moneda=monedaorigen  WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'");
+                            $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes  WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'");
                             if($solicitudes = $this->Conexion->Recorrido($consultar)){
                                 $montoenvio = $solicitudes["cantidadaenviar"];
                                 $montorecibir = $solicitudes["cantidadarecibir"];
@@ -77,7 +77,7 @@
                                     $consultas = $this->Conexion->Consultar("SELECT *,(".$montoenviado."-cantidad) diferencia FROM operaciones LEFT JOIN `screenshot` ON registro=solicitud WHERE operaciones.usuario='".$_GET["usuario"]."' AND solicitud='".$_GET["registro"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1");
                                     if($monto = $this->Conexion->Recorrido($consultas)){
                                         $dinero = $monto["cantidad"]/$tasa;
-                                        $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$dinero."',paisintercambio='".$solicitudes["iso2"]."' WHERE momento='".$monto["momento"]."'");
+                                        $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$dinero."',paisintercambio='".$solicitudes["paisorigen"]."' WHERE momento='".$monto["momento"]."'");
                                     }
 
                                 }
