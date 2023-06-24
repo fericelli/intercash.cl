@@ -8,7 +8,7 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-			$this->Conxion->Consultar("SELECT * FROM intercangios");
+			$this->Conxion->Consultar("SELECT * FROM intercangios");dd
 		} 
 	}
 	new Informacion();
