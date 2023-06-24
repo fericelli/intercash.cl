@@ -23,8 +23,11 @@ $("#operar").on("click",function(){
         html += '<input class="controls cantidadintercambio" type="text"  placeholder="Catidad">';
         html += '<label class="mensaje-error">Ingrese un monto</label>';
         html += '<label class="mensaje-error">Debe ser numerico</label>';
-        html += "<label class='margen'><input class='imagen' name='imagen' type='file'></div>";
-        html += '<label class="mensaje-error">Ingrese el screenshot</label>';
+        html += '<label class="margen">Comprobante pagado</label>';
+        html += "<input class='imagen' name='imagen' type='file'>";
+        html += '<label class="margen">Comprobante recibido</label>';
+        html += "<input class='imagen' name='imagen' type='file'>";
+        html += '<label class="mensaje-error">Ingrese los screenshot</label>';
         html += '<div id="operar" class="botons" >Ingresar</div>';
         html += '<img class="imgcarga imagensolicitud" src="imagenes/carga.gif">';
         

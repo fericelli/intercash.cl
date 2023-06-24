@@ -70,6 +70,11 @@ $("#operar").on("click",function(){
     var cripto = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('moneda');
     var decimalcripto = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('decimal');
 
+    $("#radio_1").is(":checked")
+
+    tipoperacion = $('input[type="radio"]:eq(0):checked').attr("tipo");
+   
+        
     if(typeof pais === "undefined"){
         validador ++;
         $(".mensaje-error").eq(0).css("display","flex");
@@ -98,21 +103,27 @@ $("#operar").on("click",function(){
             $(".mensaje-error").eq(4).css("display","none");
         },2000);  
     }
-    if($(".imagen").val()==""){
+    if($(".imagen").eq(0).val()==""){
         validador ++;
         $(".mensaje-error").eq(6).css("display","flex");
         setInterval(function(){
             $(".mensaje-error").eq(6).css("display","none");
+        },2000);  
+    }if($(".imagen").eq(1).val()==""){
+        validador ++;
+        $(".mensaje-error").eq(7).css("display","flex");
+        setInterval(function(){
+            $(".mensaje-error").eq(7).css("display","none");
         },2000);  
     }
     if(validador==0){
         var formulario = $(".form-register"); 
         var archivos = new FormData();
         for(var i = 0; i < (formulario.find("input[type=file]").length); i++){
-            archivos.append((formulario.find('input[type="file"]:eq('+i+')').attr("name")),((formulario.find('input[type="file"]:eq('+i+')')[0]).files[0]));
+            archivos.append(i,((formulario.find('input[type="file"]:eq('+i+')')[0]).files[0]));
         }
         $.ajax({
-            url:"./../php/operaciones/operar.php?pais="+pais+"&moneda="+moneda+"&decimalmoneda="+decimal+"&cripto="+cripto+"&decimalcripto="+decimalcripto,
+            url:"./../php/operaciones/operar.php?pais="+pais+"&moneda="+moneda+"&decimalmoneda="+decimal+"&cripto="+cripto+"&decimalcripto="+decimalcripto+"&tipoperacion="+tipoperacion+"&cantidadmoneda="+$(".monto").val()+"&cantidadcripto="+$(".cantidadintercambio").val()+"&usuario="+localStorage.usuario,
             type:'POST',
             contentType:false,
             data:archivos,
@@ -133,21 +144,17 @@ $("#operar").on("click",function(){
             },
             success:function(respuesta){
                 if(JSON.parse(respuesta)[1]=="error"){
-                    $(".mensajesolicitud").eq(1).text("display",JSON.parse(respuesta)[0]);
+                    $(".mensajesolicitud").eq(1).text(JSON.parse(respuesta)[0]);
                     $(".mensajesolicitud").eq(1).css("display","flex");
                 }else{
-                    if(JSON.parse(respuesta)[1]=="success"){
-                         $(".mensajesolicitud").eq(0).css("display","flex");
-                         $(".mensajesolicitud").eq(0).text("display",JSON.parse(respuesta)[0]);
-                    }else{
-                        $("#enviar").remove();
-                        $(".mensajesolicitud").eq(0).css("display","flex");
-                        $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0][0]);
-                        setTimeout(function(){
-                            $(".salir").trigger("click");
-                        },6000)
-                    }
+                    $(".mensajesolicitud").eq(0).css("display","flex");
+                    $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0]);
+                    $("input[type=file]").val("");
+                    $("input[type=text]").val("");
                 }
+                setTimeout(function(){
+                    $(".mensajesolicitud").css("display","none");
+                },3000)
             }
         })
     }
