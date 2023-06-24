@@ -45,11 +45,12 @@
                         move_uploaded_file($NombreTmpArchivo,$imagen);
                         
                        $tasa = number_format($_GET["cantidad"]/$_GET["cambio"],$_GET["decimal"],".","");
+                       $cambio = number_format($_GET["cambio"],$_GET["decimal"],".","");
 
 
                        
                          $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$_GET["cantidad"]."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
-                        $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,solicitud,tasa) VALUES ('".$_GET["monedacambio"]."','".$_GET["cambio"]."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."')");
+                        $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,solicitud,tasa) VALUES ('".$_GET["monedacambio"]."','".$cambio."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."')");
                         $total = 0;
                         $pendiente = 0;
                         $moneda = "";
