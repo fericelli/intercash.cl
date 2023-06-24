@@ -16,7 +16,6 @@ $.ajax({
         $("#monedainter").css("display","flex");
     },
     success:function(data){
-        console.log(JSON.parse(data));
         html = "";
         for(i=0;i<JSON.parse(data)[0].length;i++){
             html += '<option moneda="'+JSON.parse(data)[0][i].moneda+'" decimal="'+JSON.parse(data)[0][i].decimales+'" value="'+JSON.parse(data)[0][i].nombre+'">'+JSON.parse(data)[0][i].nombre+'</option>';
@@ -137,12 +136,12 @@ $("#enviar").on("click",function(){
             },
             success:function(respuesta){
                 if(JSON.parse(respuesta)[1]=="error"){
-                    $(".mensajesolicitud").eq(1).text("display",JSON.parse(respuesta)[0]);
+                    $(".mensajesolicitud").eq(1).text(JSON.parse(respuesta)[0]);
                     $(".mensajesolicitud").eq(1).css("display","flex");
                 }else{
                     if(JSON.parse(respuesta)[1]=="success"){
                          $(".mensajesolicitud").eq(0).css("display","flex");
-                         $(".mensajesolicitud").eq(0).text("display",JSON.parse(respuesta)[0]);
+                         $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0]);
                     }else{
                         $("#enviar").remove();
                         $(".mensajesolicitud").eq(0).css("display","flex");

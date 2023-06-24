@@ -3,6 +3,7 @@ var urlglobal = URLactual.href.replace("sesion/", "");
 
     
     
+
 $("#usuari").val(localStorage.usuario);
    
 function datos(){
@@ -157,7 +158,6 @@ $(".opciones a").on("click",function(){
 })
 
 $("button").eq(0).on("click", function(e){
-    
     e.preventDefault();
     var banco = $('#cuentas [value="' + $("#cuent").val() + '"]').attr('banco');
     var cuenta = $('#cuentas [value="' + $("#cuent").val() + '"]').attr('cuenta');
@@ -239,7 +239,8 @@ $("button").eq(0).on("click", function(e){
                             $("#identificacion").text("");
                             $("#cantidadeposito").val("");
                             $("#cuent").val("");
-                            $("input").val("");
+                            $("#cantidadeposito").val("");
+                            $("#cuent").val("");
                         },2000)
                     }else{
                         $(".error").css("display","flex");

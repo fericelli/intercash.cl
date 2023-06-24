@@ -168,7 +168,6 @@ $("select").on("change",function(){
             $(".contenido-imagen").css("display","none");
         },
         success:function(data){
-            console.log(JSON.parse(data));
             $("#tasacompra").attr("tasa",JSON.parse(data)[0][0].usdt); 
             $("#tasacompra").val(JSON.parse(data)[0][0].usdt);  
             $("#usd").text(JSON.parse(data)[0][0].usd);
