@@ -17,6 +17,7 @@
                  
             }
             $retorno = substr($retorno,0,strlen($retorno)-1)."],[";
+           return  "SELECT nombremoneda,iso_moneda,decimalesmoneda,paisorigen,paisdestino FROM solicitudes LEFT JOIN paises ON iso2=paisdestino WHERE momento='".$_POST["registro"]."' AND usuario='".$_POST["usuario"]."'";
             $consultapais =$this->Conexion->Consultar("SELECT nombremoneda,iso_moneda,decimalesmoneda,paisorigen,paisdestino FROM solicitudes LEFT JOIN paises ON iso2=paisdestino WHERE momento='".$_POST["registro"]."' AND usuario='".$_POST["usuario"]."'");
             while($moneda = $this->Conexion->Recorrido($consultapais)){
                 
