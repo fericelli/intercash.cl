@@ -142,11 +142,11 @@
                     data: {pais:pais,usuario:localStorage.getItem("usuario")},
                     beforeSend:function(){
                         $(".cargacuenta").css("display","flex");
-                        $("#cuent").css("display","flex");
+                        $("#cuent").css("display","none");
                     },
                     complete:function(){
                         $(".cargacuenta").css("display","none");
-                        $("#cuent").css("display","none");
+                        $("#cuent").css("display","flex");
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
@@ -456,7 +456,7 @@
                 },
                 complete:function(){
                     $(".imagensolicitud").css("display","none");
-                    $(".botons").css("display","");
+                    $(".botons").css("display","flex");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);
