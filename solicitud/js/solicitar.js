@@ -245,6 +245,10 @@
         
         $("#paisodestin").val("");
         $("#paisodestino").html("");
+        $("#cuenta").html("");
+        $("#banco").html("");
+        $("#tipodecuenta").html("");
+
     })
     $("#cantidadenviar").focusin(function(e){
         $(".usd").text("0 USD");
@@ -321,6 +325,9 @@
         $(".tasa").text("0 Tasa");
         $("#cantidadenviar").val("");
         $("#cantidadrecibir").val("");
+        $("#cuenta").html("");
+        $("#banco").html("");
+        $("#tipodecuenta").html("");
 
     })
     
