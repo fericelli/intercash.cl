@@ -142,9 +142,11 @@
                     data: {pais:pais,usuario:localStorage.getItem("usuario")},
                     beforeSend:function(){
                         $(".cargacuenta").css("display","flex");
+                        $("#cuent").css("display","flex");
                     },
                     complete:function(){
                         $(".cargacuenta").css("display","none");
+                        $("#cuent").css("display","none");
                     },
                     success:function(respuesta){
                         json = JSON.parse(respuesta);
@@ -162,6 +164,17 @@
             }
         }
     })
+    $('#tipodecuenta').focusout(function(){
+        var tipodecuenta = $('#tipodecuenta [value="' + $("#tipodecuent").val() + '"]').val();
+        if(typeof tipodecuenta === "undefined"){
+            validador ++;
+            $(".mensaje-error").eq(7).css("display","flex");
+            setTimeout(function(){
+                $(".mensaje-error").eq(7).css("display","none");
+            },5000)
+        }
+    })
+    
     $("#cantidadenviar").focusout(function(e){
         $("#cantidadrecibir").val("");
         if($(this).val()!="") {
@@ -348,6 +361,9 @@
         var paisodestin = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
         
         var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
+        
+        var tipodecuenta = $('#tipodecuenta [value="' + $("#tipodecuent").val() + '"]').val();
+        
         var validador = 0;
         if(typeof monedadestino === "undefined"){
             validador ++;
@@ -394,7 +410,7 @@
                 $(".mensaje-error").eq(6).css("display","none");
             },5000)
         }
-        if($("#tipodecuent").val()==""){
+        if(typeof tipodecuenta === "undefined"){
             validador ++;
             $(".mensaje-error").eq(7).css("display","flex");
             setTimeout(function(){
