@@ -132,8 +132,8 @@
             });
         }
         if (typeof localStorage.getItem("usuario") !== "undefined" && localStorage.tipousuario!="administrador"){
-            $("#usuario").val(localStorage.getItem("usuario"));
-            $("#usuario").attr("disabled","disabled");
+            $("#usuari").val(localStorage.getItem("usuario"));
+            $("#usuari").attr("disabled","disabled");
             var pais = $('#paisodestino [value="' + $("#paisodestin").val() + '"]').attr('pais');
             if(typeof pais !== "undefined"){
                 $.ajax({
