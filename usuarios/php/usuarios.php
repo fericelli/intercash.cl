@@ -11,7 +11,7 @@
 		private function retorno(){
            // return var_dump($_POST);
             
-			$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LIMIT 0,5");
+			$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LIMIT 0,20");
             $retorno = "";
             while($usaurio = $this->Conexion->Recorrido($consultar)){
                 
