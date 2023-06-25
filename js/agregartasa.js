@@ -32,7 +32,7 @@ $("#paisorig").on("change",function(){
         $.ajax({
             url:"./../php/tasas/agragartasas.php",
             type: 'POST',
-            data: {paisorigen:pais,moneda:moneda},
+            data: {paisorigen:pais},
             beforeSend:function(){
                 $("input").eq(1).css("display","none");
                 $(".imgcarga").eq(1).css("display","flex");
