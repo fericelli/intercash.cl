@@ -88,7 +88,6 @@ $("#usuari").focusout(function(){
     $("#cuentascuentas").html("");
     if(localStorage.tipousuario=="administrador" && typeof usuario !== "undefined"){
         var usuariodatos = $("#usuari").val();
-        console.log(usuario);
     }else{
         var usuariodatos = localStorage.usuario;
         $("#usuari").val(localStorage.usuario);
@@ -110,7 +109,6 @@ $("#usuari").focusout(function(){
             },
             success:function(respuesta){
                 json = JSON.parse(respuesta);
-                console.log(json);
                 monedas = "<option  pais='"+pais+"' moneda='"+moneda+"'>"+texto+"</option>";
                 for(var i =0;i<json[0].length;i++){
                     monedas += "<option  pais='"+json[0][i].pais+"' moneda='"+json[0][i].moneda+"'>"+json[0][i].nombre+"-"+json[0][i].moneda+"</option>";
