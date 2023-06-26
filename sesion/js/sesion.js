@@ -511,7 +511,7 @@ $(document).on("ready",function(){
         }
         if(opcion=="depositos"){
             var url = URLactual.href.replace("sesion/#", "");
-            url = URLactual.href.replace("sesion/", "");
+            urll = URLactual.href.replace("sesion/", "");
 
 
             $.ajax({
@@ -536,16 +536,14 @@ $(document).on("ready",function(){
                     
                     
                     html += '</div>';
-                    html += "<div class='table-responsive'><h2>Despositos</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero</th><th scope='col'>Cuenta</th><th scope='col'>Imagen</th><th scope='col'>Confirmar</th></tr></thead><tbody>";
+                    html += "<div class='table-responsive'><h2>Despositos</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero</th><th scope='col'>Cuenta</th><th scope='col'>Imagen</th><th scope='col'>Confirmar</th><th scope='col'>Eliminar</th></tr></thead><tbody>";
                     for(i=0;i<JSON.parse(data).length;i++){
-                        html += "<tr><td>"+JSON.parse(data)[i].cantidad+" "+JSON.parse(data)[i].moneda+"</td><td>";
-                        html += "<label style='display:block'>"+JSON.parse(data)[i].banco+"</label><label style='display:block'>"+JSON.parse(data)[i].tipodecuenta+" "+JSON.parse(data)[i].cuenta+"</label><label style='display:block'>"+JSON.parse(data)[i].nombre+"</label><label style='display:block'>"+JSON.parse(data)[i].identificacion+"</label>";
-                        html += "</td><td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' imagen='"+url+JSON.parse(data)[i].directorio+"' title='Descargar'></div></td><td >";
-                        if(JSON.parse(data)[i].estado!="1"){
-                            html += "<div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' usuariocuenta='"+JSON.parse(data)[i].usuariocuenta+"' class='iconos icono-bien confirmar' title='Confirmar'></div>"; 
-                        }
-                        
-                        html += "</td></tr>";
+                        html += "<tr><td>"+JSON.parse(data)[i].cantidad+" "+JSON.parse(data)[i].moneda+"</td>";
+                        html += "<td><label style='display:block'>"+JSON.parse(data)[i].banco+"</label><label style='display:block'>"+JSON.parse(data)[i].tipodecuenta+" "+JSON.parse(data)[i].cuenta+"</label><label style='display:block'>"+JSON.parse(data)[i].nombre+"</label><label style='display:block'>"+JSON.parse(data)[i].identificacion+"</label></td>";
+                        html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' imagen='"+url+JSON.parse(data)[i].directorio+"' title='Descargar'></div></td>";
+                        html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' usuariocuenta='"+JSON.parse(data)[i].usuariocuenta+"' class='iconos icono-bien confirmar' title='Confirmar'></div></td>"; 
+                        html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' usuariocuenta='"+JSON.parse(data)[i].usuariocuenta+"' class='iconos icono-borrar eliminar' title='Eliminar'></div></td>"; 
+                        html += "</tr>";
                     
                     }
                     html += '</tbody></table><script class="script" src="./../js/depositos.js"></script></div><center><img class="imagencargasolicitud" style="display:none;width:30px;height:30px" src="../imagenes/carga.gif"></center>';
