@@ -19,6 +19,8 @@ body {
   margin-left: var(--width-collapsed);
   background-repeat: no-repeat;
   background-attachment: fixed;
+  
+  transition: margin-left .8s;
   /*display: flex;
   flex-direction: column;*/
 }
