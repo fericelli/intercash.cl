@@ -34,7 +34,7 @@ function datos(){
     }
     var URLactual = window.location;
     var url = URLactual.href.replace("sesion/#", "");
-    url = URLactual.href.replace("sesion/", "");
+    urll = url.href.replace("sesion/", "");
     $.ajax({
         url:"./../php/depositos/datos.php",
         type: 'POST',
@@ -50,7 +50,7 @@ function datos(){
             for(i=0;i<JSON.parse(data).length;i++){
                 html += "<tr><td>"+JSON.parse(data)[i].cantidad+" "+JSON.parse(data)[i].moneda+"</td>";
                 html += "<td><label style='display:block'>"+JSON.parse(data)[i].banco+"</label><label style='display:block'>"+JSON.parse(data)[i].tipodecuenta+" "+JSON.parse(data)[i].cuenta+"</label><label style='display:block'>"+JSON.parse(data)[i].nombre+"</label><label style='display:block'>"+JSON.parse(data)[i].identificacion+"</label></td>";
-                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' imagen='"+url+JSON.parse(data)[i].directorio+"' title='Descargar'></div></td>";
+                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' imagen='"+urll+JSON.parse(data)[i].directorio+"' title='Descargar'></div></td>";
                 html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' usuariocuenta='"+JSON.parse(data)[i].usuariocuenta+"' class='iconos icono-bien confirmar' title='Confirmar'></div></td>"; 
                 html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' usuariocuenta='"+JSON.parse(data)[i].usuariocuenta+"' class='iconos icono-borrar eliminar' title='Eliminar'></div></td>"; 
                 html += "</tr>";
