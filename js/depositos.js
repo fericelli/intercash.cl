@@ -34,7 +34,7 @@ function datos(){
     }
     var URLactual = window.location;
     var url = URLactual.href.replace("sesion/#", "");
-    urll = url.href.replace("sesion/", "");
+    urll = url.replace("sesion/", "");
     $.ajax({
         url:"./../php/depositos/datos.php",
         type: 'POST',
@@ -85,9 +85,7 @@ $(".confirmar").on("click",function(){
             json = JSON.parse(respuesta);
             if(json[1]=="correcto"){
                 datos(); 
-            }
-            
-            
+            } 
         }
     })
 })
