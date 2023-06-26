@@ -228,7 +228,7 @@ select{
   text-align: center;
 }
 .barrafiltros{
-  width: 100%;
+  min-width: 300px;
   display: flex;
   padding: 5px;
   overflow-x: auto;
