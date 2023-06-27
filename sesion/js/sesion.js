@@ -25,7 +25,7 @@ $(document).on("ready",function(){
    
     
         $(".item").on("click",function(){ 
-            if($(".contenido-imagen").css("display")=="none"){
+            if($(".contenido-imagen").css("display")=="none" && $("#main-container").html()!=""){
                 $(".contenido-screeshot").remove();
                 $(".script").remove();
                 
@@ -622,6 +622,7 @@ $(document).on("ready",function(){
                     });
                 } 
             }
+        
         })
     
 
