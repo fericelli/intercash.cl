@@ -23,20 +23,22 @@ $(document).on("ready",function(){
         document.querySelector("body").classList.toggle("body-expanded")
     });
    
-
-    $(".item").on("click",function(){ 
+    if($(".contenido-imagen").css("display")=="none"){
+        $(".item").on("click",function(){ 
         $(".contenido-screeshot").remove();
         $(".script").remove();
+        
+        $("#main-container").html("");
+
         
         $(".selectormenu").remove();
         $(".item").eq($(".item").index(this)).append('<div class="selectormenu"></div>');
         opcion = $(".item").eq($(".item").index(this)).attr("opcion");
         
-        $("#main-container").html("");
         html = "";
         if(opcion=="capital"){
-           /* $.ajax({
-                url:"./php/informacion/satoshis.php",
+           $.ajax({
+                url:"./../php/patrimonio/informacion.php",
                 type: 'POST',
                 data: {usuario:localStorage.getItem("usuario"),tipodeusuario:localStorage.tipousuario},
                 beforeSend:function(){
@@ -46,15 +48,15 @@ $(document).on("ready",function(){
                     $(".contenido-imagen").css("display","none");
                 },
                 success:function(data){
-                    html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
+                    /*html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
                     for(i=0;i<JSON.parse(data).length;i++){
                         html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].invertidosatoshi+"</td><td>"+JSON.parse(data)[i].gananciasatoshis+"</td><td>"+JSON.parse(data)[i].dinerodisponoble+"</td><td>"+JSON.parse(data)[i].dineroenviado+"</td></tr>";
                     }
-                    html += "</tbody></table></div>";
-                    $("#main-container").append(html);
+                    html += "</tbody></table></div>";*/
+                    //$("#main-container").append(html);
                 }
             });
-            $.ajax({
+           /*  $.ajax({
                 url:"./php/informacion/satoshis.php",
                 type: 'POST',
                 data: {usuario:localStorage.getItem("usuario"),tipodeusuario:localStorage.tipousuario},
@@ -552,6 +554,7 @@ $(document).on("ready",function(){
             });
         }
         if(opcion=="pagos"){
+            var URLactual = window.location;
             var url = URLactual.href.replace("sesion/#", "");
             url = URLactual.href.replace("sesion/", "");
             $.ajax({
@@ -566,7 +569,6 @@ $(document).on("ready",function(){
                     $(".imagencargasolicitud").css("display","none");
                 },
                 success:function(data){
-                    console.log(JSON.parse(data));
 
                     html = "<div class='table-responsive'><h2>Pagos</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero</th><th scope='col'>Cuenta</th><th scope='col'>Pagar</th><th scope='col'>Imagenes</th></tr></thead><tbody>";
                     for(i=0;i<JSON.parse(data).length;i++){
@@ -585,11 +587,41 @@ $(document).on("ready",function(){
                 }
             });
         }
-        
-        
-        
-    })
+        if(opcion=="ventas"){
+            var url = URLactual.href.replace("sesion/#", "");
+            url = URLactual.href.replace("sesion/", "");
+            $.ajax({
+                url:"./../php/pagos/datos.php",
+                type: 'POST',
+                data: {usuario:localStorage.getItem("usuario"),tipodeusuario:localStorage.tipousuario},
+                beforeSend:function(){
+                    $(".contenido-imagen").css("display","flex");
+                },
+                complete:function(){
+                    $(".contenido-imagen").css("display","none");
+                    $(".imagencargasolicitud").css("display","none");
+                },
+                success:function(data){
 
+                    html = "<div class='table-responsive'><h2>Pagos</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero</th><th scope='col'>Cuenta</th><th scope='col'>Pagar</th><th scope='col'>Imagenes</th></tr></thead><tbody>";
+                    for(i=0;i<JSON.parse(data).length;i++){
+                       html += "<tr><td>"+JSON.parse(data)[i].cantidad+" "+JSON.parse(data)[i].moneda+"</td><td>";
+                       html += "<label style='display:block'>"+JSON.parse(data)[i].banco+"</label><label style='display:block'>"+JSON.parse(data)[i].tipodecuenta+" "+JSON.parse(data)[i].cuenta+"</label><label style='display:block'>"+JSON.parse(data)[i].nombre+"</label><label style='display:block'>"+JSON.parse(data)[i].identificacion+"</label>";
+                       html += "</td><td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-dinero pagar' registro='"+JSON.parse(data)[i].momento+"' title='Pagar'></div></td>";
+                        
+                       html += "<td ><img src='../imagenes/carga.gif' class='cargaimga' style='display:none;margin: auto; width:30px;heigth:30px'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' class='iconos icono-bien imagenes' title='Confirmar'></div></td>"; 
+                        
+                        html += "</tr>";
+                    
+                    }
+                    html += '</tbody></table></div><center><img class="imagencargasolicitud" style="display:none;width:30px;height:30px" src="../imagenes/carga.gif"></center><script src="./../js/depositos.js"></script>';
+                    
+                    $("#main-container").html(html);
+                }
+            });
+        }
+        })
+    }
 
     $(".item").eq(0).trigger("click");
     
