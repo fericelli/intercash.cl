@@ -114,6 +114,18 @@
                     <div class="title"><span>Cajero</span></div>
                   </a>
                 </div>
+                <?php
+                  if(isset($_SESSION["receptordinero"])){
+                ?>
+                  <div class="item" opcion="depositos">
+                  <a>
+                    <div class="icon"><i class=" iconos icono-money"></i></div>
+                    <div class="title"><span>Depositos</span></div>
+                  </a>
+                </div>
+                <?php
+                  }
+                ?>
                 <div class="item" opcion="solicitud">
                   <a>
                     <div class="icon"><i class=" iconos icono-dinero"></i></div>

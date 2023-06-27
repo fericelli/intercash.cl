@@ -22,19 +22,19 @@
             
             if(strlen($retorno)==1){
                 if($this->Conexion->Recorrido($consultar2)){
+                    $retorno .= '"Iniciando sesión","correcto","'.$tipousaurio.'"';
+                    session_start();
+                    $_SESSION["tipousaurio"] = $tipousaurio;
+                    $_SESSION["usuario"] = $_POST["usuario"];
+                    $_SESSION["nombreusaurio"] = str_replace(' ','',strtolower($_POST["usuario"]));
+                    $consulta3 = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE usuario='".str_replace(' ','',strtolower($_POST["usuario"]))."' AND tipo='pago'");
+                    if($this->Conexion->Recorrido($consulta3)){
+                        $_SESSION["receptordinero"] = "";
+                    }
                     
                 }else{
                     $retorno .= '"Contraseña incorrecta","error"';
                 }
-            }
-
-            if(strlen($retorno)==1){
-                $retorno .= '"Iniciando sesión","correcto","'.$tipousaurio.'"';
-                session_start();
-                $_SESSION["tipousaurio"] = $tipousaurio;
-                $_SESSION["usuario"] = $_POST["usuario"];
-                $_SESSION["nombreusaurio"] = strtoupper($_POST["usuario"]);
-
             }
              
  
