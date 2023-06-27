@@ -77,6 +77,7 @@ select{
   left: 0;
   top: 0;
   z-index: 100;
+  overflow: scroll;
 }
 #sidemenu a{
   color: white;
@@ -165,6 +166,19 @@ select{
 }
 #sidemenu #menu-items .item .title{
   padding: var(--padding) 0;
+}
+
+#sidemenu::-webkit-scrollbar {
+  width: 8px;     /* Tamaño del scroll en vertical */
+  height: 8px;    /* Tamaño del scroll en horizontal */
+  display: none;  /* Ocultar scroll */
+}
+
+
+
+#sidemenu::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
 }
 .menu-expanded{
   width: var(--width);
