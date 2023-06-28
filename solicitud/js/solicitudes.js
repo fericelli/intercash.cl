@@ -224,7 +224,7 @@ $(".envios").on("click",function(){
     
 
     envios = imagenes.split(",");
-
+    console.log(envios);
     
     var URLactual = window.location;
     
