@@ -43,7 +43,7 @@
 
                 $registro = base64_encode($solicitudes["usuario"].$solicitudes["momento"]);
                 //echo "SELECT * FROM screenshot WHERE directorio='".$registro."' AND tipo='envios'";
-                $consulaimagen = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE directorio='".$registro."' AND tipo='envios'");
+                $consulaimagen = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE registro='".$solicitudes["momento"]."' AND usuario='".$solicitudes["usuario"]."' AND tipo='envios'");
                 while($envios = $this->Conexion->Recorrido($consulaimagen)){
                     $pagado += $envios["cantidad"];
                     $validar ++;
