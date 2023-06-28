@@ -62,7 +62,10 @@
 
 				$cantidad++;
 			}
-			return $usdtporcomprar-floatval($monedas["USDT"]["operaciones"]["venta"]);
+			$usdttotal = $usdtporcomprar-floatval($monedas["USDT"]["operaciones"]["venta"]);
+			return $usdttotal ;
+
+			$monedas["USDT"]["operaciones"]["venta"];
 			var_dump($monedas);
 			//foreach()
 		} 
