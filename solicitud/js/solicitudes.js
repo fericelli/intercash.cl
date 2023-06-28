@@ -101,7 +101,7 @@ function registros(){
                             imagen += "imagenes/imagennidisponible.jpg";
                         }
                         for(j=0;j<JSON.parse(data)[i].envios.length;j++){
-                            imagen += "imagenes/intercambios/envios/"+JSON.parse(data)[i].envios[j];
+                            imagen += JSON.parse(data)[i].envios[j];
                         }
                         html += "</td>"; 
                         html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
