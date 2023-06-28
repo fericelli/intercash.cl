@@ -59,7 +59,7 @@
                             $imagen = $carpeta."/".$arraymontos[$i].$ext;
                             $directorio = "imagenes/operaciones/compra/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/".$carpetas."/".$arraymontos[$i].$ext;
                             move_uploaded_file($_FILES[$i]['tmp_name'],$imagen);
-                            $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$_GET["cantidadmoneda"]."','compra','".$arraymontos[$i].$ext."','".$momento."','".$_GET["usuario"]."')");
+                            $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','0','compra','".$arraymontos[$i].$ext."','".$momento."','".$_GET["usuario"]."')");
                         }
                         
 
