@@ -27,7 +27,7 @@
 			//var_dump($monedas);exit;
 			$fiats = [];
 			$cantidad = 0;
-			$usdtpendientes = 0;
+			$usdtporcomprar = 0;
 			$consultar3 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($fiat = $this->Conexion->Recorrido($consultar3)){
 				
@@ -54,7 +54,7 @@
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["disponible"] = abs(floatval($cantidadmoneda));
 						$usd = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$monedaintercaionbio[0]))->{'data'};
 						$usd = $usd*floatval("1.".$devaluacion);
-						 $usdtpendientes += floatval($cantidadmoneda/$usd);
+						 $usdtporcomprar += floatval($cantidadmoneda/$usd);
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["USDT"] = floatval($cantidadmoneda/$usd);
 					}
 
@@ -62,7 +62,7 @@
 
 				$cantidad++;
 			}
-			return $usdtpendientes."   ".$monedas["USDT"]["operaciones"]["venta"];
+			return $usdtporcomprar-floatval($monedas["USDT"]["operaciones"]["venta"]);
 			var_dump($monedas);
 			//foreach()
 		} 
