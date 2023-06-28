@@ -61,7 +61,7 @@
 				$cantidad++;
 			}
 			
-			var_dump($fiats);
+			var_dump([$monedas,$fiats]);
 			//foreach()
 		} 
 	}
