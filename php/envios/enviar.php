@@ -41,7 +41,7 @@
                         $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png,*.jpeg}',GLOB_BRACE));
                         $total_imagenes ++;
                        $imagen = $carpeta."/capture".$total_imagenes.$ext;
-                         $directorio = "imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
+                        return  $directorio = "imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/".$registro."/capture".$total_imagenes.$ext;
                         move_uploaded_file($NombreTmpArchivo,$imagen);
                         
                        $tasa = number_format($_GET["cantidad"]/$_GET["cambio"],$_GET["decimal"],".","");
