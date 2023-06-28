@@ -46,8 +46,10 @@
 					
 					if($cantidadmoneda<=0){
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["cantidadinvertida"] = abs(floatval($cantidadmoneda));
+						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["disponible"] = 0;
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["USDT"] = 0;
 					}else{
+						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["cantidadinvertida"] = 0;
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["disponible"] = abs(floatval($cantidadmoneda));
 						$usd = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$monedaintercaionbio[0]))->{'data'};
 						$usdtpendientes += floatval($cantidadmoneda/$usd);
