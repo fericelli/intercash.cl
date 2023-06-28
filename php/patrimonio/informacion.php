@@ -9,7 +9,7 @@
 		}
 		private function retorno(){
 			$selectormonedas = [];
-			$monedas = [];
+			$monedas;
 			$consultar = $this->Conexion->Consultar("SELECT *  FROM monedas");
 			$cantidad =0;
 			while($moneda = $this->Conexion->Recorrido($consultar)){
@@ -27,6 +27,7 @@
 			//var_dump($monedas);exit;
 			$fiats = [];
 			$cantidad = 0;
+			$usdtpendientes = 0;
 			$consultar3 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($fiat = $this->Conexion->Recorrido($consultar3)){
 				
@@ -41,8 +42,8 @@
 					$cantidadmoneda = floatval($this->Conexion->Recorrido($consultar6)[0])-floatval($this->Conexion->Recorrido($consultar7)[0]);
 					
 					$consulta8 = $this->Conexion->Consultar("SELECT porcentaje FROM devaluacion WHERE moneda='".$monedaintercaionbio[0]."'");
-					$devaluacion =  floatval($this->Conexion->Recorrido($consulta8)[0]);
-					$usdtpendientes = 0;
+					$devaluacion =  str_replace(".","",$this->Conexion->Recorrido($consulta8)[0]);
+					
 					
 					if($cantidadmoneda<=0){
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["cantidadinvertida"] = abs(floatval($cantidadmoneda));
@@ -52,7 +53,8 @@
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["cantidadinvertida"] = 0;
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["disponible"] = abs(floatval($cantidadmoneda));
 						$usd = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$monedaintercaionbio[0]))->{'data'};
-						$usdtpendientes += floatval($cantidadmoneda/($usd*floatval("1.".$devaluacion)));
+						$usd = $usd*floatval("1.".$devaluacion);
+						 $usdtpendientes += floatval($cantidadmoneda/$usd);
 						$fiats[$fiat["iso2"]][$monedaintercaionbio[0]]["USDT"] = floatval($cantidadmoneda/$usd);
 					}
 
@@ -60,8 +62,8 @@
 
 				$cantidad++;
 			}
-			
-			var_dump([$monedas,$fiats]);
+			return $usdtpendientes."   ".$monedas["USDT"]["operaciones"]["venta"];
+			var_dump($monedas);
 			//foreach()
 		} 
 	}
