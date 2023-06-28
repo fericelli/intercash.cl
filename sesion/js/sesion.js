@@ -49,7 +49,7 @@ $(document).on("ready",function(){
                             $(".contenido-imagen").css("display","none");
                         },
                         success:function(data){
-                            $("#main-container").append(data)
+                            $("#main-container").html(data);
                             /*html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
                             for(i=0;i<JSON.parse(data).length;i++){
                                 html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].invertidosatoshi+"</td><td>"+JSON.parse(data)[i].gananciasatoshis+"</td><td>"+JSON.parse(data)[i].dinerodisponoble+"</td><td>"+JSON.parse(data)[i].dineroenviado+"</td></tr>";
