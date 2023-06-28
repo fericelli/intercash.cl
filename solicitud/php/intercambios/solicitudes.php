@@ -47,7 +47,7 @@
                 while($envios = $this->Conexion->Recorrido($consulaimagen)){
                     $pagado += $envios["cantidad"];
                     $validar ++;
-                    $retorno .= '"'.$registro.'/'.$envios[3].'",';
+                    $retorno .= '"'.$envios[0].'",';
                 }
                 if($validar<1){
                     $retorno .= "],";
