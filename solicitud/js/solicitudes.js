@@ -145,7 +145,7 @@ $(".eliminarsolicitud").on("click",function(){
         registro = $("tbody tr:eq("+index+") td:eq(3)").attr("registro");
         usuariosolicitud = $("tbody tr:eq("+index+") td:eq(3)").attr("usuario");
 
-        console.log(registro+" "+usuariosolicitud);
+        console.log(index+" "+usuariosolicitud);
         $.ajax({
             url:"./../solicitud/php/intercambios/eliminar.php",
             type: 'POST',
