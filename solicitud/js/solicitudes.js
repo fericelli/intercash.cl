@@ -94,13 +94,13 @@ function registros(){
                                 
                                 
                             if(JSON.parse(data)[i].estado=="pendiente"){
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-borrar eliminarsolicitud' title='Cancelar'></div></td>"; 
+                                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' class='iconos icono-borrar eliminarsolicitud' title='Cancelar'></div></td>"; 
                             }else{
                                 html += '<td><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif" title="Procesando"></td>';
                                 
                             }
                             if(localStorage.tipousuario == "administrador"){
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"' ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
+                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"' class='iconos icono-bitcoin enviar' title='Enviar'></div>";
                                 
                                 //html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos envios icono-photo'></div>";
                                 var imagen = "";
@@ -111,8 +111,8 @@ function registros(){
                                     imagen += JSON.parse(data)[i].envios[j]+",";
                                 }
                                 html += "</td>"; 
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
-                                html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
+                                html += "<td>";   
+                                html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"' class='iconos envios icono-photo'></div>";
                                 html += "</td>"; 
                             }
                             if(localStorage.tipousuario == "sociocomercial"){
@@ -124,8 +124,8 @@ function registros(){
                                     imagen += JSON.parse(data)[i].envios[j]+",";
                                 }
                                 html += "</td>"; 
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
-                                html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
+                                html += "<td>";   
+                                html += "<div  registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"' style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
                                 html += "</td>"; 
                             }
                             html += "</tr>";
@@ -142,21 +142,17 @@ function registros(){
 $(".eliminarsolicitud").on("click",function(){
         
         index= $(".eliminarsolicitud").index(this);
-        registro = $("tbody tr:eq("+index+") td:eq(3)").attr("registro");
-        usuariosolicitud = $("tbody tr:eq("+index+") td:eq(3)").attr("usuario");
+        registro = $(this).attr("registro");
+        usuariosolicitud = $(this).attr("usuario");
 
-        console.log(index+" "+usuariosolicitud);
         $.ajax({
             url:"./../solicitud/php/intercambios/eliminar.php",
             type: 'POST',
             data: {usuario:localStorage.getItem("usuario"),momento:registro,usuariosolicitud:usuariosolicitud},
             beforeSend:function(){
-                $("tbody tr:eq("+index+") td:eq(3) div").css("display","none");
-                $("tbody tr:eq("+index+") td:eq(3)").append('<img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif">');
-            },
+                $(".contenido-imagen").css("display","flex");},
             complete:function(){
-                $("tbody tr:eq("+index+") td:eq(3) div").css("display","flex");
-                $("tbody tr:eq("+index+") td:eq(3) img").remove();
+                $(".contenido-imagen").css("display","none");
                            
             },
             success:function(data){
@@ -169,11 +165,11 @@ $(".eliminarsolicitud").on("click",function(){
 $(".enviar").on("click",function(){
         
         index= $(".enviar").index(this);
-        registro = $("tbody tr:eq("+index+") td:eq(4)").attr("registro");
-        monedadestino = $("tbody tr:eq("+index+") td:eq(4)").attr("monedadestino");
-        cantidadrecibir = $("tbody tr:eq("+index+") td:eq(4)").attr("cantidadrecibir");
-        usuario = $("tbody tr:eq("+index+") td:eq(4)").attr("usuario");
-        pagado = $("tbody tr:eq("+index+") td:eq(4)").attr("pagado");
+        registro = $(this).attr("registro");
+        monedadestino = $(this).attr("monedadestino");
+        cantidadrecibir = $(this).attr("cantidadrecibir");
+        usuario = $(this).attr("usuario");
+        pagado = $(this).attr("pagado");
         pendiente = parseFloat(cantidadrecibir)-parseFloat(pagado);
         
         html = "<div style='margin:auto;width:100%;display:flex'>";
@@ -232,14 +228,14 @@ $(".enviar").on("click",function(){
 
 $(".envios").on("click",function(){
     index= $(".envios").index(this);
-    registro = $("tbody tr:eq("+index+") td:eq(3)").attr("registro");
-    monedaorigen = $("tbody tr:eq("+index+") td:eq(4)").attr("monedaorigen");
-    cantidadenviar = $("tbody tr:eq("+index+") td:eq(4)").attr("cantidadenviar");
-    usuario = $("tbody tr:eq("+index+") td:eq(4)").attr("usuario");
+    registro = $(this).attr("registro");
+    monedaorigen = $(this).attr("monedaorigen");
+    cantidadenviar = $(this).attr("cantidadenviar");
+    usuario = $(this).attr("usuario");
     if(localStorage.tipousuario=="administrador"){
-        imagenes = $("tbody tr:eq("+index+") td:eq(5)").attr("imagenes");
+        imagenes = $(this).attr("imagenes");
     }else{
-        imagenes = $("tbody tr:eq("+index+") td:eq(4)").attr("imagenes");
+        imagenes = $(this).attr("imagenes");
     }
     
 

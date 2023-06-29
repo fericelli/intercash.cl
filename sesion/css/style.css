@@ -152,13 +152,14 @@ select{
 }
 #sidemenu #menu-items .item a{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 #sidemenu #menu-items .item a:hover{
   background-color: var(--hovercolor);
 }
 #sidemenu #menu-items .item .icon{
   box-sizing: border-box;
+  transform: translateX(10px);
 }
 #sidemenu #menu-items .item .icon i{
   width: 100%;
@@ -166,6 +167,7 @@ select{
 }
 #sidemenu #menu-items .item .title{
   padding: var(--padding) 0;
+  transform: translateX(-20px);
 }
 
 #sidemenu::-webkit-scrollbar {
