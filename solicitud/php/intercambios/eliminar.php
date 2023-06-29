@@ -9,7 +9,6 @@
 		}
 		private function retorno(){
             $retorno = "";
-			return "DELETE FROM solicitudes WHERE usuario='".$_POST["usuariosolicitud"]."' AND momento='".$_POST["momento"]."'";
 			$this->Conexion->Consultar("DELETE FROM solicitudes WHERE usuario='".$_POST["usuariosolicitud"]."' AND momento='".$_POST["momento"]."'");
             $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE usuario='".$_POST["usuariosolicitud"]."' AND momento='".$_POST["momento"]."'");
             if($this->Conexion->Recorrido($consultar)){
