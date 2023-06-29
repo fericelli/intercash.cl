@@ -23,8 +23,7 @@ $(document).on("ready",function(){
         document.querySelector("body").classList.toggle("body-expanded")
     });
    
-    
-        $(".item").on("click",function(){ 
+    $(".item").on("click",function(){ 
             if(($(".contenido-imagen").css("display")=="none" && $("#main-container").html()!="") || ($(".contenido-imagen").css("display")!="none" && $("#main-container").html()!="")){
                 $(".contenido-screeshot").remove();
                 $(".script").remove();
@@ -130,10 +129,10 @@ $(document).on("ready",function(){
                     html += '<img class="imgcarga cargapaisdestino" src="imagenes/carga.gif">';
                     html += '<label class="mensaje-error" >Seleccione un País</label>';
                     html += '<label class="margen">Cantidad a enviar</label>';
-                    html += '<input class="controls" type="text" name="cantidadenviar" id="cantidadenviar" placeholder="Ingrese la cantidad">';
+                    html += '<input class="controls cantidad" type="text" name="cantidadenviar" id="cantidadenviar" placeholder="Ingrese la cantidad">';
                     html += '<label class="mensaje-error">Ingrese un monto</label>';
                     html += '<label class="margen">Cantidad a recibir</label>';
-                    html += '<input class="controls" type="text" name="cantidadrecibir" id="cantidadrecibir" placeholder="Ingrese la cantidad">';
+                    html += '<input class="controls cantidad" type="text" name="cantidadrecibir" id="cantidadrecibir" placeholder="Ingrese la cantidad">';
                     html += '<label class="mensaje-error">Ingrese un monto</label>';
                     html += '<div style="display:flex;justify-content: space-around;">';
                     html += '<img class="imgcarga imagenusd" src="imagenes/carga.gif">';
@@ -330,13 +329,13 @@ $(document).on("ready",function(){
                                 
                                 
                             if(JSON.parse(data)[i].estado=="pendiente"){
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-borrar eliminarsolicitud' title='Cancelar'></div></td>"; 
+                                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' class='iconos icono-borrar eliminarsolicitud' title='Cancelar'></div></td>"; 
                             }else{
                                 html += '<td><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif" title="Procesando"></td>';
                                 
                             }
                             if(localStorage.tipousuario == "administrador"){
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"' ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
+                                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' pagado='"+JSON.parse(data)[i].pagado+"' class='iconos icono-bitcoin enviar' title='Cancelar'></div>";
                                 
                                 //html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos envios icono-photo'></div>";
                                 var imagen = "";
@@ -347,8 +346,8 @@ $(document).on("ready",function(){
                                     imagen += JSON.parse(data)[i].envios[j]+",";
                                 }
                                 html += "</td>"; 
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
-                                html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
+                                html += "<td>";   
+                                html += "<div  registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"' style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
                                 html += "</td>"; 
                             }
                             if(localStorage.tipousuario == "sociocomercial"){
@@ -360,8 +359,8 @@ $(document).on("ready",function(){
                                     imagen += JSON.parse(data)[i].envios[j]+",";
                                 }
                                 html += "</td>"; 
-                                html += "<td registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"'>";   
-                                html += "<div  style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
+                                html += "<td>";   
+                                html += "<div  registro='"+JSON.parse(data)[i].momento+"' usuario='"+JSON.parse(data)[i].usuario+"' cantidadrecibir='"+JSON.parse(data)[i].cantidadrecibir+"' cantidadenviar='"+JSON.parse(data)[i].cantidadenviar+"' monedaorigen='"+JSON.parse(data)[i].monedaorigen+"' monedadestino='"+JSON.parse(data)[i].monedadestino+"' imagenes='"+imagen+"' style='cursor:pointer;margin: auto; width:30px;heigth:30px' class='iconos envios icono-photo'></div>";
                                 html += "</td>"; 
                             }
                             html += "</tr>";
@@ -444,6 +443,30 @@ $(document).on("ready",function(){
                             $("input[type=date]").val(fechahoy);
                         }
                     });
+                }
+                if(opcion=="operacionescripto"){
+                    html = '<section class="form-register"><img class="logo" src="imagenes/logo (1).png"><h4>Comprar Cripto</h4>';
+                    html += '<label class="margen">Cripto</label>';
+                    html += '<input class="controls" type="text" name="cripto" id="cript" placeholder="Seleccione la cripto" list="cripto">';
+                    html += '<datalist id="cripto">';
+                    html += '</datalist>';
+                    html += '<img class="imgcarga imagenmoneda" src="imagenes/carga.gif">';
+                    html += '<label class="mensaje-error">Seleccione una cripto</label>';
+                    html += '<label class="margen">Cantidad comprada</label>';
+                    html += '<input class="controls cantidad" type="text" id="cantidadcripto" placeholder="Ingrese la cantidad">';
+                    html += '<label class="mensaje-error numero">Debe ser numerico</label>';
+                    html += '<label class="mensaje-error">Ingrese la cantidad</label>';
+                    html += '<label class="margen">Cantidad a USDT</label>';
+                    html += '<input class="controls cantidad" type="text" id="cantidadusdt" placeholder="Ingrese la cantidad">';
+                    html += '<label class="mensaje-error numero">Debe ser numerico</label>';
+                    html += '<label class="mensaje-error">Ingrese un monto</label>';
+                    html += '<div class="botons" >Confirmar</div>';
+                    html += '<img class="imgcarga imagensolicitud" src="imagenes/carga.gif">';
+                    html += '<label class="mensaje-correcto mensajesolicitud"></label>';
+                    html += '<label class="mensaje-error mensajesolicitud"></label>';
+                    html += '</section>';
+                    html += '<script type="text/javascript" src="./../js/criptos.js"></script>';
+                    $("#main-container").html(html); 
                 }
                 if(opcion=="intercambios"){
                     var usuario = "";
