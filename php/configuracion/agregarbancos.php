@@ -22,7 +22,7 @@
                     if(!$this->Conexion->Recorrido($consultar)){
                         //$sql = "UPDATE bancos SET nombre='".$nombre."' WHERE nombre LIKE '".$nombre."%' AND pais='".$_POST["pais"]."'";
                          $sql = "INSERT INTO bancos (codigo,nombre,pais) VALUES ('".$codigo."','".trim($datos)."','".$_POST["pais"]."')\n";
-                        //echo $this->Conexion->Consultar($sql);
+                        echo $this->Conexion->Consultar($sql);
                     }
                 
                 

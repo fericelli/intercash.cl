@@ -213,16 +213,16 @@ $("button").eq(0).on("click", function(e){
                 data:archivos,
                 beforeSend:function(){
                     $(".imagensolicitud").css("display","flex");
-                    $(this).css("display","none");
+                    $("button").eq(0).css("display","none");
                 },
                 complete:function(){
                     $(".imagensolicitud").css("display","none");
-                    $(this).css("display","flex");
+                    $("button").eq(0).css("display","flex");
                 },
                 error:function(){
                     alert("Ocurrio un error con la conexion");
                     $(".imagensolicitud").css("display","none");
-                    $(this).css("display","flex");
+                    $("button").eq(0).css("display","flex");
                 },
                 success:function(respuesta){
                     if(JSON.parse(respuesta)[1]=="success"){

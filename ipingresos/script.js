@@ -10,7 +10,7 @@ $(document).on("ready",function(){
    $.ajax({
         url:"../php/configuracion/agregarbancos.php",
         type: 'POST',
-        data: {datos:JSON.stringify(json),pais:"AR"},
+        data: {datos:JSON.stringify(json),pais:"BR"},
         beforeSend:function(){
             $(".imgcarga").eq(0).css("display","flex");
             
