@@ -71,14 +71,19 @@
                                 
                                 $moneda = $solicitudes["monedadestino"];
                                $consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$_GET["usuario"]."' AND solicitud='".$_GET["registro"]."'");
-                                 $cantidad = 0;
+                                //$tasa =  $montorecibir/$montoenvio;
+                                $cantidad = 0;
                                 while($operaciones = $this->Conexion->Recorrido($consulta)){
                                     $montoenviado = $operaciones["monto"]*$operaciones["tasa"];
-                                    $consultas = $this->Conexion->Consultar("SELECT *,(".$montoenviado."-cantidad) diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud AND cantidad=monto WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1");
+                                    if($operaciones["tasa"]==1){
+                                        $sql = "SELECT *,(".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud AND cantidad=monto  WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
+                                    }else{
+                                        $sql = "SELECT *,(".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
+                                   
+                                    }
+                                    $consultas = $this->Conexion->Consultar($sql);
                                     if($monto = $this->Conexion->Recorrido($consultas)){
-                                        $dinero = $monto["cantidad"]*$operaciones["tasa"];
-                                        
-                                        $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$dinero."',paisintercambio='".$solicitudes["paisorigen"]."' WHERE momento='".$operaciones["momento"]."' AND usuario='".$operaciones["usuario"]."'");
+                                        $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$monto["cantidad"]."',paisintercambio='".$solicitudes["paisorigen"]."' WHERE momento='".$operaciones["momento"]."' AND usuario='".$operaciones["usuario"]."'");
                                         
                                     }
                                     $cantidad ++;
