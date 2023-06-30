@@ -8,7 +8,7 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-            $consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE usuario='".$_POST["usuario"]."' AND pais='".$_POST["pais"]."'");
+            $consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE usuario='".$_POST["usuario"]."' AND pais='".$_POST["pais"]."' AND tipo='pago'");
             $retorno = '{"cuentas":[';
             $validador = 0;
             while($datos = $this->Conexion->Recorrido($consultar )){
