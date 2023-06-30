@@ -30,7 +30,7 @@ $(document).on("ready",function(e){
                 },
                 complete:function(){
                     $(".imagensolicitud").css("display","none");
-                    $(".botons").css("display","flex");
+                    $(".botons").css("display","");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);

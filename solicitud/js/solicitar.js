@@ -331,6 +331,13 @@
 
     })
     
+    $(".cantidad").keyup(function(){
+        if(!$.isNumeric($(this).val())){
+            $(this).val("");
+        }
+       
+    })
+
     $("#cuent").focusin(function(e){
         $(this).val("");
         $("#banc").removeAttr("nombre");
@@ -463,7 +470,7 @@
                 },
                 complete:function(){
                     $(".imagensolicitud").css("display","none");
-                    $(".botons").css("display","flex");
+                    $(".botons").css("display","");
                 },
                 success:function(respuesta){
                     json = JSON.parse(respuesta);

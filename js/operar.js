@@ -15,6 +15,7 @@ $.ajax({
     error:function(){
         alert("Ocurrio un error con la conexion");
         $(".imagenmoneda").css("display","none");
+        $("#monedacomp").css("display","flex");
         $("#monedainter").css("display","flex");
     },
     success:function(data){
