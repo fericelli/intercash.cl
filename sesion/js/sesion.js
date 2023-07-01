@@ -320,7 +320,7 @@ $(document).on("ready",function(){
                             for(i=0;i<JSON.parse(data).length;i++){
                                 html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td><td>";
                                 
-                                dato = JSON.parse(data)[i].datos.split(".");
+                                dato = JSON.parse(data)[i].datos.split(",");
     
                                 for(j=0;j<dato.length;j++){
                                     html += dato[j]+"<br>";
