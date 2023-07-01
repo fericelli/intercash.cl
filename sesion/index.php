@@ -126,15 +126,15 @@
                   </a>
                 </div>
                 <?php
-                  if(isset($_SESSION["receptordinero"])=="si"){
+                  if($_SESSION["receptordinero"]=="si"){?>
                 
-                      echo '<div class="item" opcion="depositos">
+                      <div class="item" opcion="depositos">
                       <a>
                         <div class="icon"><i class=" iconos icono-money"></i></div>
                         <div class="title"><span>Depositos</span></div>
                       </a>
-                    </div>';
-                
+                    </div>
+                <?php
                   }
                 ?>
                 <div class="item" opcion="solicitud">
