@@ -38,10 +38,12 @@
 				while($monedaintercaionbio = $this->Conexion->Recorrido($consultar5)){
 					$consultar6 = $this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE paisintercambio='".$fiat["iso2"]."' AND monedaintercambio='".$monedaintercaionbio[0]."' AND operacion='venta'");
 					$consultar7 = $this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='".$monedaintercaionbio[0]."' AND operacion='venta'");
+					$consultar9 = $this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE paisintercambio='".$fiat["iso2"]."' AND monedaintercambio='".$monedaintercaionbio[0]."' AND operacion='compra'");
+					$cantidadmoneda = floatval($this->Conexion->Recorrido($consultar6)[0])-floatval($this->Conexion->Recorrido($consultar7)[0])-floatval($this->Conexion->Recorrido($consultar9)[0]);
 					
-					$cantidadmoneda = floatval($this->Conexion->Recorrido($consultar6)[0])-floatval($this->Conexion->Recorrido($consultar7)[0]);
+					$consultar8 = $this->Conexion->Consultar("SELECT porcentaje FROM devaluacion WHERE moneda='".$monedaintercaionbio[0]."'");
 					
-					$consulta8 = $this->Conexion->Consultar("SELECT porcentaje FROM devaluacion WHERE moneda='".$monedaintercaionbio[0]."'");
+					
 					$devaluacion =  str_replace(".","",$this->Conexion->Recorrido($consulta8)[0]);
 					
 					
@@ -62,11 +64,12 @@
 
 				$cantidad++;
 			}
+			//$usdt = 
 			$usdttotal = $usdtporcomprar-floatval($monedas["USDT"]["operaciones"]["venta"]);
-			return $usdttotal ;
+			
 
-			$monedas["USDT"]["operaciones"]["venta"];
-			var_dump($monedas);
+			$monedas["BTC"]["operaciones"]["venta"];
+			var_dump($fiats);
 			//foreach()
 		} 
 	}
