@@ -25,9 +25,9 @@
             }
 			$retorno = "";
             while($solicitudes = $this->Conexion->Recorrido($consultar)){
-                $datos = $solicitudes[5].".".
-                        $solicitudes[6]." ".$solicitudes[4].".". 
-                        $solicitudes[7].".".  
+                $datos = $solicitudes[5].",".
+                        $solicitudes[6]." ".$solicitudes[4].",". 
+                        $solicitudes[7].",".  
                         $solicitudes[8];
                 $retorno .= '{
                     "monedadestino":"'.$solicitudes[0].'",
