@@ -54,7 +54,7 @@
                 </div>
                 <div class="item" opcion="tasas">
                   <a>
-                    <div class="icon"><i class=" iconos icono-bitcoin"></i></div>
+                    <div class="icon"><i class=" iconos icono-calculadora"></i></div>
                     <div class="title"><span>Tasas</span></div>
                   </a>
                 </div>
@@ -83,7 +83,12 @@
                     <div class="title"><span>Operaciones</span></div>
                   </a>
                 </div>
-                
+                <div class="item" opcion="operacionescripto">
+                  <a>
+                    <div class="icon"><i class=" iconos icono-bitcoin"></i></div>
+                    <div class="title"><span>Comprar Cripto</span></div>
+                  </a>
+                </div>
                 <div class="item" opcion="intercambios">
                   <a>
                     <div class="icon"><i class=" iconos icono-texto"></i></div>
@@ -101,7 +106,13 @@
                     <div class="icon"><i class="iconos icono-dollar-bill"></i></div>
                     <div class="title"><span>Pagos</span></div>
                   </a>
-              </div>
+                </div>
+                <div class="item" opcion="vender">
+                  <a>
+                    <div class="icon"><i class="iconos icono-venta"></i></div>
+                    <div class="title"><span>Vender</span></div>
+                  </a>
+                </div>
             <?php  
               }
             ?>
@@ -115,7 +126,7 @@
                   </a>
                 </div>
                 <?php
-                  if(isset($_SESSION["receptordinero"])){
+                  if(isset($_SESSION["receptordinero"])=="si"){
                 ?>
                   <div class="item" opcion="depositos">
                   <a>
