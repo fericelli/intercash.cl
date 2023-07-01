@@ -29,7 +29,9 @@
                     $_SESSION["nombreusaurio"] = str_replace(' ','',strtolower($_POST["usuario"]));
                     $consulta3 = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE usuario='".str_replace(' ','',strtolower($_POST["usuario"]))."' AND tipo='pago'");
                     if($this->Conexion->Recorrido($consulta3)){
-                        $_SESSION["receptordinero"] = "";
+                        $_SESSION["receptordinero"] = "si";
+                    }else{
+                        $_SESSION["receptordinero"] = "no";
                     }
                     
                 }else{
