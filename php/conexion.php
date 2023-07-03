@@ -7,7 +7,7 @@
 		private $Conectar;
 		
 		function __construct(?string $BaseDeDato = "u956446715_intercash"){
-			$this->Conexiones("localhost","u956446715_root","3H?eEvoa>n",$BaseDeDato);
+			$this->Conexiones("srv585.hstgr.io","u956446715_root","3H?eEvoa>n",$BaseDeDato);
 			
 		}
 		private function Conexiones($S,$U,$C,$B){
