@@ -104,19 +104,7 @@ $("#operar").on("click",function(){
             $(".mensaje-error").eq(4).css("display","none");
         },2000);  
     }
-    if($(".imagen").eq(0).val()==""){
-        validador ++;
-        $(".mensaje-error").eq(6).css("display","flex");
-        setInterval(function(){
-            $(".mensaje-error").eq(6).css("display","none");
-        },2000);  
-    }if($(".imagen").eq(1).val()==""){
-        validador ++;
-        $(".mensaje-error").eq(7).css("display","flex");
-        setInterval(function(){
-            $(".mensaje-error").eq(7).css("display","none");
-        },2000);  
-    }
+    
     if(validador==0){
         var formulario = $(".form-register"); 
         var archivos = new FormData();
