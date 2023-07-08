@@ -75,21 +75,22 @@
                                 $cantidad = 0;
                                 while($operaciones = $this->Conexion->Recorrido($consulta)){
                                     if($operaciones["tasa"]=="1"){
-                                         $montoenviado = $operaciones["monto"]*$operaciones["tasa"];
-                                        $sql = "SELECT *,(".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud AND cantidad=monto  WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
-                                    }else{
                                         $montoenviado = $operaciones["monto"]/$operaciones["tasa"];
-                                        $sql = "SELECT *,(".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
+                                        $sql = "SELECT *,ABS (".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
+                                    }else{
+                                        $montoenviado = $operaciones["monto"]*$operaciones["tasa"];
+                                        $sql = "SELECT *,ABS (".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud AND cantidad=monto  WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
                                     }
-                                     
+                                    
+                                    
                                     $consultas = $this->Conexion->Consultar($sql);
                                     if($monto = $this->Conexion->Recorrido($consultas)){
-                                        $envio = floatval($monto["cantidad"]/$tasa);
+                                       $envio = floatval($monto["cantidad"]/$tasa);
                                         $envio = number_format($envio,floatval($solicitudes["decimalesmoneda"]),".","");
                                         $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$envio."',paisintercambio='".$solicitudes["paisorigen"]."' WHERE momento='".$operaciones["momento"]."' AND usuario='".$operaciones["usuario"]."'");
                                         
                                     }
-                                    $cantidad ++;
+                                   $cantidad ++;
                                 }
                                 $this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
                                 $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
