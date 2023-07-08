@@ -75,7 +75,7 @@
                                 $cantidad = 0;
                                 while($operaciones = $this->Conexion->Recorrido($consulta)){
                                     if($operaciones["tasa"]=="1"){
-                                        $montoenviado = $operaciones["monto"]/$operaciones["tasa"];
+                                        $montoenviado = $operaciones["monto"];
                                         $sql = "SELECT *,ABS (".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
                                     }else{
                                         $montoenviado = $operaciones["monto"]*$operaciones["tasa"];
