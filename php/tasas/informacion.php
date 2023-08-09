@@ -23,9 +23,18 @@
 			$usdorigen =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedaorigen"]))->{'data'};
 			$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
             */
-
-            $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
-			$tasa = 0;
+            $api = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
+            
+            if($api!=""){
+                $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
+			
+            }else{
+                $usddestino =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["monedadestino"]))->{'data'};
+                $this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$_POST["monedadestino"]."' AND paisorigen='".$_POST["monedadestino"]."' AND paisdestino");
+            }
+            
+            
+            $tasa = 0;
             $tasausddestino=0;
             $decimalestasa = 0;
            $consultar = $this->Conexion->Consultar("SELECT tasa,porcentaje,decimalestasa FROM tasas LEFT JOIN devaluacion ON monedaventa=moneda WHERE monedaventa='".$_POST["monedadestino"]."' AND monedacompra='".$_POST["monedaorigen"]."' AND paisorigen='".$_POST["paisorigen"]."' AND paisdestino='".$_POST["paisdestino"]."'");
@@ -40,6 +49,11 @@
             }else{
                 $tasausddestino = $usddestino;
             }
+
+
+
+
+
             
             if(isset($_POST["cantidadenviar"])){
                 

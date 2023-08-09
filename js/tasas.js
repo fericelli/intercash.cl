@@ -59,7 +59,6 @@ $("#actualizar").on("click",function(){
     datos = '{"monedaenvio":{"iso_pais":"'+$( "select option:selected").attr("pais")+'","moneda":"'+$( "select option:selected").attr("moneda")+'","tasausdt":"'+$("#tasacompra").val()+'","nombre":"'+$( "select option:selected").attr("nombre")+'","devaluacion":"'+$( "select option:selected").attr("devaluacion")+'","decimalesmoneda":"'+$( "select option:selected").attr("decimalesmoneda")+'"},"monedasdestino":[';
 
 
-    console.log($("tbody tr").length);
     for(i=0;i<$("tbody tr").length;i++){
 
         datos += '{"pais":"'+$("tbody tr:eq("+i+") td").eq(0).text().split("/")[0]+'","moneda":"'+$("tbody tr:eq("+i+") td").eq(0).text().split("/")[1]+'","ganancia":"'+$("tbody tr:eq("+i+") input").eq(0).val()+'","tasausdt":"'+$("tbody tr:eq("+i+") input").eq(1).val()+'","decimalestasa":"'+$("tbody tr:eq("+i+") input").eq(3).val()+'","tasa":"'+$("tbody tr:eq("+i+") input").eq(2).val()+'"},'; 

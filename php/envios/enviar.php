@@ -72,8 +72,9 @@
                                 $moneda = $solicitudes["monedadestino"];
                                 $consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."'");
                                 $tasa =  $montorecibir/$montoenvio;
-                                $cantidad = 0;
+                                $montototal = 0;
                                 while($operaciones = $this->Conexion->Recorrido($consulta)){
+                                    $montoenviado = 0;
                                     if($operaciones["tasa"]=="1"){
                                         $montoenviado = $operaciones["monto"];
                                         $sql = "SELECT *,ABS (".$montoenviado."-cantidad) AS diferencia FROM operaciones LEFT JOIN screenshot ON registro=solicitud WHERE operaciones.usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."' AND monedaintercambio IS NULL ORDER BY diferencia ASC LIMIT 1";
@@ -89,11 +90,11 @@
                                         $envio = number_format($envio,floatval($solicitudes["decimalesmoneda"]),".","");
                                         $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',montointercambio='".$envio."',paisintercambio='".$solicitudes["paisorigen"]."' WHERE momento='".$operaciones["momento"]."' AND usuario='".$operaciones["usuario"]."'");
                                         
+                                        $montototal += $montoenviado;
                                     }
-                                   $cantidad ++;
                                 }
                                 $this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
-                                $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
+                                $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$montototal."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
                             }
                             
                             
