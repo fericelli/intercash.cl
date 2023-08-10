@@ -99,44 +99,23 @@
 		}
 		private function saldo(){
 			$retorno = "[";
+			$ganancia = 0;
+			$gananciabtc = 0;
+			$consultar = $this->Conexion->Consultar("SELECT * FROM pagos WHERE usuario='".$_POST["usuario"]."' ORDER BY momento DESC");
+			$fechapago = "";
+
+			if($fecha = $this->Conexion->Recorrido($consultar)){
+				$fechapago = " AND momento > '".$fecha["momento"]."'";
+			}
+			
 			if(isset($_POST["pais"])){
 				//$consulta = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 				//if($datos = $this->Conexion->Recorrido($consulta)){
-					$consultarganancia = $this->Conexion->Consultar("SELECT SUM(montocompra),usuarios.porcentaje,devaluacion.porcentaje FROM intercambios LEFT JOIN usuarios ON usuario=intermediario  LEFT JOIN devaluacion ON moneda=monedacompra  WHERE intermediario='".$_POST["usuario"]."' AND monedacompra='".$_POST["moneda"]."'");
-					if($intercambios = $this->Conexion->Recorrido($consultarganancia)){
-						
-						if($intercambios[0]==null){
-							$retorno .= '"'.number_format("0", 2, ',', '.').'",';
-							$retorno .= '"'.number_format("0", 8, ',', '.').'",';
-
-						}else{
-							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["moneda"]))->{'data'};
-				
-							$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-							 $ganancia = (floatval($intercambios[0])*floatval($intercambios[1]))/100;
-							$gananciabtc = $ganancia/$usd;
-							$gananciabtc = $gananciabtc/$btcprecio;
-							
-
-							$retorno .= '"'.number_format($ganancia, 2, ',', '.').'",';
-							$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'",';
-						}
-
-						
-					}
+					$consultarganancia = $this->Conexion->Consultar("SELECT SUM(montocompra),usuarios.porcentaje,devaluacion.porcentaje FROM intercambios LEFT JOIN usuarios ON usuario=intermediario  LEFT JOIN devaluacion ON moneda=monedacompra  WHERE intermediario='".$_POST["usuario"]."' AND monedacompra='".$_POST["moneda"]."' ".$fechapago);
 					
-				//}
-			}else{
-				$consulta = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
-				if($datos = $this->Conexion->Recorrido($consulta)){
-					$consultarganancia = $this->Conexion->Consultar("SELECT SUM(montocompra),usuarios.porcentaje,devaluacion.porcentaje FROM intercambios INNER JOIN usuarios ON usuario=intermediario  INNER JOIN devaluacion ON moneda=monedacompra  WHERE intermediario='".$_POST["usuario"]."' AND monedacompra='".$datos["iso_moneda"]."'");
 					if($intercambios = $this->Conexion->Recorrido($consultarganancia)){
 						
-						if($intercambios[0]==null){
-							$retorno .= '"'.number_format("0", 2, ',', '.').'",';
-							$retorno .= '"'.number_format("0", 8, ',', '.').'",';
-
-						}else{
+						if($intercambios[0]!=null){
 							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$datos["iso_moneda"]))->{'data'};
 				
 							$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
@@ -144,22 +123,44 @@
 							$ganancia = (floatval($intercambios[0])*floatval($intercambios[1]))/100;
 							$gananciabtc = $ganancia/$usd;
 							$gananciabtc = $gananciabtc/$btcprecio;
-							
-
-							$retorno .= '"'.number_format($ganancia, 2, ',', '.').'",';
-							$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'",';
 						}
 
 						
 					}
 					
+					
+				//}
+			}else{
+				$consulta = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+				if($datos = $this->Conexion->Recorrido($consulta)){
+					
+
+
+
+					$consultarganancia = $this->Conexion->Consultar("SELECT SUM(montocompra),usuarios.porcentaje,devaluacion.porcentaje FROM intercambios INNER JOIN usuarios ON usuario=intermediario  INNER JOIN devaluacion ON moneda=monedacompra  WHERE intermediario='".$_POST["usuario"]."' AND monedacompra='".$datos["iso_moneda"]."' ".$fechapago);
+					if($intercambios = $this->Conexion->Recorrido($consultarganancia)){
+						
+						if($intercambios[0]!=null){
+							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$datos["iso_moneda"]))->{'data'};
+				
+							$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
+							
+							$ganancia = (floatval($intercambios[0])*floatval($intercambios[1]))/100;
+							$gananciabtc = $ganancia/$usd;
+							$gananciabtc = $gananciabtc/$btcprecio;
+
+						}
+
+						
+					}
+					
+					
 				}
 			}
-			if(strlen($retorno)>1){
-				return substr($retorno,0,strlen($retorno)-1)."]";
-			}else{
-				return $retorno."]";
-			}
+			$retorno .= '"'.number_format($ganancia, 2, ',', '.').'",';
+			$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'"';
+			return $retorno."]";
+			
 		}
 	}
 	new Datos();
