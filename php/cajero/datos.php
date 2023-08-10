@@ -116,7 +116,7 @@
 					if($intercambios = $this->Conexion->Recorrido($consultarganancia)){
 						
 						if($intercambios[0]!=null){
-							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$datos["iso_moneda"]))->{'data'};
+							$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["moneda"]))->{'data'};
 				
 							$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
 							
