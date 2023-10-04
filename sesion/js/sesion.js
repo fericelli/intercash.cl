@@ -90,11 +90,12 @@ $(document).on("ready",function(){
                             $(".contenido-imagen").css("display","none");
                         },
                         success:function(data){
+                            console.log(data);
                             html = "<div class='barrafiltros'>";
                     
                             html += '<select style="width:100px;font-size:20px;margin:auto">';
                             for(i=0;i<JSON.parse(data)[0].length;i++){
-                                html += '<option nombre="'+JSON.parse(data)[0][i].nombre+'" moneda="'+JSON.parse(data)[0][i].moneda+'" pais="'+JSON.parse(data)[0][i].iso_pais+'" devaluacion="'+JSON.parse(data)[0][i].devaluacion+'" decimalesmoneda="'+JSON.parse(data)[0][i].decimalesmoneda+'">'+JSON.parse(data)[0][i].moneda+" "+JSON.parse(data)[0][i].nombre+'</option>'; 
+                                html += '<option nombre="'+JSON.parse(data)[0][i].nombre+'" moneda="'+JSON.parse(data)[0][i].moneda+'" pais="'+JSON.parse(data)[0][i].iso_pais+'"  decimalesmoneda="'+JSON.parse(data)[0][i].decimalesmoneda+'">'+JSON.parse(data)[0][i].moneda+" "+JSON.parse(data)[0][i].nombre+'</option>'; 
                             }
                             html += '</select>'; 
                             html += '<div style="display:flex;flex-direction:column"><label>Tasa USDT</label><input style="width:100px;font-size:20px;margin:auto" type="text" id="tasacompra" tasa="'+JSON.parse(data)[0][0].usdt+'" value="'+JSON.parse(data)[0][0].usdt+'"><div style="display:flex;flex-direction:row"><h5>USD</h5><p>:</p><p id="usd">'+JSON.parse(data)[0][0].usd+'</p></div></div>';
@@ -397,8 +398,9 @@ $(document).on("ready",function(){
                         dia = "0"+dia;
                     }
                     fechahoy = fecha.getFullYear() + "-" + mes + "-" + dia;
+                    
                     $.ajax({
-                        url:"./../php/intercambios/finalizados.php",
+                        url:"./../php/operaciones/datos.php",
                         type: 'POST',
                         data: {usuario:usuario,tipodeusuario:localStorage.tipousuario,fecha:fechahoy},
                         beforeSend:function(){
@@ -422,18 +424,13 @@ $(document).on("ready",function(){
                             html += '</div>';
                             html += "<div class='table-responsive'><h2>Operaciones</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Cantidad</th><th scope='col'>Tipo</th></tr></thead><tbody>";
                             for(i=0;i<JSON.parse(data).length;i++){
-                                html += "<tr><td>"+JSON.parse(data)[i].cantidadenviar+" "+JSON.parse(data)[i].monedaorigen+"</td><td>"+JSON.parse(data)[i].cantidadrecibir+" "+JSON.parse(data)[i].monedadestino+"</td>";
-                                
-                                var imagen = "";
-                                if(JSON.parse(data)[i].imegen.length==0){
-                                    imagen += "imagenes/imagennidisponible.jpg";
+                                html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].monto+"</td><td>";
+                                if(JSON.parse(data)[i].operacion=="venta"){
+                                    html += "<div class='iconos icono-venta' style='font-size:35px;'></div>"; 
+                                }else{
+                                    html += "<div class='iconos icono-compra' style='font-size:35px;'></div>"; 
                                 }
-                                for(j=0;j<JSON.parse(data)[i].imegen.length;j++){
-                                    imagen += JSON.parse(data)[i].imegen[j]+",";
-                                }
-                                html += "<td ><div style='cursor:pointer'  imagenes='"+imagen+"' class='iconos icono-photo comprobante' title='Descargar'></div></td>"; 
-                                
-                                html += "</tr>";
+                                html += "</td></tr>";
                             
                             }
                             html += '</tbody></table></div><center><script src="./../js/operaciones.js"></script>';

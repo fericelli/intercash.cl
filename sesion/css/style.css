@@ -253,3 +253,13 @@ select{
 .barrafiltros input,.barrafiltros select,.barrafiltros div{
   margin: auto 10px;
 }
+
+.contenedor-form{
+  display:none;
+  flex-direction: column;
+}
+
+.form-tipoventa{
+  display: none;
+  flex-direction: column;
+}

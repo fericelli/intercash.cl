@@ -22,10 +22,10 @@
 				}
 				$usdtorigen = number_format($usdorigen*floatval("1.".str_replace(".","",$devaluacionorigen)),$tasa["decimalesmoneda"],".","");
 				//return "SELECT * FROM tasas LEFT JOIN paises ON iso2=paisdestino AND iso_moneda=monedaventa LEFT JOIN devaluacion ON devaluacion.moneda=monedaventa  WHERE monedacompra='".$tasa["iso_moneda"]."' AND paisorigen='".$tasa["iso2"]."'";
-				$consultar = $this->Conexion->Consultar("SELECT paisdestino,iso_moneda,decimalesmoneda,nombre FROM tasas LEFT JOIN paises ON iso2=paisdestino AND iso_moneda=monedaventa LEFT JOIN devaluacion ON devaluacion.moneda=monedaventa  WHERE monedacompra='".$tasa["iso_moneda"]."' AND paisorigen='".$tasa["iso2"]."'");
+				$consultar = $this->Conexion->Consultar("SELECT paisdestino,iso_moneda,decimalesmoneda,nombre,receptor,nombremoneda	 FROM tasas LEFT JOIN paises ON iso2=paisdestino AND iso_moneda=monedaventa LEFT JOIN devaluacion ON devaluacion.moneda=monedaventa  WHERE monedacompra='".$tasa["iso_moneda"]."' AND paisorigen='".$tasa["iso2"]."'");
 				$cantidad = 0;
 				while($datos = $this->Conexion->Recorrido($consultar)){
-					$retorno .= '{"iso_pais":"'.$datos[0].'","moneda":"'.$datos[1].'","decimales":"'.$datos[2].'","nombre":"'.$datos[3].'"},';
+					$retorno .= '{"iso_pais":"'.$datos[0].'","moneda":"'.$datos[1].'","decimales":"'.$datos[2].'","nombre":"'.$datos[3].'","receptor":"'.$datos[4].'","nombremoneda":"'.$datos[5].'"},';
             
 				}
 			}

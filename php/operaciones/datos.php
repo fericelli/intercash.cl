@@ -9,16 +9,15 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-            try{
+			try{
                 $retorno = "";
 				if($_POST["tipodeusuario"]=="administrador"){
-					$consular = $this->Conexion->Consultar("SELECT * FROM operaciones");
+					$consular = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE momento LIKE '".$_POST["fecha"]."%'");
 				}else{
-					$consular = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operador='".$_POST["usuario"]."' OR usuario='".$_POST["usuario"]."'");
+					$consular = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operador='".$_POST["usuario"]."' OR usuario='".$_POST["usuario"]."' AND momento LIKE '".$_POST["fecha"]."%'");
 				}
-
-				while($depositos = $this->Conexion->Recorrido($consular)){
-					$retorno .= '{"cantidad":"'.$depositos["cantidad"].'","banco":"'.$depositos["banco"].'","tipodecuenta":"'.$depositos["tipodecuenta"].'","cuenta":"'.$depositos["cuenta"].'","nombre":"'.$depositos["nombre"].'","identificacion":"'.$depositos["identificacion"].'","directorio":"'.$depositos["directorio"].'","pais":"'.$depositos["pais"].'","moneda":"'.$depositos["moneda"].'","momento":"'.$depositos["momento"].'","usuario":"'.$depositos["usuario"].'","usuariocuenta":"'.$depositos["usuariocuenta"].'","estado":"'.$depositos["confirmado"].'"},';
+				while($operaciones = $this->Conexion->Recorrido($consular)){
+					$retorno .= '{"moneda":"'.$operaciones["moneda"].'","monto":"'.$operaciones["monto"].'","operacion":"'.$operaciones["operacion"].'","momento":"'.$operaciones["momento"].'","usuario":"'.$operaciones["usuario"].'"},';
 				}
 				if(strlen($retorno)>1){
 					return substr($retorno,0,strlen($retorno)-1)."";
