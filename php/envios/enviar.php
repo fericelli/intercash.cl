@@ -59,7 +59,7 @@
 
                             $cantidadenviada = number_format($cantidad/$tasaenvio,$solicitudes["decimalesmoneda"],".","");
                             $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud,operacion) VALUES ('".$cantidad."','".$solicitudes["monedadestino"]."','".$cantidadenviada."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."','".$operacion."')");
-                            $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',paisintercambio='".$solicitudes["paisorigen"]."',montointercambio=".$cantidadenviada." WHERE solicitud='".$solicitudes["momento"]."' AND usuario='".$solicitudes["usuario"]."'");
+                            $this->Conexion->Consultar("UPDATE operaciones SET monedaintercambio='".$solicitudes["monedaorigen"]."',paisintercambio='".$solicitudes["paisorigen"]."',montointercambio=".$cantidadenviada." WHERE solicitud='".$solicitudes["momento"]."' AND usuario='".$solicitudes["usuario"]."' AND momento='".$operacion."'");
                             
                         }
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
