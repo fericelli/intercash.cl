@@ -123,16 +123,16 @@ $("#enviar").on("click",function(){
             data:archivos,
             beforeSend:function(){
                 $(".imagensolicitud").css("display","flex");
-                $(this).css("display","none");
+                $("#enviar").css("display","none");
             },
             complete:function(){
                 $(".imagensolicitud").css("display","none");
-                $(this).css("display","flex");
+                $("#enviar").css("display","flex");
             },
             error:function(){
                 alert("Ocurrio un error con la conexion");
                 $(".imagensolicitud").css("display","none");
-                $(this).css("display","flex");
+                $("#enviar").css("display","flex");
             },
             success:function(respuesta){
                 if(JSON.parse(respuesta)[1]=="error"){
