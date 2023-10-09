@@ -25,7 +25,7 @@
                     "cantidadrecibir":"'.$intercambios["montocompra"].'",
                     "intermadiario":"'.$intercambios["intermediario"].'",';
                     $retorno .= '"imegen":[';
-                    $consultarscreensho = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE registro='".$intercambios["solicitud"]."' AND usuario='".$intercambios["intermediario"]."'");
+                    $consultarscreensho = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE (solicitud='".$intercambios["solicitud"]."' OR registro='".$intercambios["solicitud"]."') AND usuario='".$intercambios["intermediario"]."'");
                     $cantidad = 0;
                     while($screenshot = $this->Conexion->Recorrido($consultarscreensho)){
                         $cantidad ++;
