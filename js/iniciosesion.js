@@ -178,12 +178,22 @@ $(document).on("ready",function(e){
         }
     })
     $("#paisorige").focusin(function(){
+        $(this).val("");
         $(".usd").text("0 USD");
         $(".tasa").text("0 Tasa");
         $("#cantidadrecibir").val("");
         $("#cantidadenviar").val("");
         $("#paisodestin").val("");
         
+    })
+    $("input").focusin(function(){
+        $(this).val("");
+    })
+    $(".cantidad").keyup(function(){
+        if(!$.isNumeric($(this).val())){
+            $(this).val("");
+        }
+       
     })
     $("#cantidadenviar").focusin(function(e){
         $(".usd").text("0 USD");

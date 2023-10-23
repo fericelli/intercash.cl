@@ -348,7 +348,7 @@
         $("#nombres").val("");
         $("#identificacion").removeAttr("nombre");
         $("#identificacion").val("");
-        $(".bloquecuen").removeAttr("disabled");
+        //$(".bloquecuen").removeAttr("disabled");
     })
     $("#cuent").on("change",function(){
         var  banco = $('#cuenta [value="' + $("#cuent").val() + '"]').attr('banco');
@@ -364,7 +364,7 @@
             $("#nombres").val(nombres);
             $("#identificacion").attr("nombre",identificacion);
             $("#identificacion").val(identificacion);
-            $(".bloquecuen").attr("disabled","disabled");
+            //$(".bloquecuen").attr("disabled","disabled");
         }
     })
 
