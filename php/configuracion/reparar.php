@@ -4,8 +4,8 @@
 		function __construct(){
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
-			 //echo $this->operaciones();
-			echo $this->intercambios();
+			 echo $this->operaciones();
+			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
 		}
 		private function operaciones(){
@@ -19,9 +19,22 @@
 					$tasa = number_format($datos["cantidadarecibir"]/$datos["cantidadaenviar"],$datos["decimalestasa"],".","");
 										
 					if($datos["suma"]<>$datos["cantidadaenviar"]){
+
 						$consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."' GROUP BY operaciones.momento");
 						$cantidadregistro = $this->Conexion->NFilas($consultar2);
-						
+						if($cantidadregistro>1){
+							while($operacion = $this->Conexion->Recorrido($consultar2)){
+								$consultar3 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE momento='".$operacion["momento"]."' AND usuario='".$datos[21]."' AND solicitud='".$datos[6]."'");
+								$cantida = $this->Conexion->NFilas($consultar3);
+								if($cantida>1){
+
+									$this->Conexion->Consultar("DELETE FROM operaciones WHERE momento='".$operacion["momento"]."' LIMIT ".($cantida-1)."");
+									//$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,solicitud,tasa,monedaintercambio,paisintercambio,montointercambio,tipo) VALUES ('".$operacion["moneda"]."','".$operacion["monto"]."','".$operacion["operacion"]."','".$operacion["momento"]."','".$operacion["usuario"]."','".$operacion["operador"]."','".$operacion["solicitud"]."','".$operacion["tasa"]."','".$operacion["monedaintercambio"]."','".$operacion["paisintercambio"]."','".$operacion["montointercambio"]."','envio')");
+									echo $operacion["momento"]."<br>";
+								}
+							}
+						}
+						/*
 						if($cantidadregistro==1){
 							if($operaciones = $this->Conexion->Recorrido($consultar2)){
 								//$this->Conexion->Consultar("UPDATE operaciones SET montointercambio=".$datos["cantidadaenviar"]." WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."'")."<br>";
@@ -69,7 +82,7 @@
 								
 							}
 									
-						}
+						}*/
 						
 					} 
                 
