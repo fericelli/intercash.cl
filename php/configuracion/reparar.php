@@ -20,9 +20,9 @@
 										
 					if($datos["suma"]<>$datos["cantidadaenviar"]){
 								
-						/*$consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."' GROUP BY operaciones.momento");
+						$consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."' GROUP BY operaciones.momento");
 						$cantidadregistro = $this->Conexion->NFilas($consultar2);
-						if($cantidadregistro>1){
+						/*if($cantidadregistro>1){
 							while($operacion = $this->Conexion->Recorrido($consultar2)){
 								$consultar3 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE momento='".$operacion["momento"]."' AND usuario='".$datos[21]."' AND solicitud='".$datos[6]."'");
 								$cantida = $this->Conexion->NFilas($consultar3);
@@ -78,14 +78,14 @@
 										$modificar =  number_format($montointercambio+($datos["cantidadaenviar"]-$totalintercambio),$datos["decimalesmoneda"],".","") ."<br>";
 										//$totalintercambio += $datos["cantidadaenviar"]-$totalintercambio;
 									}
-									$this->Conxione->Consultar("UPDATE operaciones SET montointercambio='".$modificar."' WHERE momento='".$operacion5["momento"]."' AND usuario='".$datos[21]."' AND solicitud='".$datos[6]."'");
+									$this->Conexion->Consultar("UPDATE operaciones SET montointercambio='".$modificar."' WHERE momento='".$operacion5["momento"]."' AND usuario='".$datos[21]."' AND solicitud='".$datos[6]."'");
 								}
 								
 							}
 									
 						}
-						echo $datos["cantidadaenviar"]."-------------------".$cantidadtotal."---------------------".$cantidadregistro."<br>";
-						
+						echo $datos["cantidadaenviar"]."-------------------".$cantidadtotal."---------------------".$cantidadregistro."----------------------".$datos[6]."<br>";
+									
 					} 
 					
             	}
