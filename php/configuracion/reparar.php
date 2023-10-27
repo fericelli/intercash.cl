@@ -85,13 +85,13 @@
 			
 			try{
 
-				$consultar = $this->Conexion->Consultar("SELECT * FROM intercambios LEFT JOIN solicitudes ON solicitudes.momento=intercambios.solicitud GROUP BY intercambios.momento");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM intercambios LEFT JOIN solicitudes ON solicitudes.momento=intercambios.solicitud GROUP BY intercambios.solicitud");
 				echo "intercambios<br>";
 				while($datos = $this->Conexion->Recorrido($consultar)){
-							
-					if($datos["cantidadaenviar"]!==$datos["montocompra"]){
-						$consultar1 = $this->Conexion->Consultar("SELECT * FROM intercambios WHERE solicitud='".$datos["solicitud"]."'");
-						$cantidadregistro = $this->Conexion->NFilas($consultar1);
+					$consultar1 = $this->Conexion->Consultar("SELECT * FROM intercambios WHERE solicitud='".$datos["solicitud"]."'");
+					$cantidadregistro = $this->Conexion->NFilas($consultar1);	
+					if($datos["cantidadaenviar"]!=$datos["montocompra"]){
+						
 						if($cantidadregistro==1){
 							//echo "UPDATE intercambios SET montocompra='".$datos["cantidadaenviar"]."' WHERE solicitud='".$datos["solicitud"]."'";exit;
 							//"UPDATE intercambios SET montocompra='".$datos["cantidadaenviar"]."' WHERE solicitud='".$datos["solicitud"]."'";
@@ -100,11 +100,16 @@
 						}
 						if($cantidadregistro>1){
 							$this->Conexion->Consultar("DELETE FROM intercambios WHERE solicitud='".$datos["solicitud"]."'");
-							$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud,operacion) VALUES ('".$datos["montoventa"]."','".$datos["monedaventa"]."','".$datos["montocompra"]."','".$datos["monedacompra"]."','".$datos["intermediario"]."','".$datos["momento"]."','".$datos["solicitud"]."','".$datos["operacion"]."')");
+							$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$datos["montoventa"]."','".$datos["monedaventa"]."','".$datos["montocompra"]."','".$datos["monedacompra"]."','".$datos["intermediario"]."','".$datos["momento"]."','".$datos["solicitud"]."')");
 						}
 						
 						echo $datos["cantidadaenviar"]."-------------------".$datos["montocompra"]."-------------".$cantidadregistro."---------------------".$datos["solicitud"]."<br>";
 					
+					}else{
+						if($cantidadregistro>1){
+							$this->Conexion->Consultar("DELETE FROM intercambios WHERE solicitud='".$datos["solicitud"]."'");
+							$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,solicitud) VALUES ('".$datos["cantidadarecibir"]."','".$datos["monedaventa"]."','".$datos["cantidadaenviar"]."','".$datos["monedacompra"]."','".$datos["intermediario"]."','".$datos["momento"]."','".$datos["solicitud"]."')");
+						}
 					}
 				}
 			}catch(Exception $e){
