@@ -5,7 +5,7 @@
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
 			 echo $this->operaciones();
-			//echo $this->intercambios();
+			echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
 		}
 		private function operaciones(){
@@ -19,8 +19,9 @@
 					$tasa = number_format($datos["cantidadarecibir"]/$datos["cantidadaenviar"],$datos["decimalestasa"],".","");
 										
 					if($datos["suma"]<>$datos["cantidadaenviar"]){
-
-						$consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."' GROUP BY operaciones.momento");
+						echo $datos["cantidadaenviar"]."-------------------".$cantidadtotal."---------------------".$cantidadregistro."<br>";
+								
+						/*$consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."' GROUP BY operaciones.momento");
 						$cantidadregistro = $this->Conexion->NFilas($consultar2);
 						if($cantidadregistro>1){
 							while($operacion = $this->Conexion->Recorrido($consultar2)){
@@ -33,11 +34,11 @@
 									echo $operacion["momento"]."<br>";
 								}
 							}
-						}
-						/*
+						}*/
+						
 						if($cantidadregistro==1){
 							if($operaciones = $this->Conexion->Recorrido($consultar2)){
-								//$this->Conexion->Consultar("UPDATE operaciones SET montointercambio=".$datos["cantidadaenviar"]." WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."'")."<br>";
+								$this->Conexion->Consultar("UPDATE operaciones SET montointercambio=".$datos["cantidadaenviar"]." WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."'")."<br>";
 											
 									//echo $datos["cantidadaenviar"]."-------------------".$cantidadtotal."---------------------".$cantidadregistro."<br>";
 								
@@ -71,21 +72,22 @@
 										$montointercambio = ($operacion5["monto"]*$operaciones["tasa"])/$tasa;
 									}
 									$montointercambio = number_format($montointercambio,$datos["decimalesmoneda"],".","");
-									
+									$modificar = $montointercambio;
 									array_push($not,"'".$operacion5[3]."'");
 									$totalintercambio += $montointercambio;
 									if($total==$cantidadregistro){
 										$modificar =  number_format($montointercambio+($datos["cantidadaenviar"]-$totalintercambio),$datos["decimalesmoneda"],".","") ."<br>";
 										//$totalintercambio += $datos["cantidadaenviar"]-$totalintercambio;
 									}
+									$this->Conxione->Consultar("UPDATE operaciones SET montointercambio='".$modificar."' WHERE momento='".$operacion5["momento"]."' AND usuario='".$datos[21]."' AND solicitud='".$datos[6]."'");
 								}
 								
 							}
 									
-						}*/
+						}
 						
 					} 
-                
+					
             	}
 			}catch(Exception $e){
 				
