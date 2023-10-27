@@ -19,7 +19,6 @@
 					$tasa = number_format($datos["cantidadarecibir"]/$datos["cantidadaenviar"],$datos["decimalestasa"],".","");
 										
 					if($datos["suma"]<>$datos["cantidadaenviar"]){
-						echo $datos["cantidadaenviar"]."-------------------".$cantidadtotal."---------------------".$cantidadregistro."<br>";
 								
 						/*$consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$datos[21]."' AND solicitud='".$datos[6]."' GROUP BY operaciones.momento");
 						$cantidadregistro = $this->Conexion->NFilas($consultar2);
@@ -85,6 +84,7 @@
 							}
 									
 						}
+						echo $datos["cantidadaenviar"]."-------------------".$cantidadtotal."---------------------".$cantidadregistro."<br>";
 						
 					} 
 					
