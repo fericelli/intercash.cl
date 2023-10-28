@@ -58,7 +58,8 @@
                             $consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisorigen   LEFT JOIN tasas ON monedaventa=monedadestino AND monedacompra=monedaorigen AND tasas.paisorigen=solicitudes.paisorigen AND tasas.paisdestino = solicitudes.paisdestino WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'");
                             if($solicitudes = $this->Conexion->Recorrido($consultar)){
                                 $tasa = number_format($solicitudes["cantidadarecibir"]/$solicitudes["cantidadaenviar"],$solicitudes["decimalestasa"],".","");
-					
+                                
+                                $montoventa = 0;
                                 $cantidadenviar = 0;
                                 //return "SELECT * FROM operaciones WHERE usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."'";
                                 $consultar2 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE usuario='".$solicitudes["usuario"]."' AND solicitud='".$solicitudes["momento"]."'");
@@ -66,12 +67,11 @@
                                 if($cantidadregistro==1){
                                     if($operaciones = $this->Conexion->Recorrido($consultar2)){
                                         $this->Conexion->Consultar("UPDATE operaciones SET montointercambio=".$solicitudes["cantidadaenviar"]." WHERE usuario='".$operaciones["usuario"]."' AND solicitud='".$operaciones["solicitud"]."'");
-                                        $totalintercambio = $solicitudes["cantidadarecibir"];
+                                        $montoventa = $solicitudes["cantidadarecibir"];
                                     }
                                 }else{
                                     $total = 0;
                                     $not = [];
-                                    $montoventa = 0;
                                     while($operaciones = $this->Conexion->Recorrido($consultar2)){
         
                                         $total ++;
