@@ -148,7 +148,7 @@ $("#enviar").on("click",function(){
                         $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0][0]);
                         setTimeout(function(){
                             $(".salir").trigger("click");
-                        },6000)
+                        },1000)
                     }
                 }
             }
