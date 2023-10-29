@@ -67,7 +67,7 @@
                                 if($cantidadregistro==1){
                                     if($operaciones = $this->Conexion->Recorrido($consultar2)){
                                         $this->Conexion->Consultar("UPDATE operaciones SET montointercambio=".$solicitudes["cantidadaenviar"]." WHERE usuario='".$operaciones["usuario"]."' AND solicitud='".$operaciones["solicitud"]."'");
-                                        $montoventa = $solicitudes["cantidadarecibir"];
+                                        $montoventa = $_GET["cantidad"];
                                     }
                                 }else{
                                     $total = 0;
