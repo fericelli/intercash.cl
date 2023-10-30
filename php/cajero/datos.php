@@ -113,9 +113,10 @@
 			}
 			$dauda = 0;
 			$pago = 0;
+			$decimalesmoneda = 0;
 			if(isset($_POST["pais"])){
 
-				 $sql = "SELECT monedacompra,SUM(montocompra),usuarios.porcentaje,decimalesmoneda FROM intercambios LEFT JOIN usuarios ON usuario=intermediario LEFT JOIN paises ON paises.iso_moneda=intercambios.monedacompra AND paises.receptor IS NOT NULL WHERE intermediario='".$_POST["usuario"]."' ".$fechapago."  GROUP BY monedacompra ORDER BY intercambios.solicitud DESC";
+				$sql = "SELECT monedacompra,SUM(montocompra),usuarios.porcentaje,decimalesmoneda FROM intercambios LEFT JOIN usuarios ON usuario=intermediario LEFT JOIN paises ON paises.iso_moneda=intercambios.monedacompra AND paises.receptor IS NOT NULL WHERE intermediario='".$_POST["usuario"]."' ".$fechapago."  GROUP BY monedacompra ORDER BY intercambios.solicitud DESC";
 					
 				$consultar2 =  $this->Conexion->Consultar($sql);
 				
@@ -141,7 +142,8 @@
 				$ganancia = $dauda;
 				$gananciabtc = $ganancia/$usd;
 				$gananciabtc = $gananciabtc/$btcprecio;
-				
+				$consultarmoneda = $this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$_POST["pais"]."' AND iso_moneda='".$_POST["moneda"]."'");
+				$decimalesmoneda = $this->Conexion->Recorrido($consultarmoneda)[0];
 			}else{
 				$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
 				if($usuarios = $this->Conexion->Recorrido($consultar)){
@@ -168,13 +170,16 @@
 					$ganancia = $dauda;
 					$gananciabtc = $ganancia/$usd;
 					$gananciabtc = $gananciabtc/$btcprecio;	
+
+					$consultarmoneda = $this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$usuarios["pais"]."' AND iso_moneda='".$usuarios["moneda"]."'");
+					$decimalesmoneda = $this->Conexion->Recorrido($consultarmoneda)[0];
 				}
 				
 			
 				
 			}
 			
-			$retorno .= '"'.number_format($ganancia, 2, ',', '.').'",';
+			$retorno .= '"'.number_format($ganancia, $decimalesmoneda, ',', '.').'",';
 			$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'"';
 			return $retorno."]";
 			

@@ -49,7 +49,11 @@ function datos(){
             }
             $("#tipocuentaenvio").html(tipocuenta);
             $("#entero").text(json[4][0].split(",")[0]);
-            $("#decimal").text(","+json[4][0].split(",")[1]);
+            if(typeof json[4][0].split(",")[1]!== "undefined"){
+                $("#decimal").text(","+json[4][0].split(",")[1]);
+            }else{
+                $("#decimal").text(",00");
+            }
             $("#enterobtc").text(json[4][1].split(",")[0]);
             $("#decimalbtc").text(","+json[4][1].split(",")[1]);
 
@@ -130,7 +134,11 @@ $("#usuari").focusout(function(){
                 }
                 $("#tipocuentaenvio").html(tipocuenta);
                 $("#entero").text(json[4][0].split(",")[0]);
-                $("#decimal").text(","+json[4][0].split(",")[1]);
+                if(typeof json[4][0].split(",")[1]!== "undefined"){
+                    $("#decimal").text(","+json[4][0].split(",")[1]);
+                }else{
+                    $("#decimal").text(",00");
+                }
                 $("#enterobtc").text(json[4][1].split(",")[0]);
                 $("#decimalbtc").text(","+json[4][1].split(",")[1]);
     
@@ -494,7 +502,11 @@ $("select").on("change",function(){
             }
             $("#tipocuentaenvio").html(tipocuenta);
             $("#entero").text(json[4][0].split(",")[0]);
-            $("#decimal").text(","+json[4][0].split(",")[1]);
+            if(typeof json[4][0].split(",")[1]!== "undefined"){
+                $("#decimal").text(","+json[4][0].split(",")[1]);
+            }else{
+                $("#decimal").text(",00");
+            }
             $("#enterobtc").text(json[4][1].split(",")[0]);
             $("#decimalbtc").text(","+json[4][1].split(",")[1]);
 
