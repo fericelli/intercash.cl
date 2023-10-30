@@ -13,12 +13,14 @@
 			$retorno = "[";
 			
 			if(isset($_POST["pais"])){
-				$consulta2 = $this->Conexion->Consultar("SELECT * FROM paises WHERE iso2<>'".$_POST["pais"]."' AND receptor IS NOT NULL");
+				$consulta2 = $this->Conexion->Consultar("SELECT iso2,iso_moneda,decimalesmoneda,nombremoneda FROM paises WHERE iso2<>'".$_POST["pais"]."' AND receptor IS NOT NULL");
 				
 			}else{
-				
-				$consulta2 = $this->Conexion->Consultar("SELECT iso2,iso_moneda,decimalesmoneda,nombremoneda FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
-
+				$consultar2 = $this->Conexion->Consultar("SELECT iso2,iso_moneda,decimalesmoneda,nombremoneda FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
+				if($informacion = $this->Conexion->Recorrido($consultar2)){
+					$retorno .= '{"pais":"'.$informacion[0].'","moneda":"'.$informacion[1].'","decimales":"'.$informacion[2].'","nombre":"'.$informacion[3].'"},';
+					$consulta2 = $this->Conexion->Consultar("SELECT iso2,iso_moneda,decimalesmoneda,nombremoneda FROM paises WHERE iso2<>'".$informacion[0]."' AND receptor IS NOT NULL");
+				}
 			}
             while($datos1 = $this->Conexion->Recorrido($consulta2)){
                 
