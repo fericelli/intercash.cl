@@ -11,12 +11,12 @@
 		}
 		private function monedas(){
 			$retorno = "[";
-
+			
 			if(isset($_POST["pais"])){
 				$consulta2 = $this->Conexion->Consultar("SELECT * FROM paises WHERE iso2<>'".$_POST["pais"]."' AND receptor IS NOT NULL");
 				
 			}else{
-				
+				return "SELECT iso2,iso_moneda,decimalesmoneda,nombremoneda FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'";
 				$consulta2 = $this->Conexion->Consultar("SELECT iso2,iso_moneda,decimalesmoneda,nombremoneda FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
 
 			}
