@@ -377,6 +377,7 @@
         var paisorigen = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
         
         var tipodecuenta = $('#tipodecuenta [value="' + $("#tipodecuent").val() + '"]').val();
+        var banco = $('#banco [value="' + $("#banc").val() + '"]').val();
         
         var validador = 0;
         if(typeof monedadestino === "undefined"){
@@ -417,7 +418,8 @@
                 $(".mensaje-error").eq(5).css("display","none");
             },5000)
         }
-        if($("#banc").val()==""){
+
+        if(typeof banco === "undefined"){
             validador ++;
             $(".mensaje-error").eq(6).css("display","flex");
             setTimeout(function(){

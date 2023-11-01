@@ -6,7 +6,7 @@
 			session_start();
 			include("../../php/conexion.php");
 			$this->Conexion = new Conexion();
-			echo "[".$this->monedas().",".$this->cuentas().",".$this->cuentasretiro().",".$this->tipodecuenta().",".$this->saldo()."]";
+			echo "[".$this->monedas().",".$this->cuentas().",".$this->cuentasretiro().",".$this->tipodecuenta().",".$this->saldo().",".$this->bancos()."]";
 			$this->Conexion->CerrarConexion();
 		}
 		private function monedas(){
@@ -32,14 +32,15 @@
 		private function cuentas(){
 			$retorno = "[";
 			if(isset($_POST["pais"])){
-				$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$_POST["pais"]."' AND tipo='pago'");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$_POST["pais"]."' AND tipo='deposito'");
 				while($cuenta = $this->Conexion->Recorrido($consultar)){
 					$retorno .= '{"banco":"'.$cuenta[1].'","cuenta":"'.$cuenta[2].'","tipodecuenta":"'.$cuenta[3].'","nombre":"'.$cuenta[4].'","identificacion":"'.$cuenta[5].'","usuario":"'.$cuenta[6].'"},';
 				}
 			}else{
+				//return "SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'";
 				$consulta2 = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
             	if($datos1 = $this->Conexion->Recorrido($consulta2)){
-					$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$datos1[0]."' AND tipo='pago'");
+					$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$datos1["iso2"]."' AND tipo='deposito'");
 					while($cuenta = $this->Conexion->Recorrido($consultar)){
 						$retorno .= '{"banco":"'.$cuenta[1].'","cuenta":"'.$cuenta[2].'","tipodecuenta":"'.$cuenta[3].'","nombre":"'.$cuenta[4].'","identificacion":"'.$cuenta[5].'","usuario":"'.$cuenta[6].'"},';
 					}
@@ -57,14 +58,14 @@
 			$retorno = "[";
 
 			if(isset($_POST["pais"])){
-				$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$_POST["pais"]."' AND usuario='".$_POST["usuario"]."' AND tipo='envio'");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$_POST["pais"]."' AND usuario='".$_POST["usuario"]."' AND tipo='retiro'");
                	while($cuenta = $this->Conexion->Recorrido($consultar)){
 					$retorno .= '{"banco":"'.$cuenta[1].'","cuenta":"'.$cuenta[2].'","tipodecuenta":"'.$cuenta[3].'","nombre":"'.$cuenta[4].'","identificacion":"'.$cuenta[5].'","usuario":"'.$cuenta[6].'"},';
 				}
 			}else{
 				$consulta2 = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
             	if($datos1 = $this->Conexion->Recorrido($consulta2)){
-					$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$datos1["iso2"]."' AND usuario='".$_POST["usuario"]."' AND tipo='envio'");
+					$consultar = $this->Conexion->Consultar("SELECT * FROM cuentas WHERE pais ='".$datos1["iso2"]."' AND usuario='".$_POST["usuario"]."' AND tipo='retiro'");
                		while($cuenta = $this->Conexion->Recorrido($consultar)){
 						$retorno .= '{"banco":"'.$cuenta[1].'","cuenta":"'.$cuenta[2].'","tipodecuenta":"'.$cuenta[3].'","nombre":"'.$cuenta[4].'","identificacion":"'.$cuenta[5].'","usuario":"'.$cuenta[6].'"},';
 					}
@@ -87,7 +88,7 @@
 			}else{
 				$consulta2 = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
 				if($datos1 = $this->Conexion->Recorrido($consulta2)){
-					$consultar = $this->Conexion->Consultar("SELECT * FROM tiposdecuentas WHERE pais ='".$datos1[0]."'");
+					$consultar = $this->Conexion->Consultar("SELECT * FROM tiposdecuentas WHERE pais ='".$datos1["iso2"]."'");
 					while($tiposdecuentas = $this->Conexion->Recorrido($consultar)){
 						$retorno .= '"'.$tiposdecuentas[1].'",';
 					}
@@ -183,6 +184,31 @@
 			$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'"';
 			return $retorno."]";
 			
+		}
+		private function bancos(){
+			$retorno = "[";
+			if(isset($_POST["pais"])){
+				$consultar = $this->Conexion->Consultar("SELECT nombre FROM bancos WHERE pais ='".$_POST["pais"]."'");
+				while($bancos = $this->Conexion->Recorrido($consultar)){
+					$retorno .= '"'.$bancos[0].'",';
+				}
+					
+			}else{
+				$consulta2 = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
+				if($datos1 = $this->Conexion->Recorrido($consulta2)){
+					$consultar = $this->Conexion->Consultar("SELECT nombre FROM bancos WHERE pais ='".$datos1["iso2"]."'");
+					while($bancos = $this->Conexion->Recorrido($consultar)){
+						$retorno .= '"'.$bancos[0].'",';
+					}
+					
+				}
+			}
+
+			if(strlen($retorno)>1){
+				return substr($retorno,0,strlen($retorno)-1)."]";
+			}else{
+				return $retorno."]";
+			}
 		}
 	}
 	new Datos();

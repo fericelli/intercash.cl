@@ -13,7 +13,7 @@
             $retorno = "[";
 
 			while($datos = $this->Conexion->Recorrido($consultar)){
-                $retorno .= '{"iso_pais":"'.$datos[0].'","moneda":"'.$datos[3].'","decimales":"'.$datos[4].'","nombre":"'.$datos[2].'"},';
+                $retorno .= '{"iso_pais":"'.$datos[0].'","moneda":"'.$datos[3].'","decimales":"'.$datos[4].'","nombre":"'.$datos[2].'","receptor":"'.$datos["receptor"].'"},';
             }
 
 			$retorno = substr($retorno,0,strlen($retorno)-1)."],[";
@@ -21,7 +21,7 @@
 			$consulta2 = $this->Conexion->Consultar("SELECT DISTINCT(monedacompra),paises.* FROM tasas LEFT JOIN paises ON iso_moneda=monedacompra WHERE receptor IS NOT NULL");
             while($datos1 = $this->Conexion->Recorrido($consulta2)){
                 
-                $retorno .= '{"iso_pais":"'.$datos1[1].'","moneda":"'.$datos1[0].'","decimales":"'.$datos1[5].'","nombre":"'.$datos1[3].'"},';
+                $retorno .= '{"iso_pais":"'.$datos1[1].'","moneda":"'.$datos1[0].'","decimales":"'.$datos1[5].'","nombre":"'.$datos1[3].'","receptor":"'.$datos1["receptor"].'"},';
             }
             return substr($retorno,0,strlen($retorno)-1)."]";
 		} 
