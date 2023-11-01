@@ -181,7 +181,8 @@
 			}
 			
 			$retorno .= '"'.number_format($ganancia, $decimalesmoneda, ',', '.').'",';
-			$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'"';
+			$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'",';
+			$retorno .= '"'.number_format(  $ganancia    , $decimalesmoneda, '.', ''  ).'"';
 			return $retorno."]";
 			
 		}

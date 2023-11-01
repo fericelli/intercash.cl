@@ -6,90 +6,90 @@ var urlglobal = URLactual.href.replace("sesion/", "");
 
 $("#usuari").val(localStorage.usuario);
    
-function datos(){
-    $("#cuentasenvio").html("");
-
-    if(localStorage.tipousuario=="administrador"){
-        var usuariodatos = $("#usuari").val();
-    }else{
-         var usuariodatos = localStorage.usuario;
-    }
-    
-    $.ajax({
-        url:"./../php/cajero/datos.php",
-        type: 'POST',
-        data: {usuario:usuariodatos},
-        beforeSend:function(){
-            $(".contenido-imagen").css("display","flex");
-        },
-        complete:function(){
-            $(".contenido-imagen").css("display","none");
-        },
-        success:function(respuesta){
-            json = JSON.parse(respuesta);
-
-            monedas = "";
-            for(var i =0;i<json[0].length;i++){
-                monedas += "<option  pais='"+json[0][i].pais+"' moneda='"+json[0][i].moneda+"'>"+json[0][i].nombre+"-"+json[0][i].moneda+"</option>";
-            }
-            $("select").html(monedas);
-            cuentas = "";
-            for(var i =0;i<json[1].length;i++){
-                cuentas += "<option  banco='"+json[1][i].banco+"' cuenta='"+json[1][i].cuenta+"' tipodecuenta='"+json[1][i].tipodecuenta+"' nombre='"+json[1][i].nombre+"' identificacion='"+json[1][i].identificacion+"' usuario='"+json[1][i].usuario+"' value='"+json[1][i].banco+" - "+json[1][i].cuenta+"'>"+json[1][i].banco+" - "+json[1][i].cuenta+"</option>";
-            }
-            $("#cuentas").html(cuentas);
-            cuentas = "";
-            for(var i =0;i<json[2].length;i++){
-                cuentas += "<option  banco='"+json[2][i].banco+"' cuenta='"+json[2][i].cuenta+"' tipodecuenta='"+json[2][i].tipodecuenta+"' nombre='"+json[2][i].nombre+"' identificacion='"+json[2][i].identificacion+"' usuario='"+json[2][i].usuario+"' value='"+json[2][i].cuenta+"'>"+json[2][i].banco+" - "+json[2][i].cuenta+"</option>";
-            }
-            $("#cuentasenvio").html(cuentas);
-            tipocuenta = "";
-            for(var i =0;i<json[3].length;i++){
-                tipocuenta += "<option  value='"+json[3][i]+"'>"+json[3][i]+"</option>";
-            }
-            $("#tipocuentaenvio").html(tipocuenta);
-            $("#entero").text(json[4][0].split(",")[0]);
-            if(typeof json[4][0].split(",")[1]!== "undefined"){
-                $("#decimal").text(","+json[4][0].split(",")[1]);
-            }else{
-                $("#decimal").text(",00");
-            }
-            $("#enterobtc").text(json[4][1].split(",")[0]);
-            $("#decimalbtc").text(","+json[4][1].split(",")[1]);
-
+if(localStorage.tipousuario=="administrador"){
+    var usuariodatos = $("#usuari").val();
+}else{
+    var usuariodatos = localStorage.usuario;
+}
+$.ajax({
+    url:"./../php/cajero/datos.php",
+    type: 'POST',
+    data: {usuario:usuariodatos},
+    beforeSend:function(){
+        $(".contenido-imagen").css("display","flex");
+    },
+    complete:function(){
+        $(".contenido-imagen").css("display","none");
+    },
+    success:function(respuesta){
+        json = JSON.parse(respuesta);
+        monedas = "";
+        
+        for(var i =0;i<json[0].length;i++){
+            monedas += "<option  pais='"+json[0][i].pais+"' moneda='"+json[0][i].moneda+"'>"+json[0][i].nombre+"-"+json[0][i].moneda+"</option>";
         }
-    });
-    $.ajax({
-        url:urlglobal+'usuarios/php/usuarios.php',
-        beforeSend:function(){
-            $(".contenedorcarga").css("display","flex");
-        },
-        complete:function(){
-            $(".contenedorcarga").css("display","none");
-        },
-       
-        success:function(respuesta){
-            
-            json = JSON.parse(respuesta);
-            html = "";
-            for(i=0;i<json.length;i++){
-                html += '<option usuario="'+json[i]+'" value="'+json[i]+'">'+json[i]+'</option>';
-            }
+        $("select").html(monedas);
+        cuentas = "";
+        for(var i =0;i<json[1].length;i++){
+            cuentas += "<option  banco='"+json[1][i].banco+"' cuenta='"+json[1][i].cuenta+"' tipodecuenta='"+json[1][i].tipodecuenta+"' nombre='"+json[1][i].nombre+"' identificacion='"+json[1][i].identificacion+"' usuario='"+json[1][i].usuario+"' value='"+json[1][i].banco+" - "+json[1][i].cuenta+"'>"+json[1][i].banco+" - "+json[1][i].cuenta+"</option>";
+        }
+        $("#cuentas").html(cuentas);
+        cuentas = "";
+        for(var i =0;i<json[2].length;i++){
+            cuentas += "<option  banco='"+json[2][i].banco+"' cuenta='"+json[2][i].cuenta+"' tipodecuenta='"+json[2][i].tipodecuenta+"' nombre='"+json[2][i].nombre+"' identificacion='"+json[2][i].identificacion+"' usuario='"+json[2][i].usuario+"' value='"+json[2][i].cuenta+"'>"+json[2][i].banco+" - "+json[2][i].cuenta+"</option>";
+        }
+        $("#cuentasenvio").html(cuentas);
+        bancos = "";
+        for(var i =0;i<json[5].length;i++){
+            bancos += "<option  value='"+json[5][i]+"'>"+json[5][i]+"</option>";
+        }
+        
+        $("#bancos").html(bancos);
+        tipocuenta = "";
+        for(var i =0;i<json[3].length;i++){
+            tipocuenta += "<option  value='"+json[3][i]+"'>"+json[3][i]+"</option>";
+        }
+        $("#tipocuentaenvio").html(tipocuenta);
+        $("#entero").text(json[4][0].split(",")[0]);
+        if(typeof json[4][0].split(",")[1]!== "undefined"){
+            $("#decimal").text(","+json[4][0].split(",")[1]);
+        }else{
+            $("#decimal").text(",00");
+        }
+        $("#enterobtc").text(json[4][1].split(",")[0]);
+        $("#decimalbtc").text(","+json[4][1].split(",")[1]);
+
+        $("button").eq(1).attr("saldo",json[4][2]);
+     }
+});
+$.ajax({
+    url:urlglobal+'usuarios/php/usuarios.php',
+    beforeSend:function(){
+       $(".contenedorcarga").css("display","flex");
+    },
+    complete:function(){
+        $(".contenedorcarga").css("display","none");
+    },
+    success:function(respuesta){
+       json = JSON.parse(respuesta);
+        html = "";
+       for(i=0;i<json.length;i++){
+            html += '<option usuario="'+json[i]+'" value="'+json[i]+'">'+json[i]+'</option>';
+        }
             
             //$("#paisodestino").html(html);
-            $("#usuario").html(html);
-        }
-    });
+        $("#usuario").html(html);
+    }
+});
     
-    $("#usuari").val(usuariodatos);
-}
-
+$("#usuari").val(usuariodatos);
 
 $("#usuari").focusout(function(){
     var usuario = $('#usuario [value="' + $(this).val() + '"]').attr("usuario");
     
     $("#cuentasenvio").html("");
     $("#cuentascuentas").html("");
+    $("#bancos").html("");
     if(localStorage.tipousuario=="administrador" && typeof usuario !== "undefined"){
         var usuariodatos = $("#usuari").val();
     }else{
@@ -113,6 +113,7 @@ $("#usuari").focusout(function(){
             },
             success:function(respuesta){
                 json = JSON.parse(respuesta);
+                console.log(json);
                 monedas = "<option  pais='"+pais+"' moneda='"+moneda+"'>"+texto+"</option>";
                 for(var i =0;i<json[0].length;i++){
                     monedas += "<option  pais='"+json[0][i].pais+"' moneda='"+json[0][i].moneda+"'>"+json[0][i].nombre+"-"+json[0][i].moneda+"</option>";
@@ -128,6 +129,12 @@ $("#usuari").focusout(function(){
                     cuentas += "<option  banco='"+json[2][i].banco+"' cuenta='"+json[2][i].cuenta+"' tipodecuenta='"+json[2][i].tipodecuenta+"' nombre='"+json[2][i].nombre+"' identificacion='"+json[2][i].identificacion+"' usuario='"+json[2][i].usuario+"' value='"+json[2][i].cuenta+"'>"+json[2][i].banco+" - "+json[2][i].cuenta+"</option>";
                 }
                 $("#cuentasenvio").html(cuentas);
+                bancos = "";
+                for(var i =0;i<json[5].length;i++){
+                    bancos += "<option  value='"+json[5][i]+"'>"+json[5][i]+"</option>";
+                }
+                
+                $("#bancos").html(bancos);
                 tipocuenta = "";
                 for(var i =0;i<json[3].length;i++){
                     tipocuenta += "<option  value='"+json[3][i]+"'>"+json[3][i]+"</option>";
@@ -141,7 +148,7 @@ $("#usuari").focusout(function(){
                 }
                 $("#enterobtc").text(json[4][1].split(",")[0]);
                 $("#decimalbtc").text(","+json[4][1].split(",")[1]);
-    
+                $("button").eq(1).attr("saldo",json[4][2]);
             }
         });
     
@@ -324,6 +331,14 @@ $("#cuentsenvios").focusin(function(){
 $("button").eq(1).on("click", function(e){
     e.preventDefault();
     validador = 0;
+    var saldo = $(this).attr("saldo");
+    var usuario = $('#usuario [value="' + $("#usuari").val() + '"]').attr("usuario");
+
+    if(typeof usuario!=="undefined"){
+        var usuario = $("#usuari").val();
+    }else{
+         var usuario = localStorage.usuario;
+    }
 
    /* var cuenta = $('#cuentasenvio [value="' + $("#cuentsenvios").val() + '"]').attr('cuenta');
     var banco = $('#cuentasenvio [value="' + $("#cuentsenvios").val() + '"]').attr('banco');
@@ -331,32 +346,33 @@ $("button").eq(1).on("click", function(e){
     var nombre = $('#cuentasenvio [value="' + $("#cuentsenvios").val() + '"]').attr('nombre');
     var identificacion = $('#cuentasenvio [value="' + $("#cuentsenvios").val() + '"]').attr('identificacion');
     var usuariocuenta = $('#cuentasenvio [value="' + $("#cuentsenvios").val() + '"]').attr('usuario');*/
-    if($("#cantidadenvio").val()==""){
+    /*if($("#cantidadenvio").val()==""){
+        validador ++;
+        $(".mensajeretiro").eq(0).css("display","flex");
+        setTimeout(function(){
+            $(".mensajeretiro").eq(0).css("display","none");
+        },5000)    
+    }*/
+    /*if($("#cantidadenvio").val()!="" && $.isNumeric($("#cantidadenvio").val()) == false){
+        validador ++;
+        $(".mensajeretiro").eq(1).css("display","flex");
+        setTimeout(function(){
+            $(".mensajeretiro").eq(1).css("display","none");
+        },5000)    
+    }*/
+    if($("#cuentsenvios").val()==""){
         validador ++;
         $(".mensajeretiro").eq(0).css("display","flex");
         setTimeout(function(){
             $(".mensajeretiro").eq(0).css("display","none");
         },5000)    
     }
-    if($("#cantidadenvio").val()!="" && $.isNumeric($("#cantidadenvio").val()) == false){
+    bancoenvio = $('#bancos [value="' + $("#bancoenvio").val() + '"]').val();
+    if(typeof bancoenvio === "undefined"){
         validador ++;
         $(".mensajeretiro").eq(1).css("display","flex");
         setTimeout(function(){
             $(".mensajeretiro").eq(1).css("display","none");
-        },5000)    
-    }
-    if($("#cuentsenvios").val()==""){
-        validador ++;
-        $(".mensajeretiro").eq(2).css("display","flex");
-        setTimeout(function(){
-            $(".mensajeretiro").eq(2).css("display","none");
-        },5000)    
-    }
-    if($("#bancoenvio").val()==""){
-        validador ++;
-        $(".mensajeretiro").eq(3).css("display","flex");
-        setTimeout(function(){
-            $(".mensajeretiro").eq(3).css("display","none");
         },5000)    
     }
    /* if($("#ticuenenvio").val()==""){
@@ -370,24 +386,24 @@ $("button").eq(1).on("click", function(e){
     var tipocuentaenvio = $('#tipocuentaenvio [value="' + $("#ticuenenvio").val() + '"]').val();
     if(typeof tipocuentaenvio === "undefined"){
         validador ++;
-        $(".mensajeretiro").eq(4).css("display","flex");
+        $(".mensajeretiro").eq(2).css("display","flex");
         setTimeout(function(){
-            $(".mensajeretiro").eq(4).css("display","none");
+            $(".mensajeretiro").eq(2).css("display","none");
         },5000)    
     }
 
     if($("#nombreenvio").val()==""){
         validador ++;
-        $(".mensajeretiro").eq(5).css("display","flex");
+        $(".mensajeretiro").eq(3).css("display","flex");
         setTimeout(function(){
-            $(".mensajeretiro").eq(5).css("display","none");
+            $(".mensajeretiro").eq(3).css("display","none");
         },5000)    
     }
     if($("#identificacionenvio").val()==""){
         validador ++;
-        $(".mensajeretiro").eq(6).css("display","flex");
+        $(".mensajeretiro").eq(4).css("display","flex");
         setTimeout(function(){
-            $(".mensajeretiro").eq(6).css("display","none");
+            $(".mensajeretiro").eq(4).css("display","none");
         },5000)    
     }
     pais = $("select:eq(0) option:selected").attr("pais");
@@ -396,7 +412,7 @@ $("button").eq(1).on("click", function(e){
         $.ajax({
             url:"./../php/cajero/retirar.php",
             type: 'POST',
-            data: {usuario:localStorage.usuario,tipousuario:localStorage.tipousuario,cantidad:$("#cantidadenvio").val(),cuenta:$("#cuentsenvios").val(),banco:$("#bancoenvio").val(),tipocuenta:tipocuentaenvio,nombre:$("#nombreenvio").val(),identificacion:$("#identificacionenvio").val(),pais:pais,moneda:moneda},
+            data: {usuario:usuario,tipousuario:localStorage.tipousuario,cantidad:saldo,cuenta:$("#cuentsenvios").val(),banco:$("#bancoenvio").val(),tipocuenta:tipocuentaenvio,nombre:$("#nombreenvio").val(),identificacion:$("#identificacionenvio").val(),pais:pais,moneda:moneda},
             beforeSend:function(){
                 $(".imagensolicitud").css("display","flex");
                 $(this).css("display","none");
@@ -420,12 +436,18 @@ $("button").eq(1).on("click", function(e){
                     $("#identificacionenvio").removeAttr("nombre");
                     $("#identificacionenvio").val("");
                     $(".bloquecuen").removeAttr("disabled");
+                    
                 }else{
                     $(".errorretiro").css("display","flex");
                 }
                 
                 setTimeout(function(){
-                    $(".retiro").css("display","none")
+                    $(".retiro").css("display","none");
+                    for(i=0;i<$(".item").length;i++){
+                        if($(".item").eq(i).attr("opcion")=="cajero"){
+                            $(".item").eq(i).trigger("click");
+                        }
+                    }
                 },2000)
             }
         })
@@ -460,11 +482,8 @@ $("button").eq(1).on("click", function(e){
 $("select").on("change",function(){
     $("#cuentasenvio").html("");
     $("#cuentascuentas").html("");
-    if(localStorage.tipousuario=="administrador"){
-        var usuariodatos = $("#usuari").val();
-    }else{
-         var usuariodatos = localStorage.usuario;
-    }
+    $("#banco").html("");
+    
     pais = $('select option:selected').attr('pais');
     moneda = $('select option:selected').attr('moneda');
     texto = $('select option:selected').text();
@@ -480,7 +499,6 @@ $("select").on("change",function(){
         },
         success:function(respuesta){
             json = JSON.parse(respuesta);
-
             monedas = "<option  pais='"+pais+"' moneda='"+moneda+"'>"+texto+"</option>";
             for(var i =0;i<json[0].length;i++){
                 monedas += "<option  pais='"+json[0][i].pais+"' moneda='"+json[0][i].moneda+"'>"+json[0][i].nombre+"-"+json[0][i].moneda+"</option>";
@@ -500,6 +518,14 @@ $("select").on("change",function(){
             for(var i =0;i<json[3].length;i++){
                 tipocuenta += "<option  value='"+json[3][i]+"'>"+json[3][i]+"</option>";
             }
+            bancos = "";
+            for(var i =0;i<json[5].length;i++){
+                bancos += "<option  value='"+json[5][i]+"'>"+json[5][i]+"</option>";
+            }
+            
+            $("#bancos").html(bancos);
+
+
             $("#tipocuentaenvio").html(tipocuenta);
             $("#entero").text(json[4][0].split(",")[0]);
             if(typeof json[4][0].split(",")[1]!== "undefined"){
@@ -509,10 +535,8 @@ $("select").on("change",function(){
             }
             $("#enterobtc").text(json[4][1].split(",")[0]);
             $("#decimalbtc").text(","+json[4][1].split(",")[1]);
-
+            $("button").eq(1).attr("saldo",json[4][2]);
         }
     });
 
 })
-
-datos();
