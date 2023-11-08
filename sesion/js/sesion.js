@@ -48,7 +48,7 @@ $(document).on("ready",function(){
                             $(".contenido-imagen").css("display","none");
                         },
                         success:function(data){
-                            $("#main-container").html(data);
+                            $("#main-container").html("afwfafwwaf");
                             /*html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
                             for(i=0;i<JSON.parse(data).length;i++){
                                 html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].invertidosatoshi+"</td><td>"+JSON.parse(data)[i].gananciasatoshis+"</td><td>"+JSON.parse(data)[i].dinerodisponoble+"</td><td>"+JSON.parse(data)[i].dineroenviado+"</td></tr>";
@@ -90,7 +90,7 @@ $(document).on("ready",function(){
                             $(".contenido-imagen").css("display","none");
                         },
                         success:function(data){
-                            console.log(data);
+                            console.log(JSON.parse(data));
                             html = "<div class='barrafiltros'>";
                     
                             html += '<select style="width:100px;font-size:20px;margin:auto">';
@@ -207,7 +207,7 @@ $(document).on("ready",function(){
                     html += '</div>'; 
                     html += '<div class="col-md-4">'; 
                     html += '<p class="p-blue">'; 
-                    html += '<span class="fas fa-circle pe-2"></span>Equivalente en Bitcoins'; 
+                    html += '<span class="fas fa-circle pe-2"></span>Equivalente en Dólares'; 
                     html += '</p>'; 
                     html += '<p class="fw-bold mb-3">';
                     html += '<span class="fas fa-dollar-sign pe-1"></span><span id="enterobtc"><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif"></span> <span id="decimalbtc" class="textmuted"></span>'; 
@@ -242,13 +242,15 @@ $(document).on("ready",function(){
                     html += '<label class="mensaje-correcto enviado">Solicitud de deposito enviada</label>';
                     html += '<button class="" style="border: none;margin-top:10px;padding:5px">Depositar</button><img class="imgcarga imagensolicitud" src="imagenes/carga.gif"></form>';
                     html += '<form  class="bg-blue">';
-                    html += '<div style="" class="p-2">'; 
+                    html += '<div style="" class="p-2">';
+                    html += '<p class="h8 textmuted" id="contenedorpendiente" style="display:flex;flex-direction:column"></p>'; 
+                    
                     html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Ingrese la cantidad</label><input id="cantidadenvio" style="width:45%" type="text" paceholder="Ingrese la cantatidad"></p>'; 
                     html += '<label class="mensaje-error mensajeretiro">Ingrese una cantidad</label>';
                     html += '<label class="mensaje-error mensajeretiro">La cantidad debe ser numerica</label>';
                     html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Cuenta</label><input style="width:45%" paceholder="Digite la cuenta" id="cuentsenvios" list="cuentasenvio"><datalist id="cuentasenvio"></datalist></p>'; 
                     html += '<label class="mensaje-error mensajeretiro">Ingrese la cuenta</label>';
-                    html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Banco</label><input id="bancoenvio" class="bloquecuen" style="width:45%" type="text"></p>';
+                    html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Banco</label><input id="bancoenvio" class="bloquecuen" style="width:45%" type="text" list="bancos"><datalist id="bancos"></datalist></p>';
                     html += '<label class="mensaje-error mensajeretiro">Seleccione un banco</label>';
                     html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Tipo de cuenta</label><input style="width:45%" class="bloquecuen" paceholder="tipo de cuenta" id="ticuenenvio" list="tipocuentaenvio"><datalist id="tipocuentaenvio"></datalist></p>';
                     html += '<label class="mensaje-error mensajeretiro">Seleccione un tipo de cuenta</label>';
@@ -575,14 +577,35 @@ $(document).on("ready",function(){
                         }
                     });
                 }
-                if(opcion=="pagos"){
-                    var URLactual = window.location;
-                    var url = URLactual.href.replace("sesion/#", "");
-                    url = URLactual.href.replace("sesion/", "");
+                if(opcion=="debitos"){
+                    fecha = new Date();
+                    mes = (fecha.getMonth()+1).toString();
+                    if(mes.length==1){
+                        mes = "0"+mes;
+                    }
+                    dia = fecha.getDate().toString();
+                    if(dia.length==1){
+                        dia = "0"+dia;
+                    }
+                    fechahoy = fecha.getFullYear() + "-" + mes + "-" + dia;
+                    
+                    var usuario = "";
+                    if(localStorage.tipodeusuario == "administrador" ){
+                        var usua = $('#usuario [value="' + $("#usuari").val() + '"]').val();
+                        
+                        if(typeof usua !== "undefined"){
+                            usuario = usua;
+                        }else{
+                            usuario = localStorage.usuario;
+                        }
+                        
+                    }else{
+                        usuario = localStorage.usuario;
+                    }
                     $.ajax({
-                        url:"./../php/pagos/datos.php",
+                        url:"./../php/debito/datos.php",
                         type: 'POST',
-                        data: {usuario:localStorage.getItem("usuario"),tipodeusuario:localStorage.tipousuario},
+                        data: {fecha:fechahoy,usuario:localStorage.usuario},
                         beforeSend:function(){
                             $(".contenido-imagen").css("display","flex");
                         },
@@ -591,21 +614,37 @@ $(document).on("ready",function(){
                             $(".imagencargasolicitud").css("display","none");
                         },
                         success:function(data){
-    
-                            html = "<div class='table-responsive'><h2>Pagos</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Dinero</th><th scope='col'>Cuenta</th><th scope='col'>Pagar</th><th scope='col'>Imagenes</th></tr></thead><tbody>";
-                            for(i=0;i<JSON.parse(data).length;i++){
-                            html += "<tr><td>"+JSON.parse(data)[i].cantidad+" "+JSON.parse(data)[i].moneda+"</td><td>";
-                            html += "<label style='display:block'>"+JSON.parse(data)[i].banco+"</label><label style='display:block'>"+JSON.parse(data)[i].tipodecuenta+" "+JSON.parse(data)[i].cuenta+"</label><label style='display:block'>"+JSON.parse(data)[i].nombre+"</label><label style='display:block'>"+JSON.parse(data)[i].identificacion+"</label>";
-                            html += "</td><td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-dinero pagar' registro='"+JSON.parse(data)[i].momento+"' title='Pagar'></div></td>";
+                            
+                            html = "<div class='barrafiltros'>";
+                            if(localStorage.tipousuario=="administrador"){
+                                html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
+                                html += '<datalist id="usuario">';
+                                html += '</datalist>';
+                            }
                                 
-                            html += "<td ><img src='../imagenes/carga.gif' class='cargaimga' style='display:none;margin: auto; width:30px;heigth:30px'><div style='cursor:pointer;margin: auto; width:30px;heigth:30px' registro='"+JSON.parse(data)[i].momento+"' class='iconos icono-bien imagenes' title='Confirmar'></div></td>"; 
+                            html += '<input type="date">'; 
+                            html += '<div id="gastar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Gastar</div></div>'
+                            html += '<div id="pagar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Pagar</div></div>'
+                              
+                            html += '</div>';
+                            html += "<div class='table-responsive'><h2>Debito</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Dinero</th><th scope='col'>Imagenes</th><th scope='col'>Informaion</th><th></th></tr></thead><tbody>";
+                            for(i=0;i<JSON.parse(data).length;i++){
+                                html += "<tr><td>"+JSON.parse(data)[i].monedainversion+"</td>";
+                                html += "<td>"+JSON.parse(data)[i].cantidadgastada+"</td>";
+                                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' imagen='"+JSON.parse(data)[i].directorio+"' title='Descargar'></div></td>";
+                                    
+                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-cartamenu informacion' registro='"+JSON.parse(data)[i].momento+"' title='Informacion'></div></td>"; 
+                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-cartamenu eliminar' registro='"+JSON.parse(data)[i].momento+"' title='Eliminar'></div></td>"; 
                                 
                                 html += "</tr>";
                             
                             }
-                            html += '</tbody></table></div><center><img class="imagencargasolicitud" style="display:none;width:30px;height:30px" src="../imagenes/carga.gif"></center><script src="./../js/depositos.js"></script>';
+                            html += '</tbody></table></div><center><img class="imagencargasolicitud" style="display:none;width:30px;height:30px" src="../imagenes/carga.gif"></center><script src="./../js/debito.js"></script>';
                             
                             $("#main-container").html(html);
+                            
+                            $("input[type=date]").val(fechahoy);
+                            $("#usuari").val(usuario);
                         }
                     });
                 }
