@@ -1,5 +1,12 @@
+$(document).on('keypress',function(e) {
+    if(e.which == 13 && $(".mensajesolicitud").css("display")=="none" && $(".mensaje-error").css("display")=="none") {
+        $(".botons").trigger("click");
+    }
+});
 $(document).on("ready",function(e){
     e.preventDefault();
+
+    
     $(".botons").on("click",function(){
         
         var validador = 0;
