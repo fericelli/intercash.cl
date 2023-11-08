@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../conexion.php");
 			$this->Conexion = new Conexion();
-			echo "[".$this->retorno()."]";
+			//echo "[".$this->retorno()."]";
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){

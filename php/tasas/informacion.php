@@ -12,7 +12,7 @@
             $tasausddestino=0;
             $decimalestasa = 0;
 			
-             $tasas = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa),tasa FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND paisdestino='".$_POST["paisdestino"]."'"));
+             $tasas = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa),tasa FROM tasas WHERE monedaventa='".$_POST["monedadestino"]."' AND paisdestino='".$_POST["paisdestino"]."' AND monedacompra='".$_POST["monedaorigen"]."' AND paisorigen='".$_POST["paisorigen"]."'"));
             
              $tasausddestino = $tasas[0];
              $tasa = $tasas[1];

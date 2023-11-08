@@ -58,6 +58,11 @@
             $("#paisorigen").html(html1);
         }
     });
+
+
+    $("input").focusin(function(){
+        $(this).val("");
+    })
     $("#paisorige").focusout(function(){
         var moneda = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('moneda');
         var pais = $('#paisorigen [value="' + $("#paisorige").val() + '"]').attr('pais');
