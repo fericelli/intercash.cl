@@ -90,7 +90,6 @@ $(document).on("ready",function(){
                             $(".contenido-imagen").css("display","none");
                         },
                         success:function(data){
-                            console.log(JSON.parse(data));
                             html = "<div class='barrafiltros'>";
                     
                             html += '<select style="width:100px;font-size:20px;margin:auto">';
@@ -245,9 +244,8 @@ $(document).on("ready",function(){
                     html += '<div style="" class="p-2">';
                     html += '<p class="h8 textmuted" id="contenedorpendiente" style="display:flex;flex-direction:column"></p>'; 
                     
-                    html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Ingrese la cantidad</label><input id="cantidadenvio" style="width:45%" type="text" paceholder="Ingrese la cantatidad"></p>'; 
+                    html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Cantidad a retirar</label><label id="cantidadenvio"></label></p>'; 
                     html += '<label class="mensaje-error mensajeretiro">Ingrese una cantidad</label>';
-                    html += '<label class="mensaje-error mensajeretiro">La cantidad debe ser numerica</label>';
                     html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Cuenta</label><input style="width:45%" paceholder="Digite la cuenta" id="cuentsenvios" list="cuentasenvio"><datalist id="cuentasenvio"></datalist></p>'; 
                     html += '<label class="mensaje-error mensajeretiro">Ingrese la cuenta</label>';
                     html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Banco</label><input id="bancoenvio" class="bloquecuen" style="width:45%" type="text" list="bancos"><datalist id="bancos"></datalist></p>';

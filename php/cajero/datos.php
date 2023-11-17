@@ -6,7 +6,7 @@
 			session_start();
 			include("../../php/conexion.php");
 			$this->Conexion = new Conexion();
-			echo "[".$this->monedas().",".$this->cuentas().",".$this->cuentasretiro().",".$this->tipodecuenta().",".$this->saldo().",".$this->bancos()."]";
+			echo "[".$this->monedas().",".$this->cuentas().",".$this->cuentasretiro().",".$this->tipodecuenta().",".$this->saldo().",".$this->bancos().",".$this->pagodividido()."]";
 			$this->Conexion->CerrarConexion();
 		}
 		private function monedas(){
@@ -106,83 +106,66 @@
 			$retorno = "[";
 			$ganancia = 0;
 			$gananciabtc = 0;
-			$consultar = $this->Conexion->Consultar("SELECT * FROM pagos WHERE usuario='".$_POST["usuario"]."' ORDER BY momento DESC LIMIT 1");
-			$fechapago = "";
-			///$fecha = $this->Conexion->Recorrido($consultar)[0];
-			if($fecha1 = $this->Conexion->Recorrido($consultar)){
-				 $fechapago = " AND solicitud > '".$fecha1["momento"]."'";
-			}
+			$pais = "";
+			$moneda = "";
+			
 			$dauda = 0;
 			$pago = 0;
 			$decimalesmoneda = 0;
+			$sql = "SELECT * FROM paises WHERE receptor IS NOT NULL GROUP BY iso_moneda";	
 			if(isset($_POST["pais"])){
-
-				$sql = "SELECT monedacompra,SUM(montocompra),usuarios.porcentaje,decimalesmoneda FROM intercambios LEFT JOIN usuarios ON usuario=intermediario LEFT JOIN paises ON paises.iso_moneda=intercambios.monedacompra AND paises.receptor IS NOT NULL WHERE intermediario='".$_POST["usuario"]."' ".$fechapago."  GROUP BY monedacompra ORDER BY intercambios.solicitud DESC";
-					
-				$consultar2 =  $this->Conexion->Consultar($sql);
+				$pais = $_POST["pais"];
+				$moneda = $_POST["moneda"];
 				
-				while($datos = $this->Conexion->Recorrido($consultar2)){
-					$pago = $datos[1]*$datos[2];
-					$pago = $pago/100;
-					if($datos[0]==$_POST["moneda"]){
-						$dauda += $pago;
-					}else{
-						$consultar3 = $this->Conexion->Consultar("SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$_POST["moneda"]."' AND monedacompra='".$datos[0]."'");
-						//return "SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$_POST["moneda"]."' AND monedacompra='".$datos[0]."'";
-						$tasa = $this->Conexion->Recorrido($consultar3)[0];
-						
-						 $pago = $pago*$tasa;
-						$dauda += $pago;
-						//return "SELECT * FROM tasas WHERE monedaventa='".$usuarios["iso_moneda"]."' AND monedacompra='".$datos[0]."'";
-					}
-
-				}
-					
-				$usd =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$_POST["moneda"]))->{'data'};
-				$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-				$ganancia = $dauda;
-				$gananciabtc = $ganancia/$usd;
-				$gananciabtc = $gananciabtc/$btcprecio;
-				$consultarmoneda = $this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$_POST["pais"]."' AND iso_moneda='".$_POST["moneda"]."'");
-				$decimalesmoneda = $this->Conexion->Recorrido($consultarmoneda)[0];
+				
 			}else{
 				$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
 				if($usuarios = $this->Conexion->Recorrido($consultar)){
-					$sql = "SELECT monedacompra,SUM(montocompra),usuarios.porcentaje,decimalesmoneda FROM intercambios LEFT JOIN usuarios ON usuario=intermediario LEFT JOIN paises ON paises.iso_moneda=intercambios.monedacompra AND paises.receptor IS NOT NULL WHERE intermediario='".$_POST["usuario"]."' ".$fechapago." GROUP BY monedacompra ORDER BY intercambios.solicitud DESC";
-					
-					$consultar2 =  $this->Conexion->Consultar($sql);
-					
-					while($datos = $this->Conexion->Recorrido($consultar2)){
-						
-						$pago = $datos[1]*$datos["porcentaje"];
-						$pago = $pago/100;
-						if($datos[0]==$usuarios["iso_moneda"]){
-							$dauda += $pago;
-						}else{
-							$consultar3 = $this->Conexion->Consultar("SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$usuarios["iso_moneda"]."' AND monedacompra='".$datos[0]."'");
-							 $tasa = $this->Conexion->Recorrido($consultar3)[0];
-							 $pago = $pago*$tasa;
-							$dauda += $pago;
-						}
-
-					}
-					$usd = json_decode(file_get_contents("https://localbitcoins.com/api/equation/USD_in_".$usuarios["iso_moneda"]))->{'data'};
-					$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
-					$ganancia = $dauda;
-					$gananciabtc = $ganancia/$usd;
-					$gananciabtc = $gananciabtc/$btcprecio;	
-
-					$consultarmoneda = $this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$usuarios["pais"]."' AND iso_moneda='".$usuarios["moneda"]."'");
-					$decimalesmoneda = $this->Conexion->Recorrido($consultarmoneda)[0];
+					$pais = $usuarios["pais"];
+					$moneda = $usuarios["iso_moneda"];
 				}
-				
-			
-				
 			}
+			$consultar2 =  $this->Conexion->Consultar($sql);
+			while($datos = $this->Conexion->Recorrido($consultar2)){
+				$fecha = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT momento FROM pagos WHERE usuario='".$_POST["usuario"]."' AND monedascambiadas LIKE '%".$datos["iso_moneda"]."%' ORDER BY momento DESC LIMIT 1"))[0];
+
+				if($fecha==""){
+					$fecha = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT momento FROM intercambios WHERE intermediario='".$_POST["usuario"]."' AND monedacompra='".$datos["iso_moneda"]."'"))[0];
+				}
+
+				if($fecha==""){
+					$fecha = date("Y-m-d 00:00:00");
+				}
+
+				$consultar4 = $this->Conexion->Consultar("SELECT monedacompra,SUM(montocompra),usuarios.porcentaje FROM intercambios LEFT JOIN usuarios ON usuario=intermediario WHERE intermediario='".$_POST["usuario"]."' AND momento >= '".$fecha."' AND monedacompra='".$datos["iso_moneda"]."' GROUP BY monedacompra");
+				$cantidad = $this->Conexion->Recorrido($consultar4);
+				
+				//return  "SELECT monedacompra,SUM(montocompra),usuarios.porcentaje,decimalesmoneda FROM intercambios LEFT JOIN usuarios ON usuario=intermediario WHERE intermediario='".$_POST["usuario"]."' AND momento >= '".$fecha."' AND monedacompra='".$datos["iso_moneda"]."' GROUP BY monedacompra"."sddsdsdsds";
+				$pago = $cantidad[1]*$cantidad[2];
+				$pago = $pago/100;
+				if($datos["iso_moneda"]==$moneda){
+					$dauda += $pago;
+				}else{
+					$consultar3 = $this->Conexion->Consultar("SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$moneda."' AND monedacompra='".$datos["iso_moneda"]."'");
+					//return "SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$_POST["moneda"]."' AND monedacompra='".$datos[0]."'";
+					$tasa = $this->Conexion->Recorrido($consultar3)[0];
+						
+					$pago = $pago*$tasa;
+					$dauda += $pago;
+						//return "SELECT * FROM tasas WHERE monedaventa='".$usuarios["iso_moneda"]."' AND monedacompra='".$datos[0]."'";
+				}
+			}
+			$tasas = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$moneda."'"));
+			//$tasas[0];
+			$usd = $tasas[0];//$btcprecio =  json_decode(file_get_contents("https://localbitcoins.com/api/equation/BTC_in_USD"))->{'data'};
+			$ganancia = $dauda;
+			$gananciabtc = $ganancia/$usd;
+			$consultarmoneda = $this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$pais."' AND iso_moneda='".$moneda."'");
+			$decimalesmoneda = $this->Conexion->Recorrido($consultarmoneda)[0];
 			
 			$retorno .= '"'.number_format($ganancia, $decimalesmoneda, ',', '.').'",';
-			$retorno .= '"'.number_format(  $gananciabtc    , 8, ',', '.'  ).'",';
-			$retorno .= '"'.number_format(  $ganancia    , $decimalesmoneda, '.', ''  ).'"';
+			$retorno .= '"'.number_format(  $gananciabtc    , 2, ',', '.'  ).'",';
+			$retorno .= '"'.number_format(  $ganancia    , $decimalesmoneda, '.', '').'"';
 			return $retorno."]";
 			
 		}
@@ -210,6 +193,63 @@
 			}else{
 				return $retorno."]";
 			}
+		}
+		private function pagodividido(){
+			$retorno = "[";
+			$ganancia = 0;
+			$gananciabtc = 0;
+			$pais = "";
+			$moneda = "";
+			
+			$dauda = 0;
+			$pago = 0;
+			$decimalesmoneda = 0;
+			$sql = "SELECT * FROM paises WHERE receptor IS NOT NULL GROUP BY iso_moneda";	
+			
+			if(isset($_POST["pais"])){
+				$pais = $_POST["pais"];
+				$moneda = $_POST["moneda"];
+				
+				
+			}else{
+				$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND usuarios.usuario='".$_POST["usuario"]."'");
+				if($usuarios = $this->Conexion->Recorrido($consultar)){
+					$pais = $usuarios["pais"];
+					$moneda = $usuarios["iso_moneda"];
+				}
+			}
+			$consultar2 =  $this->Conexion->Consultar($sql);
+			while($datos = $this->Conexion->Recorrido($consultar2)){
+				$fecha = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT momento FROM pagos WHERE usuario='".$_POST["usuario"]."' AND monedascambiadas LIKE '%".$datos["iso_moneda"]."%' ORDER BY momento DESC LIMIT 1"))[0];
+
+				if($fecha==""){
+					$fecha = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT momento FROM intercambios WHERE intermediario='".$_POST["usuario"]."' AND monedacompra='".$datos["iso_moneda"]."'"))[0];
+				}
+
+				if($fecha==""){
+					$fecha = date("Y-m-d 00:00:00");
+				}
+
+				$consultar4 = $this->Conexion->Consultar("SELECT monedacompra,SUM(montocompra),usuarios.porcentaje FROM intercambios LEFT JOIN usuarios ON usuario=intermediario WHERE intermediario='".$_POST["usuario"]."' AND momento >= '".$fecha."' AND monedacompra='".$datos["iso_moneda"]."' GROUP BY monedacompra");
+				$cantidad = $this->Conexion->Recorrido($consultar4);
+				
+				$pago = $cantidad[1]*$cantidad[2];
+				$pago = $pago/100;
+				if($datos["iso_moneda"]!=$moneda){
+					$consultar3 = $this->Conexion->Consultar("SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$moneda."' AND monedacompra='".$datos["iso_moneda"]."'");
+					$tasa = $this->Conexion->Recorrido($consultar3)[0];
+						
+					$pago = $pago*$tasa;
+				}
+				$consultarmoneda = $this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$pais."' AND iso_moneda='".$moneda."'");
+				$decimalesmoneda = $this->Conexion->Recorrido($consultarmoneda)[0];
+				if($pago>0){
+					$retorno .= '["'.$datos["iso_moneda"].'","'.number_format($pago, $decimalesmoneda, '.', '').'"],';
+				}
+			}
+			
+			return substr($retorno,0,strlen($retorno)-1)."]";
+			
 		}
 	}
 	new Datos();
