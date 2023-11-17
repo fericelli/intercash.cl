@@ -4,8 +4,9 @@
 		function __construct(){
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->operaciones();
-			echo $this->intercambios();
+			 echo $this->actualizarmonedapago();
+			// echo $this->operaciones();
+			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
 		}
 		private function operaciones(){
@@ -130,6 +131,54 @@
 			}catch(Exception $e){
 				
 			}
+		}
+		private function deudahonorarios(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE tipodeusuario='sociocomercial'");
+			while($usuarios = $this->Conexion->Recorrido($consultar)){
+				
+				$consultar1 = $this->Conexion->Consultar("SELECT * FROM pagos WHERE usuario='".$usuarios["usuario"]."' ORDER BY momento DESC LIMIT 1");
+				 $fecha = $this->Conexion->Recorrido($consultar1)[0];
+				$dauda = 0; 
+				if($fecha!=NULL){
+					echo $usuarios["usuario"]."   ".$usuarios["iso_moneda"]."   ".$fecha."<br>";
+					  $sql = "SELECT monedacompra,SUM(montocompra),usuarios.porcentaje,decimalesmoneda FROM intercambios LEFT JOIN usuarios ON usuario=intermediario LEFT JOIN paises ON paises.iso_moneda=intercambios.monedacompra AND paises.receptor IS NOT NULL WHERE intermediario='".$usuarios["usuario"]."' AND solicitud>'".$fecha."' GROUP BY monedacompra";
+					
+					$consultar2 =  $this->Conexion->Consultar($sql);
+					$cantidad = $this->Conexion->NFilas($consultar2)."<br>";
+					$pago = 0;
+					while($datos = $this->Conexion->Recorrido($consultar2)){
+						$pago = $datos[1]*$usuarios["porcentaje"];
+						$pago = $pago/100;
+						if($datos[0]==$usuarios["iso_moneda"]){
+							$dauda += $pago;
+						}else{
+							$consultar3 = $this->Conexion->Consultar("SELECT AVG(tasa) FROM tasas WHERE monedaventa='".$usuarios["iso_moneda"]."' AND monedacompra='".$datos[0]."'");
+							$tasa = $this->Conexion->Recorrido($consultar3)[0];
+							$pago = $pago*$tasa;
+							$dauda += $pago;
+							
+							
+							//return "SELECT * FROM tasas WHERE monedaventa='".$usuarios["iso_moneda"]."' AND monedacompra='".$datos[0]."'";
+						}
+
+						echo $datos[1]."-----".$usuarios["iso_moneda"]."----".$tasa."-------------".$pago."<br>";
+
+						
+					}
+					
+					echo $dauda."<br>";
+				}
+				
+				
+			}
+		}
+		private function actualizarmonedapago(){
+			$monedas = "";
+			$consultar = $this->Conexion->Consultar("SELECT iso_moneda FROM paises WHERE receptor IS NOT NULL");
+			while($datos = $this->Conexion->Recorrido($consultar)){
+				$monedas .= $datos[0]." ";
+			}
+			$this->Conexion->Consultar("UPDATE pagos SET monedascambiadas='".$monedas."'") ;
 		}
 	}
 	new Reparar();
