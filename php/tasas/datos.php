@@ -24,7 +24,7 @@
                 while($tasa = $this->Conexion->Recorrido($consulta)){
 					$usdtorigen = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$tasa["iso_moneda"]."' AND paisorigen='".$tasa["iso2"]."'"))[0];
 					
-					$retorno .= '{"iso_pais":"'.$tasa["iso2"].'","moneda":"'.$tasa["iso_moneda"].'","nombre":"'.$tasa["nombre"].'","usd":"'.$usdtorigen.'","usdt":"'.$usdtorigen.'","devaluacion":"'.$tasa["porcentajedeva"].'","decimalesmoneda":"'.$tasa["decimalesmoneda"].'"},';
+					$retorno .= '{"iso_pais":"'.$tasa["iso2"].'","moneda":"'.$tasa["iso_moneda"].'","nombre":"'.$tasa["nombre"].'","usd":"'.number_format($usdtorigen,$tasa["decimalesmoneda"],".","").'","usdt":"'.number_format($usdtorigen,$tasa["decimalesmoneda"],".","").'","devaluacion":"'.$tasa["porcentajedeva"].'","decimalesmoneda":"'.$tasa["decimalesmoneda"].'"},';
                 
 				}
 				
