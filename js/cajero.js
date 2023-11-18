@@ -463,11 +463,7 @@ $("button").eq(1).on("click", function(e){
                 
                 setTimeout(function(){
                     $(".retiro").css("display","none");
-                    for(i=0;i<$(".item").length;i++){
-                        if($(".item").eq(i).attr("opcion")=="cajero"){
-                            $(".item").eq(i).trigger("click");
-                        }
-                    }
+                    $("select").trigger("change");
                 },2000)
             }
         })
