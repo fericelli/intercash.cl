@@ -25,6 +25,7 @@
                 $cantidadmoneda = number_format($_GET["cantidadmoneda"],$_GET["decimalmoneda"],".","");
                 $cantidadcripto = number_format($_GET["cantidadcripto"],$_GET["decimalcripto"],".","");
                 $arraymontos = ["pagado","recibido"];
+                $arraycantidad = [$cantidadmoneda,$cantidadcripto];
                 $tasa = number_format($_GET["cantidadmoneda"]/$_GET["cantidadcripto"],$_GET["decimalcripto"],".","");
                 $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,tasa,monedaintercambio,paisintercambio,montointercambio) VALUES ('".$_GET["cripto"]."','".$cantidadcripto."','compra','".$momento."','".str_replace(" ", "", $_GET["usuario"])."','".str_replace(" ", "", $_GET["usuario"])."','".$tasa."','".$_GET["moneda"]."','".$_GET["pais"]."','".$cantidadmoneda."')");
                 
@@ -49,7 +50,7 @@
                             $imagen = $carpeta."/".$arraymontos[$i].$ext;
                             $directorio = "imagenes/operaciones/compra/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/".$carpetas."/".$arraymontos[$i].$ext;
                             move_uploaded_file($_FILES[$i]['tmp_name'],$imagen);
-                            $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','0','compra','".$arraymontos[$i].$ext."','".$momento."','".$_GET["usuario"]."')");
+                            $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$arraycantidad[$i]."','compra','".$arraymontos[$i].$ext."','".$momento."','".$_GET["usuario"]."')");
                         }
                     }
                 }       
