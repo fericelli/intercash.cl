@@ -247,8 +247,11 @@
 					$retorno .= '["'.$datos["iso_moneda"].'","'.number_format($pago, $decimalesmoneda, '.', '').'"],';
 				}
 			}
-			
-			return substr($retorno,0,strlen($retorno)-1)."]";
+			if(strlen($retorno)>1){
+				return substr($retorno,0,strlen($retorno)-1)."]";
+			}else{
+				return $retorno."]";
+			}
 			
 		}
 	}
