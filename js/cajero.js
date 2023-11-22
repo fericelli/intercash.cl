@@ -125,7 +125,6 @@ $("#usuari").focusout(function(){
         var usuariodatos = localStorage.usuario;
         $("#usuari").val(localStorage.usuario);
     }
-    console.log(usuariodatos);
     pais = $('select option:selected').attr('pais');
     moneda = $('select option:selected').attr('moneda');
     texto = $('select option:selected').text();
@@ -501,7 +500,6 @@ $("select").on("change",function(){
         success:function(respuesta){
             json = JSON.parse(respuesta);
             
-            console.log(json);
             /*monedas = "<option  pais='"+pais+"' moneda='"+moneda+"'>"+texto+"</option>";
             for(var i =0;i<json[0].length;i++){
                 monedas += "<option  pais='"+json[0][i].pais+"' moneda='"+json[0][i].moneda+"'>"+json[0][i].nombre+"-"+json[0][i].moneda+"</option>";

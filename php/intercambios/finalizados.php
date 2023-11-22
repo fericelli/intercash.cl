@@ -11,9 +11,9 @@
             $retorno = "";
             
             if($_POST["tipodeusuario"]=="administrador" AND trim($_POST["usuariosesion"])==$_POST["usuario"]){
-                $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE solicitud LIKE '".$_POST["fecha"]."%'");
+                $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE registro LIKE '".$_POST["fecha"]."%'");
             }else{
-                $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE solicitud LIKE '".$_POST["fecha"]."%' AND intermediario='".$_POST["usuario"]."'");
+                $consultar =  $this->Conexion->Consultar("SELECT * FROM intercambios WHERE registro LIKE '".$_POST["fecha"]."%' AND intermediario='".$_POST["usuario"]."'");
             }
             
 
@@ -25,7 +25,7 @@
                     "cantidadrecibir":"'.$intercambios["montocompra"].'",
                     "intermadiario":"'.$intercambios["intermediario"].'",';
                     $retorno .= '"imegen":[';
-                    $consultarscreensho = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE (solicitud='".$intercambios["solicitud"]."' OR registro='".$intercambios["solicitud"]."') AND usuario='".$intercambios["intermediario"]."'");
+                    $consultarscreensho = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE registro='".$intercambios["registro"]."' AND usuario='".$intercambios["intermediario"]."' AND tipo='envios'");
                     $cantidad = 0;
                     while($screenshot = $this->Conexion->Recorrido($consultarscreensho)){
                         $cantidad ++;
