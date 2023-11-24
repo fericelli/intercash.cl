@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->actualizarmonedapago();
+			 echo $this->simplificarregistroa();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -179,6 +179,24 @@
 				$monedas .= $datos[0]." ";
 			}
 			$this->Conexion->Consultar("UPDATE pagos SET monedascambiadas='".$monedas."'") ;
+		}
+		private function simplificarregistroa(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes");
+			while($solicitudes = $this->Conexion->Recorrido($consultar)){
+				$consultar1 = $this->Conexion->Consultar("SELECT * FROM screenshot WHERE solicitud='".$solicitudes["momento"]."'");
+				
+				echo "solicitud ".$solicitudes["momento"]." ".$solicitudes["usuario"]."<br>";
+				if($screenshot = $this->Conexion->Recorrido($consultar1)){
+					echo "screnshoot ".$this->Conexion->Consultar("UPDATE screenshot SET registro='".$solicitudes["momento"]."',tipo='envios' WHERE solicitud='".$solicitudes["momento"]."' ")."<br>";
+				}
+				$this->Conexion->Consultar("UPDATE operaciones SET tipo='envios' WHERE solicitud='".$solicitudes["momento"]."'");
+				/*$consultar2 = $this->Conexion->Consultar("SELECT * FROM intercambios WHERE solicitud='".$solicitudes["momento"]."'");
+				if($intercambios = $this->Conexion->Recorrido($consultar2)){
+					echo "intercambios ".$this->Conexion->Consultar("UPDATE intercambios SET registro='".$solicitudes["momento"]."' WHERE solicitud='".$solicitudes["momento"]."'")."<br>";
+
+				}*/
+				
+			}
 		}
 	}
 	new Reparar();
