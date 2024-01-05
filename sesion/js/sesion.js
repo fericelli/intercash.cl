@@ -15,7 +15,7 @@ $(document).on("ready",function(){
     
     $(".item").eq(0).append('<div class="selectormenu"></div>');
     
-
+   
     
     btn.addEventListener("click", e =>{
         menu.classList.toggle("menu-expanded");
@@ -24,9 +24,9 @@ $(document).on("ready",function(){
     });
    
     $(".item").on("click",function(){ 
-            if(($(".contenido-imagen").css("display")=="none" && $("#main-container").html()!="") || ($(".contenido-imagen").css("display")!="none" && $("#main-container").html()!="")){
-                $(".contenido-screeshot").remove();
-                $(".script").remove();
+        if(($(".contenido-imagen").css("display")=="none" && $("#main-container").html()!="") || ($(".contenido-imagen").css("display")!="none" && $("#main-container").html()!="")){
+            $(".contenido-screeshot").remove();
+            $(".script").remove();
                 
                 $("#main-container").html("");
     
@@ -48,7 +48,83 @@ $(document).on("ready",function(){
                             $(".contenido-imagen").css("display","none");
                         },
                         success:function(data){
-                            $("#main-container").html("afwfafwwaf");
+                            console.log(JSON.parse(data));
+                            html += '<div class="row m-0" style="justify-content:space-around">'; 
+                            html += '<div class="col-md-7 col-12">'; 
+                            html += '<div class="row">'; 
+                            html += '<div class="col-12 mb-4">'; 
+                            html += '<div class="row box-right">'; 
+                            html += '<div class="col-md-8 ps-0 ">'; 
+                            html += '<p class="ps-3 textmuted fw-bold h6 mb-0">TOTAL RECIEVED</p>'; 
+                            html += '<p class="h1 fw-bold d-flex">'; 
+                            html += '<span class=" fas fa-dollar-sign textmuted pe-1 h6 align-text-top mt-1"></span><span id="entero"><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif"></span><span id="decimal" class="textmuted"></span>'; 
+                            html += '</p>'; 
+                            html += '<p class="ms-3 px-2 bg-green">+10% since last month</p>'; 
+                            html += '</div>'; 
+                            html += '<div class="col-md-4">'; 
+                            html += '<p class="p-blue">'; 
+                            html += '<span class="fas fa-circle pe-2"></span>Equivalente en Dólares'; 
+                            html += '</p>'; 
+                            html += '<p class="fw-bold mb-3">';
+                            html += '<span class="fas fa-dollar-sign pe-1"></span><span id="enterobtc"><img style="margin: auto; width:30px;height:30px" src="../imagenes/carga.gif"></span> <span id="decimalbtc" class="textmuted"></span>'; 
+                            html += '</p>'; 
+                            html += '<p style="display:none" class="p-org">';
+                            html += '<span class="fas fa-circle pe-2"></span>On drafts';
+                            html += '</p>';
+                            html += '<p style="display:none" class="fw-bold">';
+                            html += '<span class="fas fa-dollar-sign pe-1"></span>00<span class="textmuted">.00</span>';
+                            html += '</p>'; 
+                            html += '</div>'; 
+                            html += '<div class="col-12 px-0 mb-4">'; 
+                            html += '<div class="opciones" ><a >Depositar</a><a >Retirar</a></div>'; 
+                            html += '<form class="bg-blue p-2">'; 
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Ingrese la cantidad</label><input style="width:45%" type="text" id="cantidadeposito" paceholder="Ingrese la cantatidad"></p>'; 
+                            html += '<label class="mensaje-error mensajedeposito">Ingresa una cantidad</label>';
+                            html += '<label class="mensaje-error mensajedeposito">Debe ser numerica</label>';
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Cuenta</label><input style="width:45%" paceholder="Digite la cuenta" id="cuent" list="cuentas"><datalist id="cuentas"></datalist></p>'; 
+                            html += '<label class="mensaje-error mensajedeposito">Seleccione una cuenta</label>';
+                            html += '<div class="contenidocuenta" style="display:flex;flex-direction:column">';
+                            html += '<lable style="display:flex;flex-direction:row"><b>Banco : </b><p id="banco"></p></lable>';
+                            html += '<lable style="display:flex;flex-direction:row"><b>Cuenta : </b><p id="cuenta"></p></lable>';
+                            html += '<lable style="display:flex;flex-direction:row"><b>Tipo de cuenta : </b><p id="tipocuenta" ></p></lable>';
+                            html += '<lable style="display:flex;flex-direction:row"><b>Nombre : </b><p id="nombres"></p></lable>';
+                            html += '<lable style="display:flex;flex-direction:row"><b>Identificacion : </b><p id="identificacion"></p></lable>';
+                            html += '</div>'
+                            html += '<p class="h8 textmuted"><input class="file" name="file" type="file"></p>';
+                            html += '<label class="mensaje-error mensajedeposito">Ingrese el comprobante</label>';
+                            html += '<label class="mensaje-error error">Error al solicitar</label>';
+            
+                            
+                            html += '<label class="mensaje-correcto enviado">Solicitud de deposito enviada</label>';
+                            html += '<button class="" style="border: none;margin-top:10px;padding:5px">Depositar</button><img class="imgcarga imagensolicitud" src="imagenes/carga.gif"></form>';
+                            html += '<form  class="bg-blue">';
+                            html += '<div style="" class="p-2">';
+                            html += '<p class="h8 textmuted" id="contenedorpendiente" style="display:flex;flex-direction:column"></p>'; 
+                            
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Cantidad a retirar</label><label id="cantidadenvio"></label></p>'; 
+                            html += '<label class="mensaje-error mensajeretiro">Ingrese una cantidad</label>';
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Cuenta</label><input style="width:45%" paceholder="Digite la cuenta" id="cuentsenvios" list="cuentasenvio"><datalist id="cuentasenvio"></datalist></p>'; 
+                            html += '<label class="mensaje-error mensajeretiro">Ingrese la cuenta</label>';
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Banco</label><input id="bancoenvio" class="bloquecuen" style="width:45%" type="text" list="bancos"><datalist id="bancos"></datalist></p>';
+                            html += '<label class="mensaje-error mensajeretiro">Seleccione un banco</label>';
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Tipo de cuenta</label><input style="width:45%" class="bloquecuen" paceholder="tipo de cuenta" id="ticuenenvio" list="tipocuentaenvio"><datalist id="tipocuentaenvio"></datalist></p>';
+                            html += '<label class="mensaje-error mensajeretiro">Seleccione un tipo de cuenta</label>';
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>Nombre y Apellido</label><input id="nombreenvio" class="bloquecuen" style="width:45%" type="text"></p>';
+                            html += '<label class="mensaje-error mensajeretiro">Ingrese los nombre</label>';
+                            html += '<p class="h8 textmuted" style="display:flex;flex-direction:column"><label>N° Identificacion</label><input id="identificacionenvio" class="bloquecuen" style="width:45%" type="text"></p>';
+                            html += '<label class="mensaje-error mensajeretiro">Ingrese la identificacion</label>';
+                            
+                            html += '<label class="mensaje-error retiro errorretiro">Error al solicitar</label>';
+                            html += '<label class="mensaje-correcto retiro enviadoretiro">Solicitud de retiro enviada</label>';
+                            html += '<button style="border: none;margin-top:10px;padding:5px">Retirar</button><img class="imgcarga imagensolicitud" src="imagenes/carga.gif"></form>';
+                            
+                            html += '</div></div></div></div></div></div></div>';
+                                        
+                                    
+                                
+                            
+                            html += '<script type="text/javascript" src="./../js/patrimonio.js"></script>';
+                            $("#main-container").html(html);
                             /*html = "<div class='table-responsive'><h2>Inversion satoshis</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Satoshis Invertido</th><th scope='col'>Ganancia Satoshi</th><th scope='col'>Dinero Disponible</th><th scope='col'>Dinero Cambiado</th></tr></thead><tbody>";
                             for(i=0;i<JSON.parse(data).length;i++){
                                 html += "<tr><td>"+JSON.parse(data)[i].moneda+"</td><td>"+JSON.parse(data)[i].invertidosatoshi+"</td><td>"+JSON.parse(data)[i].gananciasatoshis+"</td><td>"+JSON.parse(data)[i].dinerodisponoble+"</td><td>"+JSON.parse(data)[i].dineroenviado+"</td></tr>";
@@ -612,7 +688,6 @@ $(document).on("ready",function(){
                             $(".imagencargasolicitud").css("display","none");
                         },
                         success:function(data){
-                            
                             html = "<div class='barrafiltros'>";
                             if(localStorage.tipousuario=="administrador"){
                                 html += '<input type="text" name="usuario" id="usuari" list="usuario" placeholder="Ingrese su Usuario o Correo">';
@@ -625,14 +700,18 @@ $(document).on("ready",function(){
                             html += '<div id="pagar" style="height:35px; padding:0px 10px;margin:auto;cursor:pointer;border:1px solid #000;display:flex" ><i class="icono-bitcoin"></i><div>Pagar</div></div>'
                               
                             html += '</div>';
-                            html += "<div class='table-responsive'><h2>Debito</h2><table class='table table-striped table-sm'><thead><tr><th scope='col'>Moneda</th><th scope='col'>Dinero</th><th scope='col'>Imagenes</th><th scope='col'>Informaion</th><th></th></tr></thead><tbody>";
+                            html += "<div class='table-responsive'><h2>Debito</h2><table class='table table-striped table-sm'><thead style='text-align:center'><tr><th scope='col'>Moneda</th><th scope='col'>Dinero</th><th scope='col'>Tipo</th><th scope='col'>Informaion</th><th></th></tr></thead><tbody>";
                             for(i=0;i<JSON.parse(data).length;i++){
-                                html += "<tr><td>"+JSON.parse(data)[i].monedainversion+"</td>";
-                                html += "<td>"+JSON.parse(data)[i].cantidadgastada+"</td>";
-                                html += "<td><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-descargar comprobante' imagen='"+JSON.parse(data)[i].directorio+"' title='Descargar'></div></td>";
-                                    
-                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-cartamenu informacion' registro='"+JSON.parse(data)[i].momento+"' title='Informacion'></div></td>"; 
-                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;heigth:30px'  class='iconos icono-cartamenu eliminar' registro='"+JSON.parse(data)[i].momento+"' title='Eliminar'></div></td>"; 
+                                html += "<tr><td>"+JSON.parse(data)[i][2]+"</td>";
+                                html += "<td>"+JSON.parse(data)[i][3]+"</td>";
+                                if(JSON.parse(data)[i][1]=="gastos"){
+                                    html += "<td><div style='cursor:pointer;margin: auto; width:30px;height:30px'  class='iconos icono-gastar'></div></td>";
+                                }else{
+                                    html += "<td><div style='cursor:pointer;margin: auto; width:30px;height:30px'  class='iconos icono-pagar'></div></td>";
+                                }
+                                   
+                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;height:30px'  class='iconos icono-cartamenu informacion' tipo='"+JSON.parse(data)[i][1]+"' registro='"+JSON.parse(data)[i][0]+"' title='Informacion'></div></td>"; 
+                                html += "<td ><div style='cursor:pointer;margin: auto; width:30px;height:30px'  class='iconos icono-borrar eliminar' tipo='"+JSON.parse(data)[i][1]+"' registro='"+JSON.parse(data)[i][0]+"' usuario='"+JSON.parse(data)[i][5]+"' title='Eliminar'></div></td>"; 
                                 
                                 html += "</tr>";
                             

@@ -10,9 +10,9 @@
         private function retorno(){
             try{
                 
-                $preciocompra = number_format(floatval($_POST["usdt"]/$_POST["cantidadcripto"]),$_POST["decimales"],".","");
-
-                $this->Conexion->Consultar("INSERT INTO operacionescripto (moneda,cantidad,cantidadusdt,tasa,usuario,momento) VALUES ('".$_POST["cripto"]."','".$_POST["cantidadcripto"]."','".$_POST["usdt"]."','".$preciocompra."','".$_POST["usuario"]."','".date("Y-m-d H:i:s")."')");
+                $preciocompra = number_format(floatval($_POST["usdt"]/$_POST["cantidadcripto"]),2,".","");
+                //return "INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,tasa,monedaintercambio,montointercambio) VALUES ('".$_POST["cripto"]."','".number_format(floatval($_POST["cantidadcripto"]),$_POST["decimales"],".","")."','compra'.'".date("Y-m-d H:i:s")."','".$_POST["usuario"]."','".$_POST["usuario"]."','".$preciocompra."','USDT','".$_POST["usdt"]."')";
+                $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,tasa,monedaintercambio,montointercambio) VALUES ('".$_POST["cripto"]."','".number_format(floatval($_POST["cantidadcripto"]),$_POST["decimales"],".","")."','compra','".date("Y-m-d H:i:s")."','".$_POST["usuario"]."','".$_POST["usuario"]."','".$preciocompra."','USDT','".$_POST["usdt"]."')");
                 return '["Operacion agregada","success"]';
             }catch(Exception $e){
                 return '["Error","error"],["'.$e.'"]';

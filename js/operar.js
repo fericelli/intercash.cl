@@ -1,7 +1,6 @@
 var URLactual = window.location;
 var urlglobal = URLactual.href.replace("sesion/", "");
 if(typeof localStorage.usuario !== "undefined" ){
-
     if(localStorage.tipousuario=="administrador"){
         $.ajax({
             url:urlglobal+'usuarios/php/usuarios.php',
@@ -311,7 +310,6 @@ $("#paisodestin").focusout(function(){
                 $("#tipodecuent").css("display","flex");
             },
             success:function(respuesta){
-                json = JSON.parse(respuesta);
                 html = "";
                 html1 = "";
                 for(i=0;i<json.bancos.length;i++){
@@ -324,7 +322,6 @@ $("#paisodestin").focusout(function(){
                 $("#tipodecuenta").html(html1);
             }
         });
-        console.log(receptor);
         if(receptor=="1"){
             $("#monedaintercambioenvio").append('<option moneda="'+moneda+'" decimal="'+decimales+'" value="'+nombremoneda+'"></option>');
         }
@@ -596,7 +593,6 @@ $("#tipoventa").on("change",function(){
     $("#tipoventa option:selected").each(function(){
         tipoventa = $(this).attr("opcion");
     });
-    console.log(tipoventa);
     $(".form-tipoventa").css("display","none");
     if(tipoventa=="envios"){
         $(".form-tipoventa").eq(0).css("display","flex");

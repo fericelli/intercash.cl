@@ -101,10 +101,10 @@
                     <div class="title"><span>Depositos</span></div>
                   </a>
                 </div>
-                <div class="item" opcion="pagos">
+                <div class="item" opcion="debitos">
                   <a>
                     <div class="icon"><i class="iconos icono-dollar-bill"></i></div>
-                    <div class="title"><span>Pagos</span></div>
+                    <div class="title"><span>Debitos</span></div>
                   </a>
                 </div>
                 <div class="item" opcion="vender">

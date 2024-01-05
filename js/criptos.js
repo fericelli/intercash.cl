@@ -81,13 +81,18 @@ $(".botons").on("click",function(){
                 $(this).css("display","none");
             },
             success:function(data){
+                console.log(JSON.parse(data));
                 if(typeof JSON.parse(data)[0][1] === "undefined"){
-                    $(".mensajesolicitud").eq(0).css("display","");
-                    $(".mensajesolicitud").eq(0).text(JSON.parse(data)[0][0]);
+                    $(".mensajesolicitud").eq(1).css("display","flex");
+                    $(".mensajesolicitud").eq(1).text(JSON.parse(data)[0][0]);
                 } else{
-                    $(".mensajesolicitud").eq(1).css("display","");
-                    $(".mensajesolicitud").eq(1).text(JSON.parse(data)[0]);
+                    $(".mensajesolicitud").eq(0).css("display","flex");
+                    $(".mensajesolicitud").eq(0).text(JSON.parse(data)[0]);
+                    $("input").val("");
                 }
+                setTimeout(function(){
+                    $(".mensajesolicitud").css("display","none");
+                },1000)
             }
         })
     }
