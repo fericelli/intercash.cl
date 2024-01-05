@@ -6,8 +6,8 @@
 		private $BaseDeDatos;
 		private $Conectar;
 		
-		function __construct(?string $BaseDeDato = "intercash.cl"){
-			$this->Conexiones("localhost","u956446715_root","n2CZ+zVjk9#R",$BaseDeDato);
+		function __construct(?string $BaseDeDato = "u956446715_intercash"){
+			$this->Conexiones("auth-db585.hstgr.io","u956446715_root","n2CZ+zVjk9#R",$BaseDeDato);
 			
 		}
 		private function Conexiones($S,$U,$C,$B){
