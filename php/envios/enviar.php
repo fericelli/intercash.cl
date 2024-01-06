@@ -70,7 +70,21 @@
                                 $cantidadregistro = $this->Conexion->NFilas($consultar2);
                                 if($cantidadregistro==1){
                                     if($operaciones = $this->Conexion->Recorrido($consultar2)){
+                                        if($operaciones["tasa"]==1){
+                                            $tasausdventa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes["monedadestino"]."'"))[0];
+                                            $decimalesmoneda = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso2='".$solicitudes["paisdestino"]."' AND iso_moneda='".$solicitudes["monedadestino"]."'"))[0];
+                                            $tasausdventa = number_format($tasausdventa,$decimalesmoneda,".","");
+                                            $cambio = number_format($_GET["cantidad"]/$tasausdventa,2,".","");
+                                            
+                                           // $tasausdcompra = number_format($modificar/$cambio,$solicitudes["decimalesmoneda"],".","");
+
+                                            $this->Conexion->Consultar("UPDATE operaciones SET moneda='USDT',monto='".$cambio."',tasa='".$tasausdventa."' WHERE momento='".$operaciones["momento"]."' AND usuario='".$operaciones["usuario"]."' AND registro='".$operaciones["registro"]."' AND tipo='envios'");
+                                            sleep(1);
+                                            $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,operador,tasa,monedaintercambio,paisintercambio,montointercambio) VALUES ('USDT','".$cambio."','compra','".date("Y-m-d H:i:s")."','".$_GET["operador"]."','".$tasausdventa."','".$solicitudes["monedadestino"]."','".$solicitudes["paisdestino"]."','".number_format($solicitudes["cantidadarecibir"],$decimalesmoneda,".","")."')");
+                                        }
                                         $this->Conexion->Consultar("UPDATE operaciones SET montointercambio=".$solicitudes["cantidadaenviar"]." WHERE usuario='".$operaciones["usuario"]."' AND registro='".$operaciones["registro"]."' AND tipo='envios'");
+                                            
+                                        
                                         $montoventa = $_GET["cantidad"];
                                     }
                                 }else{
