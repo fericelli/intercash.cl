@@ -127,13 +127,13 @@ $("#gastar").on("click",function(){
             $(".mensaje-error").eq(6).css("display","none");
         },3000)
     }
-    if($(".imagen").val()==""){
+    /*if($(".imagen").val()==""){
         validador ++;
         $(".mensaje-error").eq(7).css("display","flex");
         setTimeout(function(){
             $(".mensaje-error").eq(7).css("display","none");
         },3000)
-    }
+    }*/
 
     
     if(validador == 0){
