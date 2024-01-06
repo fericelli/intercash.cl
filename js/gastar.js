@@ -179,7 +179,7 @@ $("#gastar").on("click",function(){
 })
 
 $(".monto").keyup(function(){
-    if(($.isNumeric($(this).val())===false && $(this).val()!="") || $(this).val()==0){
+    if(($.isNumeric($(this).val())===false && $(this).val()!="")){
         $(this).val("");
         $(".mensaje-error").eq(2).css("display","flex");
         setTimeout(function(){
@@ -189,7 +189,7 @@ $(".monto").keyup(function(){
 })
 
 $(".cantidadintercambio").keyup(function(){
-    if(($.isNumeric($(this).val())===false && $(this).val()!="") || $(this).val()==0){
+    if(($.isNumeric($(this).val())===false && $(this).val()!="")){
         $(this).val("");
         $(".mensaje-error").eq(1).css("display","flex");
         setTimeout(function(){
