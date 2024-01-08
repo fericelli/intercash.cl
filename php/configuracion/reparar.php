@@ -255,7 +255,7 @@
 			$fecha = "2023-12-31 23:59:40";
 			$monedas = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			$cantidad = 0;
-			while($moneda=$this->Conexion->Recorrido($monedas)){
+			/*while($moneda=$this->Conexion->Recorrido($monedas)){
 				 $cantidadmonedainvertida = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND moneda='USDT' AND  tipo='envios' AND registro<='2024-01-01 00:00:00'"))[0];
 				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND operacion='compra' AND momento<='2024-01-01 00:00:00'"))[0];
 				
