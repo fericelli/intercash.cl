@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->asignartasaenvio();
+			 echo $this->reiniciar();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -243,25 +243,38 @@
 			$decimalesusdt = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='USDT'"))[0];
 			$decimalesbtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='BTC'"))[0];
 			
-			$usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT-$cantidadcompradaUSDTBTC),$decimalesusdt,".","");
-			$btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
-			return $usdtporcomprar ."     ".$btcporcomprar;
-
-			$monedas = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL"));
-			while($moneda=$monedas){
-				$cantidadmonedainvertida = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND tipo='envios'"))[0];
-				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND operacion='compra'"))[0];
+			 $usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
+			 $btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
+			 
+			 $usdtdispnible =0;
+			$usdtdisponibles = $cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC;
+			if($usdtporcomprar<0){
+				$usdtdispnible = ABS($usdtporcomprar);
+			}
+			//return $usdtdispnible ."     ".$btcporcomprar;
+			$fecha = "2023-12-31 23:59:40";
+			$monedas = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+			$cantidad = 0;
+			while($moneda=$this->Conexion->Recorrido($monedas)){
+				 $cantidadmonedainvertida = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND moneda='USDT' AND  tipo='envios' AND registro<='2024-01-01 00:00:00'"))[0];
+				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND operacion='compra' AND momento<='2024-01-01 00:00:00'"))[0];
 				
+				$porcomprar = number_format(floatval($cantidadmonedainvertida-$cantidadcomprada),$moneda["decimalesmoneda"],".","");
+				if($porcomprar > 0){
+					$tasa = number_format($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(tasa) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND moneda='USDT' AND operacion='compra'"))[0],$moneda["decimalesmoneda"],".","");
+					$usdt = number_format(floatval($porcomprar/$tasa),$decimalesusdt,".","");                                               
+					sleep(1);
+					
+					$momento = date("Y-m-d H:i:s",strtotime($fecha."-1 second"));
+					echo  $moneda["iso_moneda"]."-------------- ".$porcomprar." ------------".$tasa." ---------------  ".$usdt."----------------- ".$usdtporcomprar."<br>";
+					$fecha = $momento ;
+					$cantidad += $usdt;
+					 $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,tasa,monedaintercambio,paisintercambio,montointercambio) VALUES ('USDT','".$usdt."','compra','".$momento."','javier','javier','".$tasa."','".$moneda["iso_moneda"]."','".$moneda["iso2"]."','".$porcomprar."')");
+				}
 				
-				
-				$consultar = $this->Conexion->Consultar("SELECT SUM(monto),AVG(tasa),SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$moneda["iso_moneda"]."' AND paisintercambio='".$moneda["iso2"]."' AND moneda='USDT' AND tipo='envios'");
-				$resultado = $this->Conexion->Recorrido($consultar);   
-				$cantidadusdt = $resultado[0];       
-				$tasa = $resultado[1];                                                     
-				return $moneda["iso_moneda"]." ".number_format($cantidadusdt,$decimalesusdt,".","")." ".$tasa."";
 			
 			}
-
+			//return $cantidad;*/
 
 			$usdtporcomprar =  number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
 			$btcporcomprar = number_format(floatval($cantidadinvertidoBTC - $cantidadcompradaBTC),$decimalesbtc,".","");
