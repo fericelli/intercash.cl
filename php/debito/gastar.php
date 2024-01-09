@@ -14,7 +14,7 @@
                 $tasa = number_format($_GET["gastopais"]/$_GET["cantidadgasto"],2,".","");
                 $this->Conexion->Consultar("INSERT INTO gastos (momento,moneda,cantidad,descripcion,usuario,pais) VALUES ('".$gastos."','".$_GET["monedapago"]."',".$_GET["gastopais"].",'".$_GET["descripcion"]."','".$_GET["usuario"]."','".$_GET["pais"]."')");
                 if($tasa==1){
-                    $tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$_GET["monedagasto"]."'"))[0];
+                    $tasa = number_format($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$_GET["monedagasto"]."'"))[0],2,".","");
                     $cantidad = number_format($_GET["gastopais"]/$tasa,2,".","");
                     $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo) VALUES ('".$_GET["monedagasto"]."','".$cantidad."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["usuario"]."','".$gastos."','".$tasa."','".$_GET["monedapago"]."','".$_GET["pais"]."','".$_GET["gastopais"]."','gastos')");
                 }else{
