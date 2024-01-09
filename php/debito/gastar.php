@@ -11,7 +11,7 @@
 		private function retorno(){
             try{
                 $gastos = date("Y-m-d H:i:s");
-                $tasa = number_format($_GET["gastopais"]/$_GET["cantidadgasto"],$_GET["decimalgasto"],".","");
+                $tasa = number_format($_GET["gastopais"]/$_GET["cantidadgasto"],2,".","");
                 $this->Conexion->Consultar("INSERT INTO gastos (momento,moneda,cantidad,descripcion,usuario,pais) VALUES ('".$gastos."','".$_GET["monedapago"]."',".$_GET["gastopais"].",'".$_GET["descripcion"]."','".$_GET["usuario"]."','".$_GET["pais"]."')");
                 if($tasa==1){
                     $tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$_GET["monedagasto"]."'"))[0];
