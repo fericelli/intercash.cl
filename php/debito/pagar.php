@@ -22,15 +22,17 @@
                }else{
                     try{
 						$tasa = number_format($_GET["gastopais"]/$_GET["cantidadgasto"],$_GET["decimalgasto"],".","");
-                        if($tasa==1){
+                        if($_GET["monedagasto"]==$_GET["monedapago"]){
 							$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$_GET["monedagasto"]."'"))[0];
 							$tasa = number_format($tasa,$_GET["decimalgasto"],".","");
 							$cantidad = number_format($_GET["gastopais"]/$tasa,2,".","");
 
 							$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo) VALUES ('USDT','".$cantidad."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuariocobro"]."','".$_GET["usuario"]."','".$_GET["momento"]."','".$tasa."','".$_GET["monedapago"]."','".$_GET["pais"]."','".$_GET["gastopais"]."','pagos')");
-							
+                            sleep(1);
+                            $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo) VALUES ('USDT','0','compra','".date("Y-m-d H:i:s")."','".$_GET["usuariocobro"]."','".$_GET["usuario"]."','".$_GET["momento"]."','".$tasa."','".$_GET["monedapago"]."','".$_GET["pais"]."','".$_GET["gastopais"]."','pagos')");
+                           
 						}else{
-							$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo) VALUES ('".$_GET["monedagasto"]."','".$_GET["cantidadgasto"]."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuariocobro"]."','".$_GET["usuario"]."','".$_GET["momento"]."','".$tasa."','".$_GET["monedapago"]."','".$_GET["pais"]."','".$_GET["gastopais"]."','pagos')");
+							$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo) VALUES ('USDT,'".$_GET["cantidadgasto"]."','venta','".date("Y-m-d H:i:s")."','".$_GET["usuariocobro"]."','".$_GET["usuario"]."','".$_GET["momento"]."','".$tasa."','".$_GET["monedapago"]."','".$_GET["pais"]."','".$_GET["gastopais"]."','pagos')");
                         }
 						
 						

@@ -15,68 +15,80 @@
 
 			$cantidadinvertidaUSDT = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='envios'"))[0]);
 			$cantidadcompradaUSDT =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND operacion='compra'"))[0]);
+			$cantidadcompradaUSDTBTC =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='USDT' AND operacion='compra'"))[0]);
 			$cantidadinvertidoBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND tipo='envios'"))[0]);
 			$cantidadcompradaBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND operacion='compra'"))[0]);
 			$decimalesusdt = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='USDT'"))[0];
 			$decimalesbtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='BTC'"))[0];
-			$gananciaUSDT = number_format($cantidadcompradaUSDT-$cantidadinvertidaUSDT,$decimalesusdt,".","");
-			$gananciaBTC = number_format($cantidadcompradaBTC-$cantidadinvertidoBTC,$decimalesbtc,".","");
 			
-			
+			 $usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
+			   $btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
+			 
+			 
+			$btc = number_format(floatval($cantidadcompradaBTC-$cantidadinvertidoBTC),$decimalesbtc,".","");
+			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC),$decimalesusdt,".","");
+			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
+			//
+			//return "     ".$btc."  ".$usdt."  ".$tasa;
 
-			if($gananciaUSDT<0){
+			/*if($gananciaUSDT<0){
 				$gananciaUSDT = 0;
 			}
 			if($gananciaBTC<0){
 				$gananciaBTC = 0;
-			}
+			}*/
 
 			
 			$btcusdt = file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$gananciaUSDT."");
 			
-			$preciobtc = number_format(floatval($gananciaUSDT/$btcusdt),$decimalesusdt,".","");
+			$preciobtc = number_format(floatval($btc/$btcusdt),$decimalesusdt,".","");
 
-			$usdtbtc = number_format(floatval($gananciaUSDT*$btcusdt),$decimalesusdt,".","");
+			$usdtbtc = number_format(floatval($usdt*$btcusdt),$decimalesusdt,".","");
 
 			$monedas[0] = [];
 			$monedas[1] = [];
 			
 			
 
-			array_push($monedas[0],"BTC",number_format($cantidadinvertidoBTC,$decimalesbtc,".",""),$usdtbtc);
+			array_push($monedas[0],"BTC",number_format($btc,$decimalesbtc,".",""));
 			$cantidad ++;
-			array_push($monedas[1],"USDT",number_format($cantidadinvertidaUSDT,$decimalesusdt,".",""),$btcusdt);
+			array_push($monedas[1],"USDT",number_format($usdt,$decimalesusdt,".",""));
 			$cantidad ++;
-			
+			//return $monedas;
 			
 			
 			//var_dump($monedas);exit;
 			$totalusdt = $gananciaUSDT;
 			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($paises = $this->Conexion->Recorrido($consultar1)){
-				
-				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios'"))[0]),$paises["decimalesmoneda"],".","");
-				$cantidadcambiada = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra'"))[0]),$paises["decimalesmoneda"],".","");
+				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios' "))[0]),$paises["decimalesmoneda"],".","");
+				$cantidadcambiada = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' "))[0]),$paises["decimalesmoneda"],".","");
+				//echo  $paises["iso_moneda"]."--".$cantidadadquirida."  ".$cantidadcambiada."<br>";
 
 				$totalmoneda = number_format(floatval($cantidadadquirida-$cantidadcambiada),$paises["decimalesmoneda"],".","");
-				if($totalmoneda>0){
-					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$paises["iso_moneda"]."'"))[0];
-					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
-					$monedas[$cantidad] = [];
+				$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$paises["iso_moneda"]."'"))[0];
+				$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
+				$monedas[$cantidad] = [];
+				//if($totalmoneda>0){
 					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
-					$cantidad++;
-					$totalusdt += $valorusdt;
-				}
+				//}else{
+					//array_push($monedas[$cantidad],$paises["iso_moneda"],0,0);
+				//}
+				$cantidad++;
+				$totalusdt += $valorusdt;
+				
 			}
-			return $monedas;
-			$btcusdt = file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$totalusdt."");
+			
+			$btcusdt =number_format(floatval($totalusdt/$preciobtc),$decimalesbtc,".",""); //;file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$totalusdt."");
 			
 			$totalbtc =  number_format(floatval($btcusdt+$gananciaBTC),$decimalesbtc,".","");
 
 			$totalusdt = number_format(floatval($totalusdt),$decimalesusdt,".","");
 			
+			
+			$cantidadcompradaBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND operacion='compra'"))[0]);
 			 
-			return $totalusdt."  ".$totalbtc;
+			return $monedas;
 			
 			
 		} 
