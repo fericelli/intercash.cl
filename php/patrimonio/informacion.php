@@ -86,9 +86,17 @@
 			$totalusdt = number_format(floatval($totalusdt),$decimalesusdt,".","");
 			
 			
-			$cantidadcompradaBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND operacion='compra'"))[0]);
-			 
-			return $monedas;
+			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='gastos'"))[0]);
+			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='pagos'"))[0]);
+
+			$debito = [];
+			$debito[0]= [];
+			$debito[1]= [];
+
+			
+			array_push($debito[0],"USDT","gastos",$gastos);
+			array_push($debito[1],"USDT","pagos",$pagos);
+			return [$monedas,$debito];
 			
 			
 		} 
