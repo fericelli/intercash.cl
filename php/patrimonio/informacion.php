@@ -94,8 +94,8 @@
 			$debito[1]= [];
 
 			
-			array_push($debito[0],"USDT","gastos",$gastos);
-			array_push($debito[1],"USDT","pagos",$pagos);
+			array_push($debito[0],"USDT","gastos",number_format(floatval($gastos),$decimalesusdt,".",""));
+			array_push($debito[1],"USDT","pagos",number_format(floatval($pagos),$decimalesusdt,".",""));
 			return [$monedas,$debito];
 			
 			
