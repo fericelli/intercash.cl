@@ -58,7 +58,7 @@
 			
 			
 			//var_dump($monedas);exit;
-			$totalusdt = $gananciaUSDT;
+			$totalusdt = $usdt;
 			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($paises = $this->Conexion->Recorrido($consultar1)){
 				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios' "))[0]),$paises["decimalesmoneda"],".","");
@@ -79,27 +79,42 @@
 				
 			}
 			
-			$btcusdt =number_format(floatval($totalusdt/$preciobtc),$decimalesbtc,".",""); //;file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$totalusdt."");
 			
-			$totalbtc =  number_format(floatval($btcusdt+$gananciaBTC),$decimalesbtc,".","");
 
-			$totalusdt = number_format(floatval($totalusdt),$decimalesusdt,".","");
+			
 			
 			
 			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='gastos'"))[0]);
 			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='pagos'"))[0]);
 
+			$totalusdt -= $gastos - $pagos; 
 			$debito = [];
 			$debito[0]= [];
 			$debito[1]= [];
-
 			
+			$totalusdt = number_format(floatval($totalusdt),$decimalesusdt,".","");
+
+			$btcusdt =number_format(floatval($totalusdt/$preciobtc),$decimalesbtc,".",""); //;file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$totalusdt."");
+			
+			$totalbtc =  number_format(floatval($btcusdt+$gananciaBTC),$decimalesbtc,".","");
+			
+			
+
 			array_push($debito[0],"USDT","gastos",number_format(floatval($gastos),$decimalesusdt,".",""));
 			array_push($debito[1],"USDT","pagos",number_format(floatval($pagos),$decimalesusdt,".",""));
+			
+			$monedas[$cantidad]=[];
+			array_push($monedas[$cantidad],"USDTDisponibles",number_format($totalusdt,$decimalesusdt,".",""));
 			return [$monedas,$debito];
+
+			
+			
 			
 			
 		} 
+		private function deuda(){
+			$total = 0;
+		}
 	}
 	new Informacion();
 ?>
