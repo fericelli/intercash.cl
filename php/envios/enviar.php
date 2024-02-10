@@ -60,10 +60,11 @@
                         }else{
                             if($_GET["monedacambio"]=='USDT'){
                                 $cantidadusdt = number_format($_GET["cambio"],2,".","");
+                                $cambio = number_format($_GET["cambio"],2,".","");
                             }else{
+                                $cambio = number_format($_GET["cambio"],$_GET["decimal"],".","");
                                 $cantidadusdt = number_format($_GET["cantidad"]/$informacion[5],2,".",""); 
                             }
-                            $cambio = number_format($_GET["cambio"],2,".","");
                             $monedacambio = $_GET["monedacambio"];
                         }
 
