@@ -27,7 +27,7 @@
                 $arraymontos = ["pagado","recibido"];
                 $arraycantidad = [$cantidadmoneda,$cantidadcripto];
                 $tasa = number_format($_GET["cantidadmoneda"]/$_GET["cantidadcripto"],$_GET["decimalcripto"],".","");
-                $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,tasa,monedaintercambio,paisintercambio,montointercambio) VALUES ('".$_GET["cripto"]."','".$cantidadcripto."','compra','".$momento."','".str_replace(" ", "", $_GET["usuario"])."','".str_replace(" ", "", $_GET["usuario"])."','".$tasa."','".$_GET["moneda"]."','".$_GET["pais"]."','".$cantidadmoneda."')");
+                $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,tasa,monedaintercambio,paisintercambio,montointercambio,cantidadusdt) VALUES ('".$_GET["cripto"]."','".$cantidadcripto."','compra','".$momento."','".str_replace(" ", "", $_GET["usuario"])."','".str_replace(" ", "", $_GET["usuario"])."','".$tasa."','".$_GET["moneda"]."','".$_GET["pais"]."','".$cantidadmoneda."','".$cantidadcripto."')");
                 
                 if(in_array($tipoarchivo1, $formatos) AND in_array($tipoarchivo2, $formatos)){
                     if($tipoarchivo1>0 AND $tipoarchivo2>0){
