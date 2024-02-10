@@ -49,23 +49,25 @@
                          
                         $cantidadrecibida = number_format(floatval($_GET["cantidad"]/$informacion[1]),$informacion[2],".","");
                         $monedacambio = "";
-                        $tasa = number_format(floatval($_GET["cantidad"]/$_GET["cambio"]),2,".","");
+                        $tasa = number_format(floatval($_GET["cantidad"]/$_GET["cambio"]),$informacion[2],".","");
                         $cantidadusdt = 0; 
                         if($_GET["moneda"]==$_GET["monedacambio"]){
                             $cantidadusdt = number_format($_GET["cambio"]/$informacion[5],2,".","");
                             $monedacambio = "USDT";
                             $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cantidadusdt."','compra','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".date("Y-m-d H:i:s")."','".$informacion[5]."','".$informacion[7]."','".$informacion[8]."','".$_GET["cambio"]."','','".$cantidadusdt."')");
-                            
+                            $cambio = number_format($cantidadusdt,2,".","");
+                            $tasa = $informacion[5];
                         }else{
                             if($_GET["monedacambio"]=='USDT'){
                                 $cantidadusdt = number_format($_GET["cambio"],2,".","");
                             }else{
                                 $cantidadusdt = number_format($_GET["cantidad"]/$informacion[5],2,".",""); 
                             }
+                            $cambio = number_format($_GET["cambio"],2,".","");
                             $monedacambio = $_GET["monedacambio"];
                         }
 
-                        $cambio = number_format($_GET["cambio"],$_GET["decimal"],".","");
+                        
                         $cantidad = number_format($_GET["cantidad"],$_GET["decimal"],".","");
 
                         
