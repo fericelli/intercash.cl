@@ -39,7 +39,7 @@
                         $total_imagenes ++;
                         $imagen = $carpeta."/capture".$total_imagenes.$ext;
                         $directorio = "imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/capture".$total_imagenes.$ext;
-                        //move_uploaded_file($NombreTmpArchivo,$imagen);
+                        move_uploaded_file($NombreTmpArchivo,$imagen);
                         
 
                         $operacion = date("Y-m-d H:i:s");
