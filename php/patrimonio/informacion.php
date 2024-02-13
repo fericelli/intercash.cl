@@ -97,6 +97,7 @@
 			$debito = [];
 			$debito[0]= [];
 			$debito[1]= [];
+			$debito[2]= [];
 			
 			$totalusdt = number_format(floatval($totalusdt),$decimalesusdt,".","");
 
@@ -105,12 +106,14 @@
 			$totalbtc =  number_format(floatval($btcusdt+$gananciaBTC),$decimalesbtc,".","");
 			
 			
-
+			
 			array_push($debito[0],"USDT","gastos",number_format(floatval($gastos),$decimalesusdt,".",""));
 			array_push($debito[1],"USDT","pagos",number_format(floatval($pagos),$decimalesusdt,".",""));
+			array_push($debito[2],"USDT","deuda",number_format(floatval($this->deuda()),$decimalesusdt,".",""));
 			
 			$monedas[$cantidad]=[];
 			array_push($monedas[$cantidad],"USDTAproximado",number_format($totalusdt,$decimalesusdt,".",""));
+			
 			return [$monedas,$debito];
 
 			
@@ -143,8 +146,35 @@
 			return $total;
 		}
 		private function deuda(){
-			$total = 0;
+			$consultar = $this->Conexion->Consultar("SELECT * FROM usuarios LEFT JOIN paises ON paises.iso2=usuarios.pais WHERE receptor IS NOT NULL AND tipodeusuario<>'administrador'");
+			$montousdt=0;
+			while($usuarios = $this->Conexion->Recorrido($consultar)){
+				
+				//echo "<br>";
+				$sql = "SELECT * FROM paises WHERE receptor IS NOT NULL GROUP BY iso_moneda";
+				$consultar2 =  $this->Conexion->Consultar($sql);
+				$dauda = 0;
+				while($datos = $this->Conexion->Recorrido($consultar2)){
+					$fecha = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT momento FROM pagos WHERE usuario='".$usuarios["usuario"]."' AND monedascambiadas LIKE '%".$datos["iso_moneda"]."%' ORDER BY momento DESC LIMIT 1"))[0];
 
+					if($fecha==""){
+						$fecha = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT momento FROM operaciones WHERE tipo='envios' AND usuario='".$usuarios["usuario"]."' AND monedaintercambio='".$datos["iso_moneda"]."'"))[0];
+					}
+
+					if($fecha==""){
+						$fecha = date("Y-m-d 00:00:00");
+					}
+					$consultar1 = $this->Conexion->Consultar("SELECT monedaintercambio,SUM(montointercambio) FROM operaciones WHERE tipo='envios' AND usuario='".$usuarios["usuario"]."' AND momento>='".$fecha."' AND monedaintercambio='".$datos["iso_moneda"]."'");
+					$cantidad = $this->Conexion->Recorrido($consultar1);
+					$cantidad[1];
+					$pago = $cantidad[1]*$usuarios["porcentaje"];
+					$pago = $pago/100;
+					$tasas = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$datos["iso_moneda"]."'"))[0];
+					$montousdt = $montousdt + floatval($pago/$tasas);
+				}
+			}
+			
+			return $montousdt;
 		}
 	}
 	new Informacion();
