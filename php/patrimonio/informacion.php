@@ -92,7 +92,7 @@
 
 			//$gastosusdt = $this->GatosUSDT();
 			
-			$totalusdt -= $this->GatosUSDT() - $pagos; 
+			$totalusdt -= $this->GatosUSDT(); 
 
 			$debito = [];
 			$debito[0]= [];
@@ -127,6 +127,7 @@
 					$total += $usdt["monto"];
 				}
 			}
+			return $total;
 		}
 		private function PagosUSDT(){
 			$consultar = $this->Conexion->Consultar("SELECT * FROM pagos");
@@ -136,9 +137,10 @@
 				while($operaciones = $this->Conexion->Recorrido($consulta)){
 					$this->Conexion->Consultar("");
 					
-					$total += $usdt["monto"];
+					//$total += $usdt["monto"];
 				}
 			}
+			return $total;
 		}
 		private function deuda(){
 			$total = 0;
