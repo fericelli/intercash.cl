@@ -66,14 +66,17 @@
 				//echo  $paises["iso_moneda"]."--".$cantidadadquirida."  ".$cantidadcambiada."<br>";
 
 				$totalmoneda = number_format(floatval($cantidadadquirida-$cantidadcambiada),$paises["decimalesmoneda"],".","");
-				$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$paises["iso_moneda"]."'"))[0];
-				$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
+				
 				$monedas[$cantidad] = [];
-				//if($totalmoneda>0){
+				if($totalmoneda>0){
+					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$paises["iso_moneda"]."'"))[0];
+					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
 					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
-				//}else{
-					//array_push($monedas[$cantidad],$paises["iso_moneda"],0,0);
-				//}
+				}else{
+					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT tasa FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' ORDER BY momento DESC LIMIT 1"))[0];
+					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
+					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
+				}
 				$cantidad++;
 				$totalusdt += $valorusdt;
 				
@@ -87,7 +90,10 @@
 			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='gastos'"))[0]);
 			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='pagos'"))[0]);
 
-			$totalusdt -= $gastos - $pagos; 
+			//$gastosusdt = $this->GatosUSDT();
+			
+			$totalusdt -= $this->GatosUSDT() - $pagos; 
+
 			$debito = [];
 			$debito[0]= [];
 			$debito[1]= [];
@@ -104,7 +110,7 @@
 			array_push($debito[1],"USDT","pagos",number_format(floatval($pagos),$decimalesusdt,".",""));
 			
 			$monedas[$cantidad]=[];
-			array_push($monedas[$cantidad],"USDTDisponibles",number_format($totalusdt,$decimalesusdt,".",""));
+			array_push($monedas[$cantidad],"USDTAproximado",number_format($totalusdt,$decimalesusdt,".",""));
 			return [$monedas,$debito];
 
 			
@@ -112,8 +118,31 @@
 			
 			
 		} 
+		private function GatosUSDT(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM gastos");
+			$total = 0;
+			while($gastos = $this->Conexion->Recorrido($consultar)){
+				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$gastos["momento"]."' AND tipo='gastos'");
+				if($usdt = $this->Conexion->Recorrido($consulta) AND $this->Conexion->NFilas($consulta)==1){
+					$total += $usdt["monto"];
+				}
+			}
+		}
+		private function PagosUSDT(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM pagos");
+			$total = 0;
+			while($pagos = $this->Conexion->Recorrido($consultar)){
+				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$pagos["momento"]."' AND tipo='pagos'");
+				while($operaciones = $this->Conexion->Recorrido($consulta)){
+					$this->Conexion->Consultar("");
+					
+					$total += $usdt["monto"];
+				}
+			}
+		}
 		private function deuda(){
 			$total = 0;
+
 		}
 	}
 	new Informacion();
