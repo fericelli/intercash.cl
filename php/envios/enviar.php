@@ -54,7 +54,7 @@
                         if($_GET["moneda"]==$_GET["monedacambio"]){
                             $cantidadusdt = number_format($_GET["cambio"]/$informacion[5],2,".","");
                             $monedacambio = "USDT";
-                            $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cantidadusdt."','compra','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".date("Y-m-d H:i:s")."','".$informacion[5]."','".$informacion[7]."','".$informacion[8]."','".$_GET["cambio"]."','envios','".$cantidadusdt."')");
+                            $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cantidadusdt."','compra','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$informacion[5]."','".$informacion[7]."','".$informacion[8]."','".$_GET["cambio"]."','envios','".$cantidadusdt."')");
                             $cambio = number_format($cantidadusdt,2,".","");
                             $tasa = $informacion[5];
                         }else{
