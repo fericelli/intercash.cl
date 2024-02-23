@@ -47,16 +47,18 @@
                         
                         $informacion = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT cantidadaenviar,tasa,decimalesmoneda,solicitudes.paisorigen,solicitudes.monedaorigen,anuncioventa,solicitudes.cantidadarecibir,solicitudes.monedadestino,solicitudes.paisdestino,solicitudes.momento FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisorigen LEFT JOIN tasas ON monedaventa=monedadestino AND monedacompra=monedaorigen AND tasas.paisorigen=solicitudes.paisorigen AND tasas.paisdestino = solicitudes.paisdestino WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'"));  
                         
-                       $cantidadrecibida = number_format(floatval($_GET["cantidad"]/$informacion[1]),$informacion[2],".","");
+                        $cantidadrecibida = number_format(floatval($_GET["cantidad"]/$informacion[1]),$informacion[2],".","");
                         $monedacambio = "";
                         $tasa = number_format(floatval($_GET["cantidad"]/$_GET["cambio"]),$informacion[2],".","");
                         $cantidadusdt = 0; 
+                        $cantidadintercambio = 0;
                         if($_GET["moneda"]==$_GET["monedacambio"]){
                             $cantidadusdt = number_format($_GET["cambio"]/abs($informacion[5]),2,".","");
                             $monedacambio = "USDT";
                             $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cantidadusdt."','compra','".date("Y-m-d H:i:s")."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".abs($informacion[5])."','".$informacion[7]."','".$informacion[8]."','".$_GET["cambio"]."','envios','".$cantidadusdt."')");
                             $cambio = number_format($cantidadusdt,2,".","");
-                            $tasa = abs($informacion[5]);
+                            
+                            //$tasa = abs($informacion[5]);
                         }else{
                             if($_GET["monedacambio"]=='USDT'){
                                 $cantidadusdt = number_format($_GET["cambio"],2,".","");
@@ -82,12 +84,12 @@
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
 
                             $this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'");
-                            $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cambio."','venta','".$operacion."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."','".$informacion[4]."','".$informacion[3]."','".$_GET["cantidad"]."','envios','".$cantidadusdt."')");
+                            $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cambio."','venta','".$operacion."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."','".$informacion[4]."','".$informacion[3]."','".$cantidadrecibida."','envios','".$cantidadusdt."')");
                             $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,registro) VALUES ('".$informacion[6]."','".$informacion[7]."','".$informacion[0]."','".$informacion[4]."','".$_GET["usuario"]."','".date("Y-m-d H:i:s")."','".$_GET["registro"]."')");
                             return '["Remesa Finalizada","finalizar"],["0"],["0"]';
                         }else{
                             $pendiente = $_GET["total"]-$_GET["pendiente"]-$_GET["cantidad"];
-                            $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cambio."','venta','".$operacion."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."','".$informacion[4]."','".$informacion[3]."','".$_GET["cantidad"]."','envios','".$cantidadusdt."')");
+                            $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cambio."','venta','".$operacion."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."','".$informacion[4]."','".$informacion[3]."','".$cantidadrecibida."','envios','".$cantidadusdt."')");
                         
                         }
                         return '["Screenshot Enviado","success"],["'.$pendiente.'"],["'.$_GET["moneda"].'"]';
