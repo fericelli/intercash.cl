@@ -71,18 +71,19 @@
                         $cantidad = number_format($_GET["cantidad"],$_GET["decimal"],".","");
 
                         
-
-                        $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$cantidad."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
                         
+                       $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$cantidad."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
                         
+                       
                         
                         
                         $retorno = "" ;
                         $cantidadrecibida = number_format(floatval($_GET["cantidad"]/$informacion[1]),$informacion[2],".","");
                         
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
-                            $cantidadderegistro = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT COUNT(*) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios'"))[0];
-                            $cantidadcambiada = $this->Conexion->Recorrido($this->Conexion->Conesultar("SELECT SUM(montointercambio) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios'"))[0];
+                             $cantidadderegistro = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT COUNT(*) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios' AND operacion='compra'"))[0];
+                             $cantidadcambiada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios' AND operacion='compra'"))[0];
+                            
                             if($cantidadderegistro==1){
                                 $cantidadrecibida = $cantidadcambiada;
                             }else{
@@ -95,7 +96,6 @@
                         }else{
                             $pendiente = $_GET["total"]-$_GET["pendiente"]-$_GET["cantidad"];
                             $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cambio."','venta','".$operacion."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."','".$informacion[4]."','".$informacion[3]."','".$cantidadrecibida."','envios','".$cantidadusdt."')");
-                        
                         }
                         return '["Screenshot Enviado","success"],["'.$pendiente.'"],["'.$_GET["moneda"].'"]';
                     }catch(Exception $e){
