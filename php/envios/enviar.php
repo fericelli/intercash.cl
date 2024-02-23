@@ -82,6 +82,7 @@
                         
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
                             $cantidadderegistro = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT COUNT(*) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios'"))[0];
+                            $cantidadcambiada = $this->Conexion->Recorrido($this->Conexion->Conesultar("SELECT SUM(montointercambio) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios'"))[0];
                             if($cantidadderegistro==1){
                                 $cantidadrecibida = $cantidadcambiada;
                             }else{
