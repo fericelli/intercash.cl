@@ -100,8 +100,8 @@
 			
 			
 			
-			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='gastos'"))[0]);
-			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='pagos'"))[0]);
+			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE tipo='gastos'"))[0]);
+			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE tipo='pagos'"))[0]);
 
 			//$gastosusdt = $this->GatosUSDT();
 			
