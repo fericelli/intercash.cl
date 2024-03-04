@@ -58,6 +58,18 @@
 			
 			
 			//var_dump($monedas);exit;
+			
+			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."')");
+			while($moneda = $this->Conexion->Recorrido($consultar3)){
+				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='compra'"));
+				$cantidadvendida = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='venta'"));
+				$totalmoneda = number_format(floatval($cantidadcomprada[0]-$cantidadvendida[0]),$moneda["decimales"],".","");
+				$totalusdt = number_format(floatval($cantidadcomprada[1]-$cantidadvendida[1]),$moneda["decimales"],".","");
+				$monedas[$cantidad] = [];
+				array_push($monedas[$cantidad],$moneda["iso_moneda"],$totalmoneda,$totalusdt);
+				$cantidad ++;
+			}
+
 			$totalusdt = $usdt;
 			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($paises = $this->Conexion->Recorrido($consultar1)){
