@@ -46,9 +46,9 @@
                         sleep(1);
                         
                         $informacion = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT cantidadaenviar,tasa,decimalesmoneda,solicitudes.paisorigen,solicitudes.monedaorigen,anuncioventa,solicitudes.cantidadarecibir,solicitudes.monedadestino,solicitudes.paisdestino,solicitudes.momento FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisorigen LEFT JOIN tasas ON monedaventa=monedadestino AND monedacompra=monedaorigen AND tasas.paisorigen=solicitudes.paisorigen AND tasas.paisdestino = solicitudes.paisdestino WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'"));  
-                        
-                       $monedacambio = "";
-                        $tasa = number_format(floatval($_GET["cantidad"]/$_GET["cambio"]),$informacion[2],".","");
+                        $decimalestasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso_moneda='".$informacion[7]."' AND iso2='".$informacion[8]."'"))[0];
+                        $monedacambio = "";
+                        $tasa = number_format(floatval($_GET["cantidad"]/$_GET["cambio"]),$decimalestasa,".","");
                         $cantidadusdt = 0; 
                         if($_GET["moneda"]==$_GET["monedacambio"]){
                             $cantidadusdt = number_format($_GET["cambio"]/abs($informacion[5]),2,".","");
