@@ -21,13 +21,18 @@
 			$decimalesusdt = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='USDT'"))[0];
 			$decimalesbtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='BTC'"))[0];
 			
-			 $usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
-			   $btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
-			 
+			$usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
+			$btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
+			
+			$cantidadinvertidaUSDE = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND tipo='envios' AND operacion='venta'"))[0]);
+			$cantidadcompradaUSDE =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND operacion='compra'"))[0]);
+			
+			
 			 
 			$btc = number_format(floatval($cantidadcompradaBTC-$cantidadinvertidoBTC),$decimalesbtc,".","");
-			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC)-floatval($this->GatosUSDT()),$decimalesusdt,".","");
+			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC)-floatval($this->GatosUSDT())-floatval($this->PagosUSDT()),$decimalesusdt,".","");
 			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
+			$usde = number_format(floatval($cantidadinvertidaUSDE - $cantidadcompradaUSDE)-floatval($this->GatosUSDE())-floatval($this->PagosUSDE()),$decimalesusdt,".","");
 			//
 			//return "     ".$btc."  ".$usdt."  ".$tasa;
 
@@ -47,6 +52,7 @@
 
 			$monedas[0] = [];
 			$monedas[1] = [];
+			$monedas[2] = [];
 			
 			
 
@@ -54,12 +60,14 @@
 			$cantidad ++;
 			array_push($monedas[1],"USDT",number_format($usdt,$decimalesusdt,".",""));
 			$cantidad ++;
+			array_push($monedas[2],"USDE",number_format($usde,$decimalesusdt,".",""));
+			$cantidad ++;
 			//return $monedas;
 			
 			
 			//var_dump($monedas);exit;
-			$totalusdt = $usdt;
-			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."')");
+			$totalcapital = $usdt + $usde;
+			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."','".$monedas[2][0]."')");
 			while($moneda = $this->Conexion->Recorrido($consultar3)){
 				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='compra'"));
 				$cantidadvendida = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='venta'"));
@@ -68,7 +76,7 @@
 				$monedas[$cantidad] = [];
 				array_push($monedas[$cantidad],$moneda["iso_moneda"],$totalmoneda,$total);
 				$cantidad ++;
-				$totalusdt += $total;
+				$totalcapital += $total;
 			}
 
 			
@@ -91,7 +99,7 @@
 					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
 				}
 				$cantidad++;
-				$totalusdt += $valorusdt;
+				$totalcapital += $valorusdt;
 				
 			}
 			
@@ -112,9 +120,9 @@
 			$debito[1]= [];
 			$debito[2]= [];
 			
-			$totalusdt = number_format(floatval($totalusdt),$decimalesusdt,".","");
+			$totalcapital = number_format(floatval($totalcapital),$decimalesusdt,".","");
 
-			$btcusdt =number_format(floatval($totalusdt/$preciobtc),$decimalesbtc,".",""); //;file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$totalusdt."");
+			$btcusdt =number_format(floatval($totalcapital/$preciobtc),$decimalesbtc,".",""); //;file_get_contents("https://blockchain.info/tobtc?currency=USD&value=".$totalusdt."");
 			
 			$totalbtc =  number_format(floatval($btcusdt+$gananciaBTC),$decimalesbtc,".","");
 			
@@ -125,7 +133,7 @@
 			array_push($debito[2],"USDT","deuda",number_format(floatval($this->deuda()),$decimalesusdt,".",""));
 			
 			$monedas[$cantidad]=[];
-			array_push($monedas[$cantidad],"USDTAproximado",number_format($totalusdt,$decimalesusdt,".",""));
+			array_push($monedas[$cantidad],"CapitalAproximada",number_format($totalcapital,$decimalesusdt,".",""));
 			
 			return [$monedas,$debito];
 
@@ -138,7 +146,7 @@
 			$consultar = $this->Conexion->Consultar("SELECT * FROM gastos");
 			$total = 0;
 			while($gastos = $this->Conexion->Recorrido($consultar)){
-				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$gastos["momento"]."' AND tipo='gastos'");
+				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$gastos["momento"]."' AND moneda='USDT' AND tipo='gastos'");
 				if($usdt = $this->Conexion->Recorrido($consulta) AND $this->Conexion->NFilas($consulta)==1){
 					$total += $usdt["monto"];
 				}
@@ -149,7 +157,31 @@
 			$consultar = $this->Conexion->Consultar("SELECT * FROM pagos");
 			$total = 0;
 			while($pagos = $this->Conexion->Recorrido($consultar)){
-				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$pagos["momento"]."' AND tipo='pagos'");
+				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$pagos["momento"]."' AND moneda='USDT' AND tipo='pagos'");
+				while($operaciones = $this->Conexion->Recorrido($consulta)){
+					$this->Conexion->Consultar("");
+					
+					//$total += $usdt["monto"];
+				}
+			}
+			return $total;
+		}
+		private function GatosUSDE(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM gastos");
+			$total = 0;
+			while($gastos = $this->Conexion->Recorrido($consultar)){
+				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$gastos["momento"]."' AND moneda='USDE' AND tipo='gastos'");
+				if($usdt = $this->Conexion->Recorrido($consulta) AND $this->Conexion->NFilas($consulta)==1){
+					$total += $usdt["monto"];
+				}
+			}
+			return $total;
+		}
+		private function PagosUSDE(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM pagos");
+			$total = 0;
+			while($pagos = $this->Conexion->Recorrido($consultar)){
+				$consulta = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE registro='".$pagos["momento"]."' AND moneda='USDE' AND tipo='pagos'");
 				while($operaciones = $this->Conexion->Recorrido($consulta)){
 					$this->Conexion->Consultar("");
 					
