@@ -32,7 +32,7 @@
 			$btc = number_format(floatval($cantidadcompradaBTC-$cantidadinvertidoBTC),$decimalesbtc,".","");
 			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC)-floatval($this->GatosUSDT())-floatval($this->PagosUSDT()),$decimalesusdt,".","");
 			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
-			$usde = number_format(floatval($cantidadinvertidaUSDE - $cantidadcompradaUSDE)-floatval($this->GatosUSDE())-floatval($this->PagosUSDE()),$decimalesusdt,".","");
+			$usde = number_format(floatval($cantidadinvertidaUSDE - $cantidadcompradaUSDE),$decimalesusdt,".","");
 			//
 			//return "     ".$btc."  ".$usdt."  ".$tasa;
 
