@@ -13,10 +13,10 @@
 
 			$cantidad =0;
 
-			$cantidadinvertidaUSDT = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND operacion='venta'"))[0]);
+			$cantidadinvertidaUSDT = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND tipo='envios' AND operacion='venta'"))[0]);
 			$cantidadcompradaUSDT =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDT' AND operacion='compra'"))[0]);
 			$cantidadcompradaUSDTBTC =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='USDT' AND operacion='compra'"))[0]);
-			$cantidadinvertidoBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND operacion='venta'"))[0]);
+			$cantidadinvertidoBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND tipo='envios'"))[0]);
 			$cantidadcompradaBTC = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND operacion='compra'"))[0]);
 			$decimalesusdt = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='USDT'"))[0];
 			$decimalesbtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='BTC'"))[0];
@@ -24,7 +24,7 @@
 			$usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
 			$btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
 			
-			$cantidadinvertidaUSDE = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND operacion='venta'"))[0]);
+			$cantidadinvertidaUSDE = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND tipo='envios' AND operacion='venta'"))[0]);
 			$cantidadcompradaUSDE =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND operacion='compra'"))[0]);
 			
 			
@@ -32,7 +32,7 @@
 			$btc = number_format(floatval($cantidadcompradaBTC-$cantidadinvertidoBTC),$decimalesbtc,".","");
 			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC)-floatval($this->GatosUSDT())-floatval($this->PagosUSDT()),$decimalesusdt,".","");
 			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
-			$usde = number_format(floatval($cantidadcompradaUSDE - $cantidadinvertidaUSDE),$decimalesusdt,".","");
+			$usde = number_format(floatval($cantidadcompradaUSDE - $cantidadinvertidaUSDE)-floatval($this->GatosUSDE())-floatval($this->PagosUSDE()),$decimalesusdt,".","");
 			//
 			//return "     ".$btc."  ".$usdt."  ".$tasa;
 
