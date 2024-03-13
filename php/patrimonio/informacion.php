@@ -32,7 +32,7 @@
 			$btc = number_format(floatval($cantidadcompradaBTC-$cantidadinvertidoBTC),$decimalesbtc,".","");
 			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC)-floatval($this->GatosUSDT())-floatval($this->PagosUSDT()),$decimalesusdt,".","");
 			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
-			$usde = number_format(floatval($cantidadinvertidaUSDE - $cantidadcompradaUSDE),$decimalesusdt,".","");
+			$usde = number_format(floatval($cantidadinvertidaUSDE - $cantidadcompradaUSDE)-floatval($this->GatosUSDE())-floatval($this->PagosUSDE()),$decimalesusdt,".","");
 			//
 			//return "     ".$btc."  ".$usdt."  ".$tasa;
 
@@ -66,7 +66,7 @@
 			
 			
 			//var_dump($monedas);exit;
-			$totalcapital = $usdt;
+			$totalcapital = $usdt + $usde;
 			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."','".$monedas[2][0]."')");
 			while($moneda = $this->Conexion->Recorrido($consultar3)){
 				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='compra'"));
