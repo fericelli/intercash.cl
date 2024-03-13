@@ -66,7 +66,7 @@
 			
 			
 			//var_dump($monedas);exit;
-			$totalcapital = $usdt + $usde;
+			$totalcapital = $usdt;
 			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."','".$monedas[2][0]."')");
 			while($moneda = $this->Conexion->Recorrido($consultar3)){
 				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='compra'"));
