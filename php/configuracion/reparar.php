@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->repararintercambio();
+			 echo $this->finalizarsolicitudes();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -306,6 +306,23 @@
 			}catch(Exception $e){
 				
 			}
+		}
+		private function finalizarsolicitudes(){
+			try{
+				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE momento NOT LIKE '2024-04-01%' AND  estado IS NULL");
+				while($solicitudes = $this->Conexion->Recorrido($consultar)){
+					$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."'"))[0];
+					$cantidadusd = number_format($solicitudes["cantidadarecibir"]/$tasausd,2,".","");
+					echo $solicitudes[0]." ".number_format($tasausd,$solicitudes["decimalesmoneda"],".","")."   ".$cantidadusd."<br>";
+					$this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
+					$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,registro) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
+					$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('USDT',".$cantidadusd.",'venta','".date("Y-m-d H:i:s")."','".$solicitudes["usuario"]."','javier','".$solicitudes["momento"]."','".$tasausd."','".$solicitudes["monedaorigen"]."','".$solicitudes["paisorigen"]."','".$solicitudes["cantidadaenviar"]."','envios',".$cantidadusd.")");
+					
+				}
+			}catch(Exception $e){
+				return  $e;
+			}
+			
 		}
 	}
 	new Reparar();
