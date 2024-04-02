@@ -68,7 +68,7 @@
 			array_push($monedas[2],"USDE",number_format($usde,$decimalesusdt,".",""));
 			$cantidad ++;
 			
-			array_push($monedas[3],"ETH",number_format($usde,$decimalesusdt,".",""));
+			array_push($monedas[3],"ETH",number_format($eth,$decimalesusdt,".",""));
 			$cantidad ++;
 			//return $monedas;
 			
