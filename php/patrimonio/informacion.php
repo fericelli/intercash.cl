@@ -26,13 +26,17 @@
 			
 			$cantidadinvertidaUSDE = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND tipo='envios' AND operacion='venta'"))[0]);
 			$cantidadcompradaUSDE =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='USDE' AND operacion='compra'"))[0]);
-			
+
+			$cantidadinvertidaETH = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='ETH' AND tipo='envios' AND operacion='venta'"))[0]);
+			$cantidadcompradaETH =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='ETH' AND operacion='compra'"))[0]);
 			
 			 
 			$btc = number_format(floatval($cantidadcompradaBTC-$cantidadinvertidoBTC),$decimalesbtc,".","");
 			$usdt = number_format(floatval($cantidadcompradaUSDT - $cantidadinvertidaUSDT-$cantidadcompradaUSDTBTC)-floatval($this->GatosUSDT())-floatval($this->PagosUSDT()),$decimalesusdt,".","");
 			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
 			$usde = number_format(floatval($cantidadcompradaUSDE - $cantidadinvertidaUSDE)-floatval($this->GatosUSDE())-floatval($this->PagosUSDE()),$decimalesusdt,".","");
+			$eth = number_format(floatval($cantidadcompradaUSDE - $cantidadinvertidaUSDE)-floatval($this->GatosUSDE())-floatval($this->PagosUSDE()),$decimalesusdt,".","");
+			
 			//
 			//return "     ".$btc."  ".$usdt."  ".$tasa;
 
@@ -53,6 +57,7 @@
 			$monedas[0] = [];
 			$monedas[1] = [];
 			$monedas[2] = [];
+			$monedas[3] = [];
 			
 			
 
@@ -62,12 +67,15 @@
 			$cantidad ++;
 			array_push($monedas[2],"USDE",number_format($usde,$decimalesusdt,".",""));
 			$cantidad ++;
+			
+			array_push($monedas[3],"ETH",number_format($usde,$decimalesusdt,".",""));
+			$cantidad ++;
 			//return $monedas;
 			
 			
 			//var_dump($monedas);exit;
 			$totalcapital = $usdt + $usde;
-			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."','".$monedas[2][0]."')");
+			$consultar3 = $this->Conexion->Consultar("SELECT * FROM monedas WHERE iso_moneda NOT IN ('".$monedas[0][0]."','".$monedas[1][0]."','".$monedas[2][0]."','".$monedas[3][0]."')");
 			while($moneda = $this->Conexion->Recorrido($consultar3)){
 				$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='compra'"));
 				$cantidadvendida = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND operacion='venta'"));
