@@ -99,13 +99,13 @@ $("#enviar").on("click",function(){
         cambio = $(".monto").val();
     }
     
-    if($(".imagen").val()==""){
+   /* if($(".imagen").val()==""){
         validador ++;
         $(".mensaje-error").eq(5).css("display","flex");
         setTimeout(function(){
             $(".mensaje-error").eq(5).css("display","none");
         },3000)
-    }
+    }*/
     total = parseFloat($("label").eq(0).text().split(" ")[2])-parseFloat($(".monto").val());
 
     if(validador==0){

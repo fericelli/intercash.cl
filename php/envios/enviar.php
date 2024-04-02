@@ -10,42 +10,35 @@
 		}
 		private function retorno(){
            //return var_dump($_FILES['imagen']);
-           
-            $formatos = array(".jpg",".png",".jepg",".jpeg");
-            $momento = date("Y-m-d H:i:s");
-            $ErrorArchivo = $_FILES['imagen']['error'];
-            $NombreArchivo = $_FILES['imagen']['name'];
-            $NombreTmpArchivo = $_FILES['imagen']['tmp_name'];
-            $ext = substr($_FILES['imagen']['name'],strrpos($_FILES['imagen']['name'], '.'));
-            if(in_array($ext, $formatos)){
-               if($ErrorArchivo>0){
-                   return '"Intente Subir la Foto Nuevamente","error"';
-               }else{
-                    try{
-                        //$registro = str_replace(" ", "", $_GET["registro"]);
-                        $registro = base64_encode(str_replace(' ','',strtolower($_GET["usuario"])).$_GET["registro"]);
-                        //solicitud es el codigo imagen
-
+           try{
+                $formatos = array(".jpg",".png",".jepg",".jpeg");
+                $momento = date("Y-m-d H:i:s");
+                $ErrorArchivo = $_FILES['imagen']['error'];
+                $NombreArchivo = $_FILES['imagen']['name'];
+                $NombreTmpArchivo = $_FILES['imagen']['tmp_name'];
+                $ext = substr($_FILES['imagen']['name'],strrpos($_FILES['imagen']['name'], '.'));
+                
+                
+                if(in_array($ext, $formatos)){
+                    if($ErrorArchivo>0){
+                       
+                    }else{
                         $carpeta = "./../../imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]));
                         if(!file_exists($carpeta)){
                             mkdir($carpeta,0777, true);
                         }
                         $carpeta = "./../../imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d");
-                        if(!file_exists($carpeta)){
-                            mkdir($carpeta,0777, true);
+                            if(!file_exists($carpeta)){
+                                mkdir($carpeta,0777, true);
                         }
-                        
                         $total_imagenes = count(glob($carpeta.'/{*.jpg,*.gif,*.png,*.jpeg}',GLOB_BRACE));
                         $total_imagenes ++;
                         $imagen = $carpeta."/capture".$total_imagenes.$ext;
                         $directorio = "imagenes/intercambios/envios/".str_replace(' ','',strtolower($_GET["usuario"]))."/".date("Y-m-d")."/capture".$total_imagenes.$ext;
                         move_uploaded_file($NombreTmpArchivo,$imagen);
-                        
-
-                        $operacion = date("Y-m-d H:i:s");
-                        sleep(1);
-                        
-                        $informacion = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT cantidadaenviar,tasa,decimalesmoneda,solicitudes.paisorigen,solicitudes.monedaorigen,anuncioventa,solicitudes.cantidadarecibir,solicitudes.monedadestino,solicitudes.paisdestino,solicitudes.momento FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisorigen LEFT JOIN tasas ON monedaventa=monedadestino AND monedacompra=monedaorigen AND tasas.paisorigen=solicitudes.paisorigen AND tasas.paisdestino = solicitudes.paisdestino WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'"));  
+                    }
+                }
+                $informacion = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT cantidadaenviar,tasa,decimalesmoneda,solicitudes.paisorigen,solicitudes.monedaorigen,anuncioventa,solicitudes.cantidadarecibir,solicitudes.monedadestino,solicitudes.paisdestino,solicitudes.momento FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisorigen LEFT JOIN tasas ON monedaventa=monedadestino AND monedacompra=monedaorigen AND tasas.paisorigen=solicitudes.paisorigen AND tasas.paisdestino = solicitudes.paisdestino WHERE momento='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."'"));  
                         $decimalestasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimalesmoneda FROM paises WHERE iso_moneda='".$informacion[7]."' AND iso2='".$informacion[8]."'"))[0];
                         $monedacambio = "";
                         $tasa = number_format(floatval($_GET["cantidad"]/$_GET["cambio"]),$decimalestasa,".","");
@@ -57,7 +50,7 @@
                             $cambio = number_format($cantidadusdt,2,".","");
                             $tasa = abs($informacion[5]);
                         }else{
-                            if($_GET["monedacambio"]=='USDT'){
+                            if($_GET["monedacambio"]=='USDT' OR $_GET["monedacambio"]=='USDE'){
                                 $cantidadusdt = number_format($_GET["cambio"],2,".","");
                                 $cambio = number_format($_GET["cambio"],2,".","");
                             }else{
@@ -66,24 +59,13 @@
                             }
                             $monedacambio = $_GET["monedacambio"];
                         }
-
-                        
                         $cantidad = number_format($_GET["cantidad"],$_GET["decimal"],".","");
-
-                        
-                        
-                       $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$cantidad."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
-                        
-                       
-                        
-                        
+                        $this->Conexion->Consultar("INSERT INTO screenshot (directorio,cantidad,tipo,nombre,registro,usuario) VALUES ('".$directorio."','".$cantidad."','envios','capture".$total_imagenes.$ext."','".$_GET["registro"]."','".$_GET["usuario"]."')");
                         $retorno = "" ;
                         $cantidadrecibida = number_format(floatval($_GET["cantidad"]/$informacion[1]),$informacion[2],".","");
-                        
                         if($_GET["cantidad"]>=$_GET["pendiente"]){
-                             $cantidadderegistro = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT COUNT(*) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios' AND operacion='venta'"))[0];
-                             $cantidadcambiada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios' AND operacion='venta'"))[0];
-                            
+                            $cantidadderegistro = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT COUNT(*) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios' AND operacion='venta'"))[0];
+                            $cantidadcambiada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE registro='".$_GET["registro"]."' AND usuario='".$_GET["usuario"]."' AND tipo='envios' AND operacion='venta'"))[0];
                             if($cantidadderegistro==0){
                                 $cantidadrecibida = $informacion[0];
                             }else{
@@ -98,13 +80,10 @@
                             $this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('".$monedacambio."','".$cambio."','venta','".$operacion."','".$_GET["usuario"]."','".$_GET["operador"]."','".$_GET["registro"]."','".$tasa."','".$informacion[4]."','".$informacion[3]."','".$cantidadrecibida."','envios','".$cantidadusdt."')");
                         }
                         return '["Screenshot Enviado","success"],["'.$pendiente.'"],["'.$_GET["moneda"].'"]';
-                    }catch(Exception $e){
-                        return '["Error","error"],["'.$e.'"]';
-                    }
-                }
-            }else{
-               return '["Formatos Permitidos Solo jpg y png","error"],["'.$_GET["pendiente"].'"]';
-           }
+                         
+            }catch(Exception $e){
+                return '["Error","error"],["'.$e.'"]';
+            }
         } 
 	}
 	new Enviar();
