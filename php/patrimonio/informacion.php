@@ -11,20 +11,7 @@
 			$criptos=[];
 			$monedas = [];
 			$envios = [];
-			$consultarmonedas = $this->Conexion->Consultar("SELECT * FROM monedas");
-			while($moneda = $this->Conexion->Recorrido($consultarmonedas)){
-				$consultapaises = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
-				while($pais = $this->Conexion->Recorrido($consultapaises)){
-					$fechacomprafiat = $this->Recorrido($this->Conexion->Consultar("SELECT momento FROM operaciones WHERE monedaintercambio='".$pais["iso_moneda"]."' AND paisintercambio='".$pais["iso2"]."' AND operacion='compra' ORDER BY momento DESC"))[0];
-					$fechacompracripto = $this->Recorrido($this->Conexion->Consultar("SELECT momento FROM operaciones WHERE  moneda='".$moneda["iso_moneda"]."' AND operacion='compra' ORDER BY momento DESC"))[0];
-					$consultaenvioanterioes = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND monedaintercambio='".$pais["iso_moneda"]."' AND operacion='venta' AND tipo='envios' AND registro<'".$fechacompracripto."'");
-					$consultaenvioposterior = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt) FROM operaciones WHERE moneda='".$moneda["iso_moneda"]."' AND monedaintercambio='".$pais["iso_moneda"]."' AND operacion='venta' AND tipo='envios' AND registro>'".$fechacompracripto."'");
-					
-					if($envioanterioes = $this->Conexion->Recorrido($consultaenvioanterioes) AND $envioposterior = $this->Conexion->Recorrido($consultaenvioposterior)){
-
-					}
-				}
-			}
+			
 
 			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($paises = $this->Conexion->Recorrido($consultar1)){
