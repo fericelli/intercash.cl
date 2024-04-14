@@ -1,0 +1,51 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+.imgcarga{
+    display: none;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+}
+.contenido-screeshot{
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    height: 100%;
+    display: flex;
+    padding-top: 10px;
+    overflow-x: auto;
+}
+
+
+.icono-descargar:hover{
+    text-decoration: none;
+}
+.principal{
+    height: 525px;
+    width: 300px;
+}
+
+.imegenes-peque{
+    display: flex;
+    position: fixed;
+    justify-content: space-around;
+    bottom: 0;
+    height: 120px;
+    margin: auto;
+}
+
+.secundaria{
+    margin: auto 5px;
+    height: 100px;
+    width: 90px;
+    cursor: pointer;
+    transition: 01 ms;
+}
+
+.secundariaseleccion, .secundaria:hover{
+    height: 120px;
+    width: 110px;
+}

@@ -1,0 +1,128 @@
+*{
+	box-sizing: border-box;
+}
+body{
+    background: #181818;
+    color:#fff;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0 1.5em;
+    font-size: 40px;
+    margin: auto;
+}
+
+.content{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5em;
+}
+.logo{
+    text-align: center;
+    font-size:  3em;
+}
+.logo span{
+    color: #b70e21;
+}
+.contact-wrapper{
+    box-shadow: 0 0 20px 0 rgba(255,255,255, .3);
+}
+.contact-wrapper > * {
+    padding: 1em;
+}
+.contact-form{
+    background-color: #222222;
+    
+}
+
+.contact-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form form p{
+    margin: 0;
+    padding: 1em;
+}
+
+
+
+.contact-form form button,
+.contact-form form input,
+.contact-form form select,
+.contact-form form textarea{
+    width: 100%;
+    padding: .7em;
+    border: none;
+    background: none;
+    outline: 0;
+    color:#fff;
+    border-bottom: 1px solid #d63021;
+}
+.contact-form form button{
+    background: #b70e21;
+    border:0;
+    text-transform: uppercase;
+    padding: 1em;
+    cursor: pointer;
+    font-size: 40px;
+}
+.contact-form button:hover,
+.contact-form button:focus{
+    background: #fff;
+    color: #000;
+    transition: background-color 1s ease-out;
+    outline:0;
+}
+
+.contact-info{
+    display: none;
+    background-color: #000000;
+}
+.contact-info h4,
+.contact-info ul,
+.contact-info p{
+    text-align: center;
+    margin: 0 0 1rem 0;
+}
+
+.contact-info ul{
+    list-style: none;
+    padding: 0;
+}
+.contact-info ul li{
+    padding: .3em;
+}
+
+.mensajesolicitud{
+    text-align: center;
+}
+/*pantallas grandes*/
+@media(min-width:1000px){
+    body{
+        padding: 0 4rem;
+        font-size: 20px;
+    }
+    .contact-form form button{
+        
+        font-size: 20px;
+    }
+    .contact-wrapper{
+        display: flex;
+        /*flex-direction: row;*/
+    }
+    
+    
+    .contact-wrapper > *{
+        padding: 2em;
+    }
+    .contact-form form{
+        display: grid;
+        grid-template-columns: 1fr 1ft;
+    }
+    .contact-form form .block{
+        grid-column: 3/3;
+    }
+    .contact-info{
+       /* width: 40%;*/
+    }
+    
+}

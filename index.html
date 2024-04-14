@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="imagenes/logo.ico"> 
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/iniciosesion.js"></script>
+  <title>Intercash</title>
+</head>
+<body>
+  <section class="form-register">
+    <img src="imagenes/logo (1).png">
+    <h4>Calculadora Envío</h4>
+    <label class="margen">Pais Origen</label>
+    <input class="controls" type="text" name="paisorigen" id="paisorige" placeholder="Seleccione un país" list="paisorigen">
+    <datalist id="paisorigen">
+    </datalist>
+    <label class="mensaje-error">Seleccione un País</label>
+    <label class="margen">Pais Destino</label>
+    <input class="controls" type="text" name="paisodestino" id="paisodestin" placeholder="Seleccione un país" list="paisodestino">
+    <datalist id="paisodestino">
+    </datalist>
+    <img class="imgcarga cargapaisdestino" src="imagenes/carga.gif">
+    <label class="mensaje-error" >Seleccione un País</label>
+    <label class="margen">Cantidad a enviar</label>
+    <input class="controls cantidad" type="text" name="cantidadenviar" id="cantidadenviar" placeholder="Ingrese la cantidad">
+    <label class="mensaje-error">Ingrese un monto</label>
+    <label class="margen">Cantidad a recibir</label>
+    <input class="controls cantidad" type="text" name="cantidadrecibir" id="cantidadrecibir" placeholder="Ingrese la cantidad">
+    <label class="mensaje-error">Ingrese un monto</label>
+    <div style="display:flex;justify-content: space-around;">
+    <img style="width: 30px;height: 30px;" class="imgcarga imagenusd" src="imagenes/carga.gif">
+    <p class="usd">0 USD</p>
+    <p class="tasa">0 Tasa</p>
+    </div>
+    <h4>Iniciar sesion</h4>
+    <label class="margen">Usuario</label>
+    <input class="controls" type="text" name="usuario" id="usuario" placeholder="Ingresa su usuario">
+    <label class="mensaje-error" >Ingrese su usuario</label>
+    <label class="margen">Contraseña</label>
+    <input class="controls" type="password" name="clave" id="clave" placeholder="Ingrese su contraseña">
+    <label class="mensaje-error" >Ingrese su contraseña</label>
+    <div class="botons" >Ingresar</div>
+    <img class="imgcarga imagensolicitud" src="imagenes/carga.gif">
+    <label class="mensaje-correcto mensajesolicitud"></label>
+    <label class="mensaje-error mensajesolicitud"></label>
+     <!--<p><a >Registrate</a></p>-->
+    
+    <!--<p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>-->
+  </section>
+
+</body>
+</html>

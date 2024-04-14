@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "javi";
+  src:url("fonts/javi.eot");
+  src:url("fonts/javi.eot?#iefix") format("embedded-opentype"),
+    url("fonts/javi.woff") format("woff"),
+    url("fonts/javi.ttf") format("truetype"),
+    url("fonts/javi.svg#javi") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "javi" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icono-"]:before,
+[class*=" icono-"]:before {
+  font-family: "javi" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icono-izquierda:before {
+  content: "\65";
+}
+.icono-derecha:before {
+  content: "\66";
+}
+.icono-tarjetacredito:before {
+  content: "\67";
+}
+.icono-texto:before {
+  content: "\68";
+}
+.icono-guardar:before {
+  content: "\69";
+}
+.icono-menu:before {
+  content: "\6a";
+}
+.icono-nuevo:before {
+  content: "\6b";
+}
+.icono-inicio:before {
+  content: "\6c";
+}
+.icono-calendario:before {
+  content: "\6d";
+}
+.icono-personas:before {
+  content: "\6e";
+}
+.icono-borrar:before {
+  content: "\6f";
+}
+.icono-industry:before {
+  content: "\70";
+}
+.icono-preguntas:before {
+  content: "\71";
+}
+.icono-codigoqr:before {
+  content: "\72";
+}
+.icono-entradas:before {
+  content: "\73";
+}
+.icono-descargar:before {
+  content: "\75";
+}
+.icono-graficas:before {
+  content: "\76";
+}
+.icono-user-plus:before {
+  content: "\78";
+}
+.icono-identificacion:before {
+  content: "\79";
+}
+.icono-lenguajes:before {
+  content: "\41";
+}
+.icono-dinero:before {
+  content: "\42";
+}
+.icono-bien:before {
+  content: "\45";
+}
+.icono-sign-out:before {
+  content: "\46";
+}
+.icono-mail-read:before {
+  content: "\47";
+}
+.icono-link:before {
+  content: "\48";
+}
+.icono-buscar:before {
+  content: "\49";
+}
+.icono-mirror:before {
+  content: "\4a";
+}
+.icono-mesas:before {
+  content: "\4b";
+}
+.icono-salones:before {
+  content: "\4c";
+}
+.icono-cartamenu:before {
+  content: "\4d";
+}
+.icono-book:before {
+  content: "\4f";
+}
+.icono-bodega:before {
+  content: "\50";
+}
+.icono-inventario:before {
+  content: "\51";
+}
+.icono-platos:before {
+  content: "\52";
+}
+.icono-ingredientes:before {
+  content: "\53";
+}
+.icono-bebidas:before {
+  content: "\4e";
+}
+.icono-prohibido:before {
+  content: "\54";
+}
+.icono-grid:before {
+  content: "\55";
+}
+.icono-imprimir:before {
+  content: "\56";
+}
+.icono-delivery:before {
+  content: "\57";
+}
+.icono-video:before {
+  content: "\58";
+}
+.icono-bitcoin:before {
+  content: "\59";
+}
+.icono-calculadora:before {
+  content: "\5a";
+}
+.icono-cliente:before {
+  content: "\30";
+}
+.icono-soporte:before {
+  content: "\31";
+}
+.icono-localizar:before {
+  content: "\61";
+}
+.icono-whatsapp:before {
+  content: "\62";
+}
