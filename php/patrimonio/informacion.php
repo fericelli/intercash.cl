@@ -12,37 +12,6 @@
 			$monedas = [];
 			$envios = [];
 			
-
-			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
-			while($paises = $this->Conexion->Recorrido($consultar1)){
-				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios' "))[0]),$paises["decimalesmoneda"],".","");
-				$cantidadcambiada = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' "))[0]),$paises["decimalesmoneda"],".","");
-				//echo  $paises["iso_moneda"]."--".$cantidadadquirida."  ".$cantidadcambiada."<br>";
-
-				$totalmoneda = number_format(floatval($cantidadadquirida-$cantidadcambiada),$paises["decimalesmoneda"],".","");
-				
-				$monedas[$cantidad] = [];
-
-
-
-
-
-				
-
-				if($totalmoneda>0){
-					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$paises["iso_moneda"]."'"))[0];
-					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
-					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
-				}else{
-					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT tasa FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' ORDER BY momento DESC LIMIT 1"))[0];
-					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
-					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
-				}
-				$cantidad++;
-				$totalcapital += $valorusdt;
-				
-			}
-
 			$cantidad =0;
 			$decimalesusdt = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='USDT'"))[0];
 			$decimalesbtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT decimales FROM monedas WHERE iso_moneda='BTC'"))[0];
@@ -115,6 +84,37 @@
 			
 			
 			//var_dump($monedas);exit;
+			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+			while($paises = $this->Conexion->Recorrido($consultar1)){
+				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios' "))[0]),$paises["decimalesmoneda"],".","");
+				$cantidadcambiada = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' "))[0]),$paises["decimalesmoneda"],".","");
+				//echo  $paises["iso_moneda"]."--".$cantidadadquirida."  ".$cantidadcambiada."<br>";
+
+				$totalmoneda = number_format(floatval($cantidadadquirida-$cantidadcambiada),$paises["decimalesmoneda"],".","");
+				
+				$monedas[$cantidad] = [];
+
+
+
+
+
+				
+
+				if($totalmoneda>0){
+					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anunciocompra) FROM tasas WHERE monedacompra='".$paises["iso_moneda"]."'"))[0];
+					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
+					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
+				}else{
+					$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT tasa FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' ORDER BY momento DESC LIMIT 1"))[0];
+					$valorusdt = number_format(floatval($totalmoneda/$tasa),2,".","");
+					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
+				}
+				$cantidad++;
+				$totalcapital += $valorusdt;
+				
+			}
+
+			
 			$totalcapital = $usdt + $usde;
 			
 
