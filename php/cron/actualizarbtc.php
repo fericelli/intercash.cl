@@ -3,8 +3,8 @@ error_reporting(E_ALL);
 	Class ActualizarBtc{
 		private $Conexion;
 		function __construct(){
-            /*include("../../conexion.php");
-			$this->Conexion = new Conexion();*/
+            include("../../conexion.php");
+			/*$this->Conexion = new Conexion();*/
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL, 'https://criptoya.com/api/binancep2p/btc/usd');
