@@ -11,7 +11,7 @@ error_reporting(E_ALL);
 
             
             //$url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
-            $url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
+            $url = "https://api.coingecko.com/api/v3/simple/price";
             /*$parameters = [
             'amount' => '1',
             'symbol' => 'BTC',
@@ -31,7 +31,7 @@ error_reporting(E_ALL);
                 "x-cg-demo-api-key: CG-cqVau314h2vrVuPBwRWTNA2y"
             ];
             
-            //$qs = http_build_query($parameters); // query string encode the parameters
+            $qs = http_build_query($parameters); // query string encode the parameters
             $request = "{$url}?{$qs}"; // create the request URL
 
             //$request = "{$url}"; // create the request URL
