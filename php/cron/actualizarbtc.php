@@ -52,7 +52,7 @@ error_reporting(E_ALL);
                 $preciobtc = number_format(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"},2,".","");
             }
             $momento = date("Y-m-d H:i:s");
-            echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."')");
+            echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento,api) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."','".$api."')");
             $this->Conexion->CerrarConexion();
 			/* = json_decode(file_get_contents("https://criptoya.com/api/binancep2p/btc/usd/"), true);
             $preciousdbtc = $informacion["totalBid"];
