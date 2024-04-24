@@ -47,9 +47,9 @@ error_reporting(E_ALL);
             
             $preciobtc = 0;
             if($api=="CGK"){
-                $preciobtc = number_format(json_decode($response)->{"bitcoin"}->{"usd"},2,".","");
+                $preciobtc = json_decode($response)->{"bitcoin"}->{"usd"};
             }else{
-                $preciobtc = number_format(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"},2,".","");
+                $preciobtc = json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"};
             }
             $momento = date("Y-m-d H:i:s");
             echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."')");
