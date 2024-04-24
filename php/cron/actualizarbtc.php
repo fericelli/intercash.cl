@@ -66,7 +66,7 @@ error_reporting(E_ALL);
             //print_r($result);
             curl_close($ch);*/
 			/* = json_decode(file_get_contents("https://criptoya.com/api/binancep2p/btc/usd/"), true);*/
-            $informacion = json_decode($this->ConexionCoinGeko(),true);
+            $informacion = $this->ConexionCoinMarkCap();
             
             print_r($informacion);
 
