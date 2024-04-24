@@ -17,10 +17,10 @@ error_reporting(E_ALL);
             'symbol' => 'BTC',
             'convert' => 'USD'
             ];*/
-            /*$parameters = [
+            $parameters = [
             'ids' => 'bitcoin',
             'convert' => 'usd'
-            ];*/
+            ];
             /*$headers = [
             'Accepts: application/json',
             'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
