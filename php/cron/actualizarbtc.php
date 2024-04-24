@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 	Class ActualizarBtc{
 		private $Conexion;
 		function __construct(){
