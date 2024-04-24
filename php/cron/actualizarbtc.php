@@ -5,26 +5,26 @@ error_reporting(E_ALL);
 		function __construct(){
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
-            //$url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
-            $url = "https://api.coingecko.com/api/v3/simple/price";
-            /*$parameters = [
+            $url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
+            //$url = "https://api.coingecko.com/api/v3/simple/price";
+            $parameters = [
             'amount' => '1',
             'symbol' => 'BTC',
             'convert' => 'USD'
-            ];*/
-            $parameters = [
+            ];
+            /*$parameters = [
             'ids' => 'bitcoin',
             'vs_currencies' => 'usd'
-            ];
-            /*$headers = [
+            ];*/
+            $headers = [
             'Accepts: application/json',
             'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
-            ];*/
+            ];
 
-            $headers = [
+            /*$headers = [
                 "accept: application/json",
                 "x-cg-demo-api-key: CG-cqVau314h2vrVuPBwRWTNA2y"
-            ];
+            ];*/
             
             $qs = http_build_query($parameters); // query string encode the parameters
             $request = "{$url}?{$qs}"; // create the request URL
