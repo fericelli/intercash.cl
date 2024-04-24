@@ -41,7 +41,7 @@ error_reporting(E_ALL);
             ));
 
             $response = curl_exec($curl); // Send the request, save the response
-            print_r(json_decode($response));
+            print_r(json_decode($response)->{"bitcoin"}->{"usd"});
             //print_r(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"}); // print json decoded response
             curl_close($curl); // Close request
            
