@@ -19,7 +19,7 @@ error_reporting(E_ALL);
             ];*/
             $parameters = [
             'ids' => 'bitcoin',
-            'convert' => 'usd'
+            'vs_currencies' => 'usd'
             ];
             /*$headers = [
             'Accepts: application/json',
