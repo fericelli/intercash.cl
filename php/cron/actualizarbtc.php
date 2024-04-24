@@ -13,7 +13,7 @@ error_reporting(E_ALL);
             $informacion = json_decode(curl_exec($ch), true);
             $preciousdbtc = $informacion["totalBid"];
 			$momento = date("Y-m-d H:i:s",$informacion["time"]);
-
+            echo "INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciousdbtc."','".$preciousdbtc."','".$momento."')";
             echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciousdbtc."','".$preciousdbtc."','".$momento."')");
             $this->Conexion->CerrarConexion();
             if (curl_errno($ch)) {
