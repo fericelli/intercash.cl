@@ -7,47 +7,51 @@ error_reporting(E_ALL);
 			$this->Conexion = new Conexion();
             $api = "CGK";
             $api = "CMP";
-
+            if($api=="CGK"){
+                $url = "https://api.coingecko.com/api/v3/simple/price";
+                $parameters = [
+                    'ids' => 'bitcoin',
+                    'vs_currencies' => 'usd'
+                ];
+                $headers = [
+                    "accept: application/json",
+                    "x-cg-demo-api-key: CG-cqVau314h2vrVuPBwRWTNA2y"
+                ];
+            }else{
+                $url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
+                $parameters = [
+                    'amount' => '1',
+                    'symbol' => 'BTC',
+                    'convert' => 'USD'
+                ];
+                $headers = [
+                    'Accepts: application/json',
+                    'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
+                ];
+            }
 
             
-            //$url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
-            $url = "https://api.coingecko.com/api/v3/simple/price";
-            /*$parameters = [
-            'amount' => '1',
-            'symbol' => 'BTC',
-            'convert' => 'USD'
-            ];*/
-            $parameters = [
-            'ids' => 'bitcoin',
-            'vs_currencies' => 'usd'
-            ];
-            /*$headers = [
-            'Accepts: application/json',
-            'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
-            ];*/
+            $qs = http_build_query($parameters); 
+            $request = "{$url}?{$qs}"; 
+            $curl = curl_init(); 
 
-            $headers = [
-                "accept: application/json",
-                "x-cg-demo-api-key: CG-cqVau314h2vrVuPBwRWTNA2y"
-            ];
-            
-            $qs = http_build_query($parameters); // query string encode the parameters
-            $request = "{$url}?{$qs}"; // create the request URL
-
-            //$request = "{$url}"; // create the request URL
-
-
-            $curl = curl_init(); // Get cURL resource
             // Set cURL options
             curl_setopt_array($curl, array(
-            CURLOPT_URL => $request,            // set the request URL
-            CURLOPT_HTTPHEADER => $headers,     // set the headers 
-            CURLOPT_RETURNTRANSFER => 1         // ask for raw response instead of bool
+                CURLOPT_URL => $request,            
+                CURLOPT_HTTPHEADER => $headers,      
+                CURLOPT_RETURNTRANSFER => 1         
             ));
 
             $response = curl_exec($curl); // Send the request, save the response
-            print_r(json_decode($response));
-            //print_r(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"}); // print json decoded response
+            $preciobtc = 0;
+            if($api=="CGK"){
+                $preciobtc = number_format(json_decode($response)->{"bitcoin"}->{"usd"},2,".","");
+            }else{
+                $preciobtc = number_format(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"},2,".","");
+            }
+            echo $preciobtc."\n";
+
+            //print_r(); // print json decoded response
             curl_close($curl); // Close request
            
 			/* = json_decode(file_get_contents("https://criptoya.com/api/binancep2p/btc/usd/"), true);
