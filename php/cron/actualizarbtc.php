@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 	Class ActualizarBtc{
 		private $Conexion;
 		function __construct(){
-            include("../../conexion.php");
+            include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
             $ch = curl_init();
 
