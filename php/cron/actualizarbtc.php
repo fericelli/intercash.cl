@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 		function __construct(){
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
-            $url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
+            $url = 'https://pro-api.coinmarketcap.com /v1/cryptocurrency/market-pairs/latest';
             $parameters = [
             'symbol' => 'BTC',
             'convert' => 'USD'
