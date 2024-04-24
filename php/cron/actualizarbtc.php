@@ -15,8 +15,8 @@ error_reporting(E_ALL);
             'Accepts: application/json',
             'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
             ];
-           // $qs = http_build_query($parameters); // query string encode the parameters
-            $request = "{$url}";//?{$qs}"; // create the request URL
+            $qs = http_build_query($parameters); // query string encode the parameters
+            $request = "{$url}?{$qs}"; // create the request URL
 
 
             $curl = curl_init(); // Get cURL resource
