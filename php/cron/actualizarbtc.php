@@ -5,7 +5,8 @@ error_reporting(E_ALL);
 		function __construct(){
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
-            $url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
+            //$url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
+            $url = "https://api.coingecko.com/api/v3/simple/token_price/bitcoins";
             $parameters = [
             'amount' => '1',
             'symbol' => 'BTC',
@@ -17,7 +18,9 @@ error_reporting(E_ALL);
             'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
             ];
             $qs = http_build_query($parameters); // query string encode the parameters
-            $request = "{$url}?{$qs}"; // create the request URL
+            //$request = "{$url}?{$qs}"; // create the request URL
+
+            $request = "{$url}"; // create the request URL
 
 
             $curl = curl_init(); // Get cURL resource
@@ -29,7 +32,8 @@ error_reporting(E_ALL);
             ));
 
             $response = curl_exec($curl); // Send the request, save the response
-            print_r(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"}); // print json decoded response
+            print_r(json_decode($response));
+            //print_r(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"}); // print json decoded response
             curl_close($curl); // Close request
            /* $ch = curl_init();
 
