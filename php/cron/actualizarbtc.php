@@ -6,7 +6,7 @@ error_reporting(E_ALL);
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
             $api = "CGK";
-            $api = "CMP";
+            //$api = "CMP";
             if($api=="CGK"){
                 $url = "https://api.coingecko.com/api/v3/simple/price";
                 $parameters = [
