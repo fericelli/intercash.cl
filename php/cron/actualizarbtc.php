@@ -43,23 +43,22 @@ error_reporting(E_ALL);
             ));
 
             $response = curl_exec($curl); // Send the request, save the response
+            curl_close($curl); // Close request
+            
             $preciobtc = 0;
             if($api=="CGK"){
                 $preciobtc = number_format(json_decode($response)->{"bitcoin"}->{"usd"},2,".","");
             }else{
                 $preciobtc = number_format(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"},2,".","");
             }
-            echo $preciobtc."\n";
-
-            //print_r(); // print json decoded response
-            curl_close($curl); // Close request
-           
+            $momento = date("Y-m-d H:i:s");
+            $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."')");
+            $this->Conexion->CerrarConexion();
 			/* = json_decode(file_get_contents("https://criptoya.com/api/binancep2p/btc/usd/"), true);
             $preciousdbtc = $informacion["totalBid"];
-			$momento = date("Y-m-d H:i:s",$informacion["time"]);
+			
 
-             $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciousdbtc."','".$preciousdbtc."','".$momento."')");
-            $this->Conexion->CerrarConexion();*/
+             */
         }
 		
 	}
