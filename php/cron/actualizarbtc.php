@@ -25,7 +25,7 @@ error_reporting(E_ALL);
              $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ('BTC','".$preciousdbtc."','".$preciousdbtc."','".$momento."')");
             $this->Conexion->CerrarConexion();*/
         }
-        private functioN CoinMarketCap(){
+        private function CoinMarketCap(){
             $url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
             $parameters = [
                 'amount' => '1',
