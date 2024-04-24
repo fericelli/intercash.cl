@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 		function __construct(){
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
-            $url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+            $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
             $parameters = [
             'start' => '1',
             'limit' => '5000',
@@ -16,8 +16,8 @@ error_reporting(E_ALL);
             'Accepts: application/json',
             'X-CMC_PRO_API_KEY: cf040e5c-1049-4d6c-870d-08e1dd063018'
             ];
-            $qs = http_build_query($parameters); // query string encode the parameters
-            $request = "{$url}?{$qs}"; // create the request URL
+           // $qs = http_build_query($parameters); // query string encode the parameters
+            $request = "{$url}";//?{$qs}"; // create the request URL
 
 
             $curl = curl_init(); // Get cURL resource
