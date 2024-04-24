@@ -29,7 +29,7 @@ error_reporting(E_ALL);
             ));
 
             $response = curl_exec($curl); // Send the request, save the response
-            print_r(json_decode($response)); // print json decoded response
+            print_r(json_decode($response){"data"}); // print json decoded response
             curl_close($curl); // Close request
            /* $ch = curl_init();
 
