@@ -36,6 +36,12 @@ error_reporting(E_ALL);
             // Set cURL options
             curl_setopt_array($curl, array(
             CURLOPT_URL => $request,            // set the request URL
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => $headers,     // set the headers 
             CURLOPT_RETURNTRANSFER => 1         // ask for raw response instead of bool
             ));
