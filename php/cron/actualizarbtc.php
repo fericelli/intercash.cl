@@ -11,7 +11,6 @@ error_reporting(E_ALL);
                 $api = $apis[0];
                 $this->Conexion->Consultar("UPDATE apis SET solicitudes=solicitudes+1 WHERE codigo='".$apis[0]."'");
             }
-            echo $api;exit;
             if($api=="CGK"){
                 $url = "https://api.coingecko.com/api/v3/simple/price";
                 $parameters = [
