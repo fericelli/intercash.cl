@@ -59,7 +59,7 @@ error_reporting(E_ALL);
             if($api == "CMP"){
                 $preciobtc = number_format(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"},2,".","");
             }
-            echo $preciobtc;exit;
+            echo $preciobtc." ";
             $momento = date("Y-m-d H:i:s");
             if($api!=""){
                 echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento,api) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."','".$api."')");
