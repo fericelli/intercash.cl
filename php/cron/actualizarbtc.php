@@ -5,8 +5,11 @@ error_reporting(E_ALL);
 		function __construct(){
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
-            $api = "CGK";
-            $api = "CMP";
+            $api = "";
+            $consultarapi = $this->Conexion->Consultar("SELECT * FROM precios WHERE moneda='BTC' ORDER BY momento DESC");
+            while ($apis = $this->Conexion->Recorrido($consultarapi)) {
+                $api = $apis["api"];
+            }
             if($api=="CGK"){
                 $url = "https://api.coingecko.com/api/v3/simple/price";
                 $parameters = [
@@ -17,7 +20,8 @@ error_reporting(E_ALL);
                     "accept: application/json",
                     "x-cg-demo-api-key: CG-cqVau314h2vrVuPBwRWTNA2y"
                 ];
-            }else{
+            }
+            if($api == "CMP"){
                 $url = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion';
                 $parameters = [
                     'amount' => '1',
@@ -30,29 +34,34 @@ error_reporting(E_ALL);
                 ];
             }
 
+            if($api!=""){
+                $qs = http_build_query($parameters); 
+                $request = "{$url}?{$qs}"; 
+                $curl = curl_init(); 
+
+                // Set cURL options
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => $request,            
+                    CURLOPT_HTTPHEADER => $headers,      
+                    CURLOPT_RETURNTRANSFER => 1         
+                ));
+
+                $response = curl_exec($curl); // Send the request, save the response
+                curl_close($curl); // Close request
+            }
             
-            $qs = http_build_query($parameters); 
-            $request = "{$url}?{$qs}"; 
-            $curl = curl_init(); 
-
-            // Set cURL options
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => $request,            
-                CURLOPT_HTTPHEADER => $headers,      
-                CURLOPT_RETURNTRANSFER => 1         
-            ));
-
-            $response = curl_exec($curl); // Send the request, save the response
-            curl_close($curl); // Close request
             
             $preciobtc = 0;
             if($api=="CGK"){
                 $preciobtc = number_format(json_decode($response)->{"bitcoin"}->{"usd"},2,".","");
-            }else{
+            }
+            if($api == "CMP"){
                 $preciobtc = number_format(json_decode($response)->{"data"}[0]->{"quote"}->{"USD"}->{"price"},2,".","");
             }
             $momento = date("Y-m-d H:i:s");
-            echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento,api) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."','".$api."')");
+            if($api!=""){
+                echo $this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento,api) VALUES ('BTC','".$preciobtc."','".$preciobtc."','".$momento."','".$api."')");
+            }
             $this->Conexion->CerrarConexion();
 			/* = json_decode(file_get_contents("https://criptoya.com/api/binancep2p/btc/usd/"), true);
             $preciousdbtc = $informacion["totalBid"];
