@@ -6,8 +6,7 @@ error_reporting(E_ALL);
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
             $api = "";
-            echo "SELECT codigo FROM apis  solicitudes ASC";exit;
-            $consultarapi = $this->Conexion->Consultar("SELECT codigo FROM apis  solicitudes ASC");
+             $consultarapi = $this->Conexion->Consultar("SELECT codigo FROM apis ORDER BY solicitudes ASC");
             if ($apis = $this->Conexion->Recorrido($consultarapi)) {
                 $api = $apis[0];
                 $this->Conexion->Consultar("UPDATE apis SET solicitudes=solicitudes+1 WHERE codigo='".$apis[0]."'");
