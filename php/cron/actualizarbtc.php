@@ -6,11 +6,11 @@ error_reporting(E_ALL);
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
             $api = "";
-            $consultarapi = $this->Conexion->Consultar("SELECT * FROM precios WHERE moneda='BTC' ORDER BY momento DESC");
+            $consultarapi = $this->Conexion->Consultar("SELECT codigo FROM apis WHERE moneda='BTC' ORDER BY solicitudes ASC");
             if ($apis = $this->Conexion->Recorrido($consultarapi)) {
                 $api = $apis["api"];
             }
-            
+            echo $api;exit;
             if($api=="CGK"){
                 $url = "https://api.coingecko.com/api/v3/simple/price";
                 $parameters = [
