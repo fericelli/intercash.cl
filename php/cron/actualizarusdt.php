@@ -2,7 +2,7 @@
 	Class ActualizarUsdt{
 		private $Conexion;
 		function __construct(){
-			include("../conexion.php");
+			include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
 			$values = "";
 			$update = "";
