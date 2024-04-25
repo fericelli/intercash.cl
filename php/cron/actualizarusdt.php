@@ -19,7 +19,7 @@
 					$momento = date("Y-m-d H:i:s",$informacion["time"]);
 					
 					if(!is_null($precioventa) AND $monedas[0]<>"USD"){
-						$values .=  "('".$monedas[0]."','".$preciocompra."','".$precioventa."','".$momento."'),";
+						$values .=  "('".$monedas[0]."','".$preciocompra."','".$precioventa."','".$momento."','CPTY'),";
 						$this->Conexion->Consultar("UPDATE tasas SET anunciocompra='".$preciocompra."' WHERE monedacompra='".$monedas[0]."'");
 						$this->Conexion->Consultar("UPDATE tasas SET anuncioventa='".$precioventa."' WHERE monedaventa='".$monedas[0]."'");
 					}
@@ -28,7 +28,7 @@
 				}
 			} 
 			$values = substr($values,0,strlen($values)-1);
-			$this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento) VALUES ".$values."");
+			$this->Conexion->Consultar("INSERT INTO precios (moneda,compra,venta,momento,api) VALUES ".$values."");
 			$this->Conexion->CerrarConexion();
 		}
 		
