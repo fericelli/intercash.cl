@@ -8,7 +8,8 @@ error_reporting(E_ALL);
             $api = "";
             $consultarapi = $this->Conexion->Consultar("SELECT codigo FROM apis WHERE moneda='BTC' ORDER BY solicitudes ASC");
             if ($apis = $this->Conexion->Recorrido($consultarapi)) {
-                $api = $apis["api"];
+                $api = $apis[0];
+                $this->Conexion->Consultar("UPDATE apis SET solicitudes=solicitudes+1 WHERE codigo='".$apis[0]."'");
             }
             echo $api;exit;
             if($api=="CGK"){
