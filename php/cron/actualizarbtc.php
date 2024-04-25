@@ -6,6 +6,7 @@ error_reporting(E_ALL);
             include("/home/u956446715/public_html/public_html/php/conexion.php");
 			$this->Conexion = new Conexion();
             $api = "";
+            echo "SELECT codigo FROM apis  solicitudes ASC";exit;
             $consultarapi = $this->Conexion->Consultar("SELECT codigo FROM apis  solicitudes ASC");
             if ($apis = $this->Conexion->Recorrido($consultarapi)) {
                 $api = $apis[0];
