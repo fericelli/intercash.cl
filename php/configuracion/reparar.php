@@ -309,7 +309,7 @@
 		}
 		private function finalizarsolicitudes(){
 			try{
-				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE momento NOT LIKE '2024-05%' AND  estado IS NULL");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL");
 				while($solicitudes = $this->Conexion->Recorrido($consultar)){
 					$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."'"))[0];
 					$cantidadusd = number_format($solicitudes["cantidadarecibir"]/$tasausd,2,".","");
