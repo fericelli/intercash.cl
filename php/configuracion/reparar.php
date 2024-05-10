@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->finalizarsolicitudes();
+			 echo $this->envioimagen();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -313,16 +313,43 @@
 				while($solicitudes = $this->Conexion->Recorrido($consultar)){
 					$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."'"))[0];
 					$cantidadusd = number_format($solicitudes["cantidadarecibir"]/$tasausd,2,".","");
-					echo $solicitudes[0]." ".number_format($tasausd,$solicitudes["decimalesmoneda"],".","")."   ".$cantidadusd."<br>";
+					//echo $solicitudes[0]." ".number_format($tasausd,$solicitudes["decimalesmoneda"],".","")."   ".$cantidadusd."<br>";
 					$this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
 					$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,registro) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
-					$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('USDT',".$cantidadusd.",'venta','".date("Y-m-d H:i:s")."','".$solicitudes["usuario"]."','javier','".$solicitudes["momento"]."','".$tasausd."','".$solicitudes["monedaorigen"]."','".$solicitudes["paisorigen"]."','".$solicitudes["cantidadaenviar"]."','envios',".$cantidadusd.")");
+					$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('BTC',0,'venta','".date("Y-m-d H:i:s")."','".$solicitudes["usuario"]."','javier','".$solicitudes["momento"]."',0,'".$solicitudes["monedaorigen"]."','".$solicitudes["paisorigen"]."','".$solicitudes["cantidadaenviar"]."','envios',".$cantidadusd.")");
 					
 				}
 			}catch(Exception $e){
 				return  $e;
 			}
 			
+		}
+		private function envioimagen(){
+			$url =  "https://api.apichat.io/v1/sendImage";
+                        $parameters = [
+                            'phone' => '584149192168',
+                            'url' => 'httsp://intercash.cl/'.$directorio,
+                            'caption' => ' '
+                        ];
+                        $headers = [
+                            "accept: application/json",
+                            "token: kMOMQkkx1Zxn",
+                            "client-id: 26892"
+                        ];
+                        $qs = http_build_query($headers); 
+                        $request = "{$url}?{$qs}"; 
+                        $curl = curl_init(); 
+                         // Set cURL options
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => $request,            
+                            CURLOPT_POSTFIELDS => $parameters, 
+                            CURLOPT_POST => 1,     
+                            CURLOPT_RETURNTRANSFER => 1         
+                        ));
+
+                        $response = curl_exec($curl); // Send the request, save the response
+                        print_r($response);
+                        curl_close($curl); // Close request
 		}
 	}
 	new Reparar();
