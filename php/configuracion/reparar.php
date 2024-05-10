@@ -341,7 +341,8 @@
                         $curl = curl_init(); 
                          // Set cURL options
                         curl_setopt_array($curl, array(
-                            CURLOPT_URL => $request,            
+                            CURLOPT_URL => $url,  
+							CURLOPT_HTTPHEADER => $qs,          
                             CURLOPT_POSTFIELDS => $parameters, 
                             CURLOPT_POST => 1,     
                             CURLOPT_RETURNTRANSFER => 1         
