@@ -327,7 +327,9 @@
 		private function envioimagen(){
 			$url =  "https://api.apichat.io/v1/sendImage";
                         $parameters = [
-                            'phone' => '584149192168',
+                            'number' => '584149192168',
+							"chat_type" => "normal",
+							"external_id" => "123",
                             'url' => 'https://intercash.cl/imagenes/operaciones/compra/javier/2024-01-05/operacion1/pagado.jpeg',
                             'caption' => ' '
                         ];
