@@ -342,7 +342,7 @@
                          // Set cURL options
                         curl_setopt_array($curl, array(
                             CURLOPT_URL => $url,  
-							CURLOPT_HTTPHEADER => $qs,          
+							CURLOPT_HTTPHEADER => $headers,          
                             CURLOPT_POSTFIELDS => $parameters, 
                             CURLOPT_POST => 1,     
                             CURLOPT_RETURNTRANSFER => 1         
