@@ -328,7 +328,7 @@
 			$url =  "https://api.apichat.io/v1/sendImage";
                         $parameters = [
                             'phone' => '584149192168',
-                            'url' => 'httsp://intercash.cl/'.$directorio,
+                            'url' => 'https://intercash.cl/imagenes/operaciones/compra/javier/2024-01-05/operacion1/pagado.jpeg',
                             'caption' => ' '
                         ];
                         $headers = [
