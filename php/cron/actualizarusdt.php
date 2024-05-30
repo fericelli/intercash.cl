@@ -18,7 +18,7 @@
 					$precioventa = $informacion["totalBid"];
 					$momento = date("Y-m-d H:i:s",$informacion["time"]);
 					
-					if(!is_null($precioventa) AND $monedas[0]<>"USD"){
+					if(!is_null($precioventa) AND $moneda<>"USD"){
 						$values .=  "('".$moneda."','".$preciocompra."','".$precioventa."','".$momento."','CPTY'),";
 						//$this->Conexion->Consultar("UPDATE tasas SET anunciocompra='".$preciocompra."' WHERE monedacompra='".$monedas[0]."'");
 						//$this->Conexion->Consultar("UPDATE tasas SET anuncioventa='".$precioventa."' WHERE monedaventa='".$monedas[0]."'");
