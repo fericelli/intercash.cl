@@ -37,15 +37,19 @@
 			
 			$cantidadcompradaUSDTBTC =  floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='USDT' AND operacion='compra'"))[0]);
 			
+
+
 			$usdtporcomprar = number_format(floatval($cantidadinvertidaUSDT-$cantidadcompradaUSDT),$decimalesusdt,".","");
 			$btcporcomprar = number_format(floatval($cantidadinvertidoBTC-$cantidadcompradaBTC),$decimalesbtc,".","");
-			
+			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE tipo='gastos'"))[0]);
+			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE tipo='pagos'"))[0]);
+
 			
 			
 
 			 
 			
-			$tasa = number_format(floatval($usdt/$btc),$decimalesusdt,".","");
+			$tasa = number_format(floatval($usdtenvios/$btc),$decimalesusdt,".","");
 			
 			//
 			//return "     ".$btc."  ".$usdt."  ".$tasa;
@@ -69,7 +73,7 @@
 			$monedas[2] = [];
 			$monedas[3] = [];
 			
-			
+			$usdt = $usdtenvios-$cantidadcompradaUSDTBTC-$this->GatosUSDT()-$this->PagosUSDT();
 
 			array_push($monedas[0],"BTC",number_format($btc,$decimalesbtc,".",""));
 			$cantidad ++;
@@ -86,8 +90,8 @@
 			//var_dump($monedas);exit;
 			$consultar1 = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
 			while($paises = $this->Conexion->Recorrido($consultar1)){
-				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios' "))[0]),$paises["decimalesmoneda"],".","");
-				$cantidadcambiada = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra' "))[0]),$paises["decimalesmoneda"],".","");
+				$cantidadadquirida = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='venta' AND tipo='envios' AND monto>0"))[0]),$paises["decimalesmoneda"],".","");
+				$cantidadcambiada = number_format(floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(montointercambio) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND operacion='compra'"))[0]),$paises["decimalesmoneda"],".","");
 				//echo  $paises["iso_moneda"]."--".$cantidadadquirida."  ".$cantidadcambiada."<br>";
 
 				$totalmoneda = number_format(floatval($cantidadadquirida-$cantidadcambiada),$paises["decimalesmoneda"],".","");
@@ -110,27 +114,12 @@
 					array_push($monedas[$cantidad],$paises["iso_moneda"],$totalmoneda,$valorusdt);
 				}
 				$cantidad++;
-				$totalcapital += $valorusdt;
+				$usdt += $valorusdt;
 				
 			}
 
 			
 			$totalcapital = $usdt + $usde;
-			
-
-			
-			
-			
-			
-
-			
-			
-			
-			$gastos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE tipo='gastos'"))[0]);
-			$pagos = floatval($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE tipo='pagos'"))[0]);
-
-			//$gastosusdt = $this->GatosUSDT();
-			
 			
 
 			$debito = [];
