@@ -18,10 +18,10 @@ $.ajax({
     success:function(data){
         html = "";
         for(i=0;i<JSON.parse(data)[0].length;i++){
-            html += '<option moneda="'+JSON.parse(data)[0][i].moneda+'" decimal="'+JSON.parse(data)[0][i].decimales+'" value="'+JSON.parse(data)[0][i].nombre+'">'+JSON.parse(data)[0][i].nombre+'</option>';
+            html += '<div><label>'+JSON.parse(data)[0][i].nombre+'</label><input type="radio" name="moneda" moneda="'+JSON.parse(data)[0][i].moneda+'" decimal="'+JSON.parse(data)[0][i].decimales+'" ></div>';
         }
         for(i=0;i<JSON.parse(data)[1].length;i++){
-            html += '<option moneda="'+JSON.parse(data)[1][i].moneda+'" decimal="'+JSON.parse(data)[1][i].decimales+'" value="'+JSON.parse(data)[1][i].nombre+'">'+JSON.parse(data)[1][i].nombre+'</option>';
+            html += '<div><label>'+JSON.parse(data)[1][i].nombre+'</label><input type="radio" name="moneda" moneda="'+JSON.parse(data)[1][i].moneda+'" decimal="'+JSON.parse(data)[1][i].decimales+'"></div>';
         }
         $("#monedaintercambio").html(html);
         
@@ -37,7 +37,7 @@ $(".monto").keyup(function(){
         },3000)
     }
 })
-$(".monedacambiada").keyup(function(){
+/*$(".monedacambiada").keyup(function(){
     if($.isNumeric($(this).val())===false && $(this).val()!=""){
         $(this).val("");
         $(".mensaje-error").eq(4).css("display","flex");
@@ -45,10 +45,13 @@ $(".monedacambiada").keyup(function(){
             $(".mensaje-error").eq(4).css("display","none");
         },3000)
     }
-})
-$("#monedainter").on("change",function(){
+})*/
+/*$("#monedaintercambio").on("click",function(){
     var moneda = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('moneda');
     var decimal = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('decimal');
+
+    var moneda = $('#monedaintercambio input[type="radio"]:checked').attr('moneda');
+    var decimal = $('#monedaintercambio input[type="radio"]:checked').attr('decimal');
     
     if(moneda==$("#enviar").attr("moneda")){
         $(".margen").eq(5).css("display","none"); 
@@ -58,7 +61,7 @@ $("#monedainter").on("change",function(){
         $(".controls").eq(2).css("display","flex"); 
     }
     
-})
+})*/
 
 $("#enviar").on("click",function(){
     validador = 0;
@@ -69,22 +72,22 @@ $("#enviar").on("click",function(){
             $(".mensaje-error").eq(0).css("display","none");
         },3000)
     }
-
-    var moneda = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('moneda');
-    var decimal = $('#monedaintercambio [value="' + $("#monedainter").val() + '"]').attr('decimal');
-    
+    //$(".dia:eq("+$(".icono-guardar").index(this)+") input[type='radio']:checked").val();
+    var moneda = $('#monedaintercambio input[type="radio"]:checked').attr('moneda');
+    var decimal = $('#monedaintercambio input[type="radio"]:checked').attr('decimal');
+    console.log(moneda);
     if(typeof moneda === "undefined"){
-        
-        $(".mensaje-error").eq(2).css("display","flex");
+        validador ++;
+        $(".mensaje-error").eq(3).css("display","flex");
         setTimeout(function(){
-            $(".mensaje-error").eq(2).css("display","none");
+            $(".mensaje-error").eq(3).css("display","none");
         },3000)
     }
 
     
 
-    cambio = "";
-    if($(".controls").eq(2).css("display")!="none"){
+    cambio = $(".monto").val();
+    /*if($(".controls").eq(2).css("display")!="none"){
         cambio = $(".controls").eq(2).val();
         if($(".controls").eq(2).val()==""){
             validador ++;
@@ -97,15 +100,15 @@ $("#enviar").on("click",function(){
       
     }else{
         cambio = $(".monto").val();
-    }
-    
-   /* if($(".imagen").val()==""){
-        validador ++;
-        $(".mensaje-error").eq(5).css("display","flex");
-        setTimeout(function(){
-            $(".mensaje-error").eq(5).css("display","none");
-        },3000)
     }*/
+    
+   if($(".imagen").val()==""){
+        validador ++;
+        $(".mensaje-error").eq(2).css("display","flex");
+        setTimeout(function(){
+            $(".mensaje-error").eq(2).css("display","none");
+        },3000)
+    }
     total = parseFloat($("label").eq(0).text().split(" ")[2])-parseFloat($(".monto").val());
 
     if(validador==0){
@@ -127,29 +130,46 @@ $("#enviar").on("click",function(){
             },
             complete:function(){
                 $(".imagensolicitud").css("display","none");
-                $("#enviar").css("display","flex");
+                $("#enviar").css("display","");
             },
             error:function(){
                 alert("Ocurrio un error con la conexion");
                 $(".imagensolicitud").css("display","none");
-                $("#enviar").css("display","flex");
+                $("#enviar").css("display","");
             },
             success:function(respuesta){
+                console.log(JSON.parse(respuesta));
+
                 if(JSON.parse(respuesta)[1]=="error"){
                     $(".mensajesolicitud").eq(1).text(JSON.parse(respuesta)[0]);
                     $(".mensajesolicitud").eq(1).css("display","flex");
                 }else{
-                    if(JSON.parse(respuesta)[1]=="success"){
+                    if(JSON.parse(respuesta)[0][1]=="finalizar"){
                          $(".mensajesolicitud").eq(0).css("display","flex");
-                         $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0]);
-                    }else{
+                         $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0][0]);
+                         
                         $("#enviar").remove();
+                         setTimeout(function(){
+
+                            $(".salir").trigger("click");
+                         },1000)
+                    }else{
                         $(".mensajesolicitud").eq(0).css("display","flex");
                         $(".mensajesolicitud").eq(0).text(JSON.parse(respuesta)[0][0]);
-                        setTimeout(function(){
-                            $(".salir").trigger("click");
+                       setTimeout(function(){
+                           $(".mensajesolicitud").eq(0).css("display","none");
+                           $("#enviar").attr("pendiente",JSON.parse(respuesta)[1]);
+                           $(".pendiente").text(JSON.parse(respuesta)[1]+" "+JSON.parse(respuesta)[2]);
+                           $(".monto").val();
                         },1000)
                     }
+                    if(JSON.parse(respuesta)[0][2]!=""){
+                        copy =  window.location.href.replace("sesion/", "")+JSON.parse(respuesta)[0][2];
+                        navigator.clipboard.writeText(copy);
+                    }
+                    $('#monedaintercambio input[type="radio"]:checked').prop("checked", false);
+                    $(".monto").val("");
+                    $(".imagen").val("");
                 }
             }
         })

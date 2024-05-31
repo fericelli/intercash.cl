@@ -263,3 +263,32 @@ select{
   display: none;
   flex-direction: column;
 }
+
+#monedaintercambio{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#monedaintercambio div{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#monedaintercambio{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#monedaintercambio div{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#monedaintercambio{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
