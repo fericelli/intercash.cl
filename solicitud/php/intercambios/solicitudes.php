@@ -9,7 +9,7 @@
 			$this->Conexion->CerrarConexion();
 		}
 		private function retorno(){
-           $cantidad = 100;
+           $cantidad = 1000;
             if(isset($_POST["cantidad"])){
                 $cantidad = $_POST["cantidad"]+5;
                 $inicio = $_POST["cantidad"]-1;
