@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->cambiartasasusdt();
+			 echo $this->cambiartasas();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
