@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->cambiartasas();
+			 echo $this->cambiartasabtc();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -412,19 +412,24 @@
 		private function cambiartasabtc(){
 			$retorno = "";
 			$consultar = $this->Conexion->Consultar("SELECT operaciones.momento,operaciones.registro,operaciones.monedaintercambio,operaciones.montointercambio,operaciones.monto FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro AND solicitudes.usuario=solicitudes.usuario WHERE tasa>77000 AND monedaintercambio<>'USDT' AND moneda='BTC' AND tipo='envios' AND operacion='venta'");
-			
 			while($operaciones = $this->Conexion->Recorrido($consultar)){
 				$tasa = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(venta) FROM precios WHERE momento BETWEEN '".$operaciones[1]."' AND '".$operaciones[0]."'"))[0];
 				if(is_null($tasa)){
 					$tasa =  $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT tasa FROM operaciones WHERE monedaintercambio='".$operaciones[2]."' AND moneda='USDT' AND momento >= '".$operaciones[1]."' AND tipo='envios' AND monto>0 LIMIT 1"))[0];
-					$retorno .= "SELECT tasa FROM operaciones WHERE monedaintercambio='".$operaciones[2]."' AND moneda='USDT' AND momento >= '".$operaciones[1]."' AND tipo='envios' AND monto>0 LIMIT 1<br>"; 
+					//$retorno .= "SELECT tasa FROM operaciones WHERE monedaintercambio='".$operaciones[2]."' AND moneda='USDT' AND momento >= '".$operaciones[1]."' AND tipo='envios' AND monto>0 LIMIT 1<br>"; 
 				
 				}
 				$usdt = number_format($operaciones[3]/$tasa,2,".",""); 
-				 //$tasa = number_format($usdt/$operaciones[4],2,".","");
+				$tasa = number_format($usdt/$operaciones[4],2,".","");
+				$satoshi = $operaciones[4];
+				if($tasa>100000){
+					$satoshi = $operaciones[4]*10;
+				}
 				
-
-					//$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$operaciones[4]."  ".$usdt." ".$tasa."<br>";
+				$tasa = number_format($usdt/$satoshi,2,".","");
+				$satoshi = number_format($satoshi,8,".","");
+				$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$satoshi."  ".$usdt." ".$tasa."<br>";
+				$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET monto=".$satoshi.",tasa=".$tasa.",cantidadusdt=".$usdt." WHERE momento='".$operaciones[0]."' ");
 				
 			}
 			return $retorno;
