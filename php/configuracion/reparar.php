@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->cambiartasabtc();
+			 echo $this->compras();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -431,6 +431,19 @@
 				$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$satoshi."  ".$usdt." ".$tasa."<br>";
 				$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET monto=".$satoshi.",tasa=".$tasa.",cantidadusdt=".$usdt." WHERE momento='".$operaciones[0]."' ");
 				
+			}
+			return $retorno;
+		}
+
+		private function compras(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND monto>0 AND moneda='USDT' AND cantidadusdt=0");
+			while($operaciones = $this->Conexion->Recorrido($consultar)){
+				$tasa = number_format($operaciones["montointercambio"]/$operaciones["monto"],2,".","");
+				$diferencia = $operaciones["tasa"]-$tasa;
+				if(abs($diferencia)>12 OR $operaciones[1]>2267.35){
+					//$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$satoshi."  ".$usdt." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
+					$retorno .= $this->Conexion->Consultar("DELETE FROM operaciones WHERE momento='".$operaciones[3]."'");
+				}
 			}
 			return $retorno;
 		}
