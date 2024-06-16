@@ -436,14 +436,13 @@
 		}
 
 		private function compras(){
-			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND moneda='USDT' AND monto>0 AND cantidadusdt=0");
+			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND monto>0 AND moneda='USDT'");
 			while($operaciones = $this->Conexion->Recorrido($consultar)){
 				$tasa = number_format($operaciones["montointercambio"]/$operaciones["monto"],2,".","");
 				$diferencia = $operaciones["tasa"]-$tasa;
-				if(abs($diferencia)>12 OR $operaciones[1]>2267.35){
-					$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$satoshi."  ".$usdt." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
-					//$retorno .= $this->Conexion->Consultar("DELETE FROM operaciones WHERE momento='".$operaciones[3]."'");
-				}
+				//$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
+				$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
+				
 			}
 			return $retorno;
 		}
