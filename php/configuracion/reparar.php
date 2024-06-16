@@ -436,16 +436,21 @@
 		}
 
 		private function compras(){
-			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND monto>0 AND moneda='USDT'");
+			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND monto>0 AND moneda='BTC'");
 			while($operaciones = $this->Conexion->Recorrido($consultar)){
 				$tasa = number_format($operaciones["montointercambio"]/$operaciones["monto"],2,".","");
 				$diferencia = $operaciones["tasa"]-$tasa;
-				//$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
-				$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
+				if($operaciones["tasa"]!=$tasa){
+					//$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
+					$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
+				
+				}
+				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
 				
 			}
 			return $retorno;
 		}
+		
 	}
 	new Reparar();
 ?>
