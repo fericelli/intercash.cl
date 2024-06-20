@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->comprasfaltantesusdt();
+			 echo $this->comprasfaltantesbtc();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -519,7 +519,16 @@
 			return $retorno;
 		}
 		private function comprasfaltantesbtc(){
-
+			$cantidadusdt = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(cantidadusdt) FROM operaciones WHERE moneda='USDT' AND tipo='envios' AND operacion='venta' AND momento<'2023-12-31 23:59:59'"))[0];
+			$cantidadbtc = number_format($this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(monto) FROM operaciones WHERE moneda='BTC' AND tipo='envios' AND operacion='venta' AND momento<'2023-12-31 23:59:59'"))[0], 8,".","");
+			
+			$cantidadcomprada = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT SUM(cantidadusdt)  FROM operaciones WHERE  moneda='USDT' AND operacion='compra' AND momento<'2023-12-31 23:59:59'"))[0];
+			$porcomprar = $cantidadcomprada-$cantidadusdt;
+			$tasa = number_format($porcomprar/$cantidadbtc, 2,".","");
+			 $porcomprar." ".$cantidadbtc." ".$tasa;
+			 return $retorno .= $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,operador,tasa,monedaintercambio,montointercambio,cantidadusdt) VALUES ('BTC',".$cantidadbtc.",'compra','2023-12-31 23:59:59','javier',".$tasa.",'USDT',".$porcomprar.",".$porcomprar.")");
+				
+			
 		}
 		
 	}
