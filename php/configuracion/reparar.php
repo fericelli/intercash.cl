@@ -505,8 +505,8 @@
 					
 					$comprausdt = number_format($compramoneda/$tasausd, 2,".","");
 					
-					$retorno .= $compramoneda." ".$comprausdt ."<br>";
-					//$retorno .= $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,operador,tasa,monedaintercambio,paisintercambio,montointercambio,cantidadusdt) VALUES ('USDT',".$comprausdt.",'compra','".$momento."','javier',".$tasausd.",'".$paises["iso_moneda"]."','".$paises["iso2"]."',".$compramoneda.",".$comprausdt.")");
+					//$retorno .= $compramoneda." ".$comprausdt ."<br>";
+					$retorno .= $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,operador,tasa,monedaintercambio,paisintercambio,montointercambio,cantidadusdt) VALUES ('USDT',".$comprausdt.",'compra','".$momento."','javier',".$tasausd.",'".$paises["iso_moneda"]."','".$paises["iso2"]."',".$compramoneda.",".$comprausdt.")");
 				}
 				
 
@@ -519,7 +519,7 @@
 			return $retorno;
 		}
 		private function comprasfaltantesbtc(){
-			
+
 		}
 		
 	}
