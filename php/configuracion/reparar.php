@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->compras();
+			 echo $this->comprasfaltantesusdt();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -441,14 +441,85 @@
 				$tasa = number_format($operaciones["montointercambio"]/$operaciones["monto"],2,".","");
 				$diferencia = $operaciones["tasa"]-$tasa;
 				if($operaciones["tasa"]!=$tasa){
-					//$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
-					$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
-				
+					$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
+					
 				}
 				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
 				
 			}
 			return $retorno;
+		}
+		private function comprasfaltantesusdt(){
+			$consultar = $this->Conexion->Consultar("SELECT * FROM paises WHERE receptor IS NOT NULL");
+			$retorno = "";
+			$momento = "2023-12-30 00:00:00";
+			
+					
+			while($paises = $this->Conexion->Recorrido($consultar)){
+				$montousdt = 0;
+				$montobtc = 0;
+				$moneda = $paises["iso_moneda"];
+				$pais = $paises["iso2"];
+				$totalusdt = 0;
+				$totalmoneda = 0;
+				$monedacompra = 0;
+				$usdtcompra = 0;
+				//$retorno .= $paises["iso"]."  ".$paises["iso_moneda"]."<br>";
+				$consultarusdt = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND paisintercambio='".$paises["iso2"]."' AND moneda='USDT' AND tipo='envios' AND operacion='venta' AND momento<'2023-12-31 23:59:59'");
+				$consultarbtc = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND paisintercambio='".$paises["iso2"]."' AND moneda='BTC' AND tipo='envios' AND operacion='venta' AND momento<'2023-12-31 23:59:59'");
+				if($usdt = $this->Conexion->Recorrido($consultarusdt) AND $btc = $this->Conexion->Recorrido($consultarbtc)){
+					if(!is_null($usdt[0])){
+						$montousdt = number_format($usdt[0],2,".","");
+						$totalmoneda += $usdt[1];
+						$totalusdt += number_format($usdt[2],2,".","");
+					}
+					if(!is_null($btc[0])){
+						$montobtc = number_format($btc[0],8,".","");
+						$totalmoneda += $btc[1];
+						$totalusdt += number_format($btc[2],2,".","");
+					}
+
+					
+					$consultarcompra = $this->Conexion->Consultar("SELECT  SUM(monto),SUM(montointercambio),SUM(cantidadusdt)  FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND paisintercambio='".$paises["iso2"]."' AND moneda='USDT' AND operacion='compra' AND momento<'2023-12-31 23:59:59'");
+					if($compras = $this->Conexion->Recorrido($consultarcompra)){
+						if(!is_null($compras[1])){
+							$monedacompra = number_format($compras[1],$paises["decimalesmoneda"],".","");
+							$usdtcompra  = number_format($compras[0],2,".","");
+						}
+						
+					}
+				}
+				if($totalmoneda>$monedacompra){
+					$momento = date('Y-m-d H:i:s', strtotime("+1 Minute",strtotime($momento)));
+					//$retorno .= "moneda ".$paises["iso_moneda"]."  ".$totalmoneda."  ".$totalusdt."<br>";
+					//$retorno .= "envios BTC   ".$montobtc."  ".number_format($btc[1],$paises["decimalesmoneda"],".","")." ".number_format($btc[2],2,".","")."<br>";
+					//$retorno .= "envios USDT   ".$montousdt."  ".number_format($usdt[1],$paises["decimalesmoneda"],".","")." ".number_format($usdt[2],2,".","")."<br>";
+					 
+					//$retorno .= "compras USDT ".$monedacompra."  ".$usdtcompra."<br>";
+					$tasausd = number_format($monedacompra/$usdtcompra,2,".","");
+					$compramoneda = number_format($totalmoneda - $monedacompra, $paises["decimalesmoneda"],".","");
+					
+					if($monedacompra==0){
+						$tasausd = number_format($usdt[1]/$montousdt,2,".","");
+					}
+					
+					$comprausdt = number_format($compramoneda/$tasausd, 2,".","");
+					
+					$retorno .= $compramoneda." ".$comprausdt ."<br>";
+					//$retorno .= $this->Conexion->Consultar("INSERT INTO operaciones(moneda,monto,operacion,momento,operador,tasa,monedaintercambio,paisintercambio,montointercambio,cantidadusdt) VALUES ('USDT',".$comprausdt.",'compra','".$momento."','javier',".$tasausd.",'".$paises["iso_moneda"]."','".$paises["iso2"]."',".$compramoneda.",".$comprausdt.")");
+				}
+				
+
+
+
+			}
+			
+			
+			
+			return $retorno;
+		}
+		private function comprasfaltantesbtc(){
+			
 		}
 		
 	}
