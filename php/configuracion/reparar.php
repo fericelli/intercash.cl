@@ -391,7 +391,7 @@
 				if($usdt!=$operaciones[1] OR $usdt!=$operaciones["cantidadusdt"]){
 				
 					$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$operaciones[4]."  ".$operaciones[5]." ".$operaciones[6]." ".$operaciones["tasa"]."  ".$operaciones["montointercambio"]."  ".$usdt."<br>";
-					//$this->Conexion->Consultar("UPDATE operaciones SET monto='".$usdt."',cantidadusdt='".$usdt."' WHERE registro='".$operaciones["registro"]."' AND tasa='".$operaciones["tasa"]."' AND montointercambio='".$operaciones["montointercambio"]."'");
+					$this->Conexion->Consultar("UPDATE operaciones SET monto='".$usdt."',cantidadusdt='".$usdt."' WHERE registro='".$operaciones["registro"]."' AND tasa='".$operaciones["tasa"]."' AND montointercambio='".$operaciones["montointercambio"]."'");
 				}
 				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$usdt.",monto=".$usdt." WHERE momento='".$operaciones[1]."' ");
 				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa='".$tasa."',cantidadusdt='".$operaciones["monto"]."' WHERE momento='".$operaciones[3]."' AND usuario='".$operaciones[4]."'")."<br>";
