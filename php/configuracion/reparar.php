@@ -308,7 +308,7 @@
 		}
 		private function finalizarsolicitudes(){
 			try{
-				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL LIMIT 20");
 				$cantidad =0;
 
 				while($solicitudes = $this->Conexion->Recorrido($consultar)){
