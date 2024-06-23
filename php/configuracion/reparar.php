@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->repararintercambio();
+			 echo $this->finalizarsolicitudes();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -309,13 +309,45 @@
 		private function finalizarsolicitudes(){
 			try{
 				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL");
+				$cantidad =0;
+
 				while($solicitudes = $this->Conexion->Recorrido($consultar)){
-					$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."'"))[0];
-					$cantidadusd = number_format($solicitudes["cantidadarecibir"]/$tasausd,2,".","");
+					$cantidad ++;
+					$momento = date('Y-m-d H:i:s', strtotime("+60 Minutes",strtotime($solicitudes["momento"])));
+					//echo $momento."  ". date('Y-m-d',strtotime($solicitudes["momento"]))."<br>";
+					$tasausd = 0;
+					$tasausdt = 0;
+					if(date('Y-m-d')==date('Y-m-d',strtotime($solicitudes["momento"]))){
+						$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."' LIMIT 1"))[0];
+					}else{
+						$tasainicial = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT venta FROM precios WHERE moneda='".$solicitudes[0]."' AND momento<='".$momento."' LIMIT 1"))[0];
+						if($tasainicial==null){
+							$consultatasainicial = $this->Conexion->Consultar("SELECT solicitudes.cantidadarecibir,solicitudes.cantidadaenviar,operaciones.montointercambio,operaciones.cantidadusdt,tasas.decimalestasa FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro LEFT JOIN tasas ON tasas.monedaventa=solicitudes.monedadestino AND tasas.paisdestino=solicitudes.paisdestino AND tasas.monedacompra=solicitudes.monedaorigen AND  tasas.paisorigen=solicitudes.paisorigen WHERE solicitudes.monedadestino='".$solicitudes[0]."' AND registro<='".$momento."' AND moneda='USDT' ORDER BY registro DESC LIMIT 1");
+							if($inicial = $this->Conexion->Recorrido($consultatasainicial)){
+								$tasa = number_format($inicial[0]/$inicial[1],$inicial[4],".","");
+								$cantidadrecibir = $inicial[1]*$tasa;
+								$tasainicial = number_format($cantidadrecibir/$inicial[3],2,".","");
+							}
+						}
+						$tasausd = $tasainicial;
+
+					}
+					$usdt = number_format($solicitudes[3]/$tasausd,2,".","");
+					$tasausdt =  number_format($solicitudes[2]/$usdt,2,".","");
+					
+					echo $solicitudes[1]."  ".$solicitudes[2]."  ".$cantidad."<br>";
+
+					//$preciobtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(venta) FROM precios WHERE momento BETWEEN '".$solicitudes["momento"]."' AND '".$momento."'"))[0];
+
+					//echo $tasausdt."  ".$solicitudes[1]."  ".$solicitudes[2]."   ".$usdt."  ".$solicitudes["momento"]."  ".$momento." ".$cantidad. "<br>";
+					
+
+					//
+					//$cantidadusd = number_format($solicitudes["cantidadarecibir"]/$tasausd,2,".","");
 					//echo $solicitudes[0]." ".number_format($tasausd,$solicitudes["decimalesmoneda"],".","")."   ".$cantidadusd."<br>";
-					$this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
-					$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,registro) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
-					$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('BTC',0,'venta','".date("Y-m-d H:i:s")."','".$solicitudes["usuario"]."','javier','".$solicitudes["momento"]."',0,'".$solicitudes["monedaorigen"]."','".$solicitudes["paisorigen"]."','".$solicitudes["cantidadaenviar"]."','envios',".$cantidadusd.")");
+					//$this->Conexion->Consultar("UPDATE solicitudes SET estado='finalizado' WHERE momento='".$solicitudes["momento"]."'");
+					//$this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,registro) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."','".$solicitudes["usuario"]."','".date("Y-m-d H:i:s")."','".$solicitudes["momento"]."')");
+					//$this->Conexion->Consultar("INSERT INTO operaciones (moneda,monto,operacion,momento,usuario,operador,registro,tasa,monedaintercambio,paisintercambio,montointercambio,tipo,cantidadusdt) VALUES ('BTC',0,'venta','".date("Y-m-d H:i:s")."','".$solicitudes["usuario"]."','javier','".$solicitudes["momento"]."',0,'".$solicitudes["monedaorigen"]."','".$solicitudes["paisorigen"]."','".$solicitudes["cantidadaenviar"]."','envios',".$cantidadusd.")");
 					
 				}
 			}catch(Exception $e){
@@ -390,7 +422,7 @@
 				if($usdt!=$operaciones[1] OR $usdt!=$operaciones["cantidadusdt"]){
 				
 					$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$operaciones[4]."  ".$operaciones[5]." ".$operaciones[6]." ".$operaciones["tasa"]."  ".$operaciones["montointercambio"]."  ".$usdt."<br>";
-					$this->Conexion->Consultar("UPDATE operaciones SET monto='".$usdt."',cantidadusdt='".$usdt."' WHERE registro='".$operaciones["registro"]."' AND tasa='".$operaciones["tasa"]."' AND montointercambio='".$operaciones["montointercambio"]."'");
+					//$this->Conexion->Consultar("UPDATE operaciones SET monto='".$usdt."',cantidadusdt='".$usdt."' WHERE registro='".$operaciones["registro"]."' AND tasa='".$operaciones["tasa"]."' AND montointercambio='".$operaciones["montointercambio"]."'");
 				}
 				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$usdt.",monto=".$usdt." WHERE momento='".$operaciones[1]."' ");
 				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa='".$tasa."',cantidadusdt='".$operaciones["monto"]."' WHERE momento='".$operaciones[3]."' AND usuario='".$operaciones[4]."'")."<br>";
@@ -526,7 +558,9 @@
 				
 			
 		}
-		
+		private function reparartasas(){
+			
+		}
 	}
 	new Reparar();
 ?>
