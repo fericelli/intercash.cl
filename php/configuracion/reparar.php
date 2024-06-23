@@ -296,10 +296,10 @@
 				
 				while($intercambio = $this->Conexion->Recorrido($consultar)){
 					$momento = date('Y-m-d H:i:s', strtotime("+30 Minutes",strtotime($intercambio["registro"])));
-					//echo $intercambio["registro"]." ".$momento."<br>";
-					echo $this->Conexion->Consultar("UPDATE solicitudes SET estado=null WHERE momento='".$intercambio["registro"]."' AND usuario='".$intercambio["intermediario"]."'");
-					echo $this->Conexion->Consultar("DELETE FROM intercambios   WHERE registro='".$intercambio["registro"]."' AND intermediario='".$intercambio["intermediario"]."'");
-					echo $this->Conexion->Consultar("DELETE FROM operaciones   WHERE registro='".$intercambio["registro"]."' AND usuario='".$intercambio["intermediario"]."'");
+					echo $intercambio["registro"]." ".$momento."<br>";
+					//echo $this->Conexion->Consultar("UPDATE solicitudes SET estado=null WHERE momento='".$intercambio["registro"]."' AND usuario='".$intercambio["intermediario"]."'");
+					//echo $this->Conexion->Consultar("DELETE FROM intercambios   WHERE registro='".$intercambio["registro"]."' AND intermediario='".$intercambio["intermediario"]."'");
+					//echo $this->Conexion->Consultar("DELETE FROM operaciones   WHERE registro='".$intercambio["registro"]."' AND usuario='".$intercambio["intermediario"]."'");
 				}
 			}catch(Exception $e){
 				
