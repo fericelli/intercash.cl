@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->cambiartasas();
+			 echo $this->repararintercambio();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -290,18 +290,16 @@
 		}
 		private function repararintercambio(){
 			try{
-				$consultar = $this->Conexion->Consultar("SELECT * FROM intercambios ORDER BY registro DESC LIMIT 1");
-				if($intercambio = $this->Conexion->Recorrido($consultar)){
-					$consultar2 = $this->Conexion->Consultar("SELECT * FROM solicitudes WHERE momento>'".$intercambio["registro"]."' AND estado='finalizado'");
-					while($solicitudes = $this->Conexion->Recorrido($consultar2)){
-						
-						$momento = date("Y-m-d H:i:s",strtotime($solicitudes["momento"]."+1 second"));
-						echo $this->Conexion->Consultar("INSERT INTO intercambios (montoventa,monedaventa,montocompra,monedacompra,intermediario,momento,registro) VALUES ('".$solicitudes["cantidadarecibir"]."','".$solicitudes["monedadestino"]."','".$solicitudes["cantidadaenviar"]."','".$solicitudes["monedaorigen"]."', '".$solicitudes["usuario"]."', '".$momento."', '".$solicitudes["momento"]."')")."<br>";
-						
-					}
-					//echo $momento
-					//return $intercambio["registro"]; 
-					$this->Conexion->Consultar("DELETE FROM intercambios WHERE montoventa=0");
+				$retorno = "";
+				$consultar = $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento BETWEEN '2024-04-17 21:40:04' AND '2024-05-03 17:11:47'");
+				$consultar1 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE momento BETWEEN '2024-04-17 21:40:04' AND '2024-05-03 17:11:47'");
+				
+				while($intercambio = $this->Conexion->Recorrido($consultar)){
+					$momento = date('Y-m-d H:i:s', strtotime("+30 Minutes",strtotime($intercambio["registro"])));
+					//echo $intercambio["registro"]." ".$momento."<br>";
+					echo $this->Conexion->Consultar("UPDATE solicitudes SET estado=null WHERE momento='".$intercambio["registro"]."' AND usuario='".$intercambio["intermediario"]."'");
+					echo $this->Conexion->Consultar("DELETE FROM intercambios   WHERE registro='".$intercambio["registro"]."' AND intermediario='".$intercambio["intermediario"]."'");
+					echo $this->Conexion->Consultar("DELETE FROM operaciones   WHERE registro='".$intercambio["registro"]."' AND usuario='".$intercambio["intermediario"]."'");
 				}
 			}catch(Exception $e){
 				
@@ -436,14 +434,14 @@
 		}
 
 		private function compras(){
-			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND monto>0 AND moneda='BTC'");
+			$consultar = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE operacion='compra' AND momento>'2023-12-31 23:59:59'");
 			while($operaciones = $this->Conexion->Recorrido($consultar)){
 				$tasa = number_format($operaciones["montointercambio"]/$operaciones["monto"],2,".","");
 				$diferencia = $operaciones["tasa"]-$tasa;
-				if($operaciones["tasa"]!=$tasa){
+				
 					$retorno .= $operaciones[0]." ". $operaciones[1]." ".$operaciones[2]." ".$operaciones[3]." ".$tasa." ".$operaciones["tasa"]." ".$operaciones["montointercambio"]." ".$operaciones["monedaintercambio"]."<br>";
 					
-				}
+				
 				//$retorno .= $this->Conexion->Consultar("UPDATE operaciones SET tasa=".$tasa.",cantidadusdt=".$operaciones[1]." WHERE momento='".$operaciones[3]."'");
 				
 			}
@@ -463,7 +461,7 @@
 				$monedacompra = 0;
 				$usdtcompra = 0;
 				//$retorno .= $paises["iso"]."  ".$paises["iso_moneda"]."<br>";
-				$consultarusdt = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND paisintercambio='".$paises["iso2"]."' AND moneda='USDT' AND tipo='envios' AND operacion='venta' AND registro>'2023-12-31 23:59:59'");
+				$consultarusdt = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt),AVG(tasa) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND paisintercambio='".$paises["iso2"]."' AND moneda='USDT' AND tipo='envios' AND operacion='venta' AND registro>'2023-12-31 23:59:59'");
 				$consultarbtc = $this->Conexion->Consultar("SELECT SUM(monto),SUM(montointercambio),SUM(cantidadusdt) FROM operaciones WHERE monedaintercambio='".$paises["iso_moneda"]."' AND paisintercambio='".$paises["iso2"]."' AND moneda='BTC' AND tipo='envios' AND operacion='venta' AND registro>'2023-12-31 23:59:59'");
 				if($usdt = $this->Conexion->Recorrido($consultarusdt) AND $btc = $this->Conexion->Recorrido($consultarbtc)){
 					if(!is_null($usdt[0])){
@@ -488,7 +486,7 @@
 					}
 				}
 				$momento = date('Y-m-d H:i:s', strtotime("+1 Minute",strtotime($momento)));
-					$retorno .= "moneda ".$paises["iso_moneda"]."  ".$totalmoneda."  ".$totalusdt."<br>";
+					$retorno .= "moneda ".$paises["iso_moneda"]."  ".$totalmoneda."  ".$totalusdt." ".$usdt[3]."<br>";
 					$retorno .= "envios BTC   ".$montobtc."  ".number_format($btc[1],$paises["decimalesmoneda"],".","")." ".number_format($btc[2],2,".","")."<br>";
 					$retorno .= "envios USDT   ".$montousdt."  ".number_format($usdt[1],$paises["decimalesmoneda"],".","")." ".number_format($usdt[2],2,".","")."<br>";
 					 
