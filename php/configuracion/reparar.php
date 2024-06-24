@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->finalizarsolicitudes();
+			 echo $this->repararintercambio();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -291,8 +291,8 @@
 		private function repararintercambio(){
 			try{
 				$retorno = "";
-				$consultar = $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento BETWEEN '2024-04-17 21:40:04' AND '2024-05-03 17:11:47'");
-				$consultar1 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE momento BETWEEN '2024-04-17 21:40:04' AND '2024-05-03 17:11:47'");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM intercambios WHERE momento BETWEEN '2024-04-01 19:43:28' AND '2024-05-03 17:11:47'");
+				$consultar1 = $this->Conexion->Consultar("SELECT * FROM operaciones WHERE momento BETWEEN '2024-04-01 19:43:28' AND '2024-05-03 17:11:47'");
 				
 				while($intercambio = $this->Conexion->Recorrido($consultar)){
 					$momento = date('Y-m-d H:i:s', strtotime("+30 Minutes",strtotime($intercambio["registro"])));
@@ -308,40 +308,54 @@
 		}
 		private function finalizarsolicitudes(){
 			try{
-				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL LIMIT 20");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL LIMIT 200 ");
 				$cantidad =0;
 
 				while($solicitudes = $this->Conexion->Recorrido($consultar)){
 					$cantidad ++;
-					$momento = date('Y-m-d H:i:s', strtotime("+60 Minutes",strtotime($solicitudes["momento"])));
+					$momento = date('Y-m-d H:i:s', strtotime("+45 Minutes",strtotime($solicitudes["momento"])));
 					//echo $momento."  ". date('Y-m-d',strtotime($solicitudes["momento"]))."<br>";
 					$tasausd = 0;
 					$tasausdt = 0;
 					if(date('Y-m-d')==date('Y-m-d',strtotime($solicitudes["momento"]))){
 						$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."' LIMIT 1"))[0];
 					}else{
+						if($solicitudes["momento"]=="2024-04-09 12:31:38"){
+							return "SELECT solicitudes.cantidadarecibir,solicitudes.cantidadaenviar,operaciones.montointercambio,operaciones.cantidadusdt,tasas.decimalestasa FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro LEFT JOIN tasas ON tasas.monedaventa=solicitudes.monedadestino AND tasas.paisdestino=solicitudes.paisdestino AND tasas.monedacompra=solicitudes.monedaorigen AND  tasas.paisorigen=solicitudes.paisorigen WHERE solicitudes.monedadestino='".$solicitudes[0]."' AND solicitudes.monedaorigen='".$solicitudes["monedaorigen"]."' AND registro<='".$momento."' AND moneda='USDT' ORDER BY registro DESC LIMIT 1";
+						}	
 						$tasainicial = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT venta FROM precios WHERE moneda='".$solicitudes[0]."' AND momento<='".$momento."' LIMIT 1"))[0];
 						if($tasainicial==null){
-							$consultatasainicial = $this->Conexion->Consultar("SELECT solicitudes.cantidadarecibir,solicitudes.cantidadaenviar,operaciones.montointercambio,operaciones.cantidadusdt,tasas.decimalestasa FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro LEFT JOIN tasas ON tasas.monedaventa=solicitudes.monedadestino AND tasas.paisdestino=solicitudes.paisdestino AND tasas.monedacompra=solicitudes.monedaorigen AND  tasas.paisorigen=solicitudes.paisorigen WHERE solicitudes.monedadestino='".$solicitudes[0]."' AND registro<='".$momento."' AND moneda='USDT' ORDER BY registro DESC LIMIT 1");
+							$consultatasainicial = $this->Conexion->Consultar("SELECT solicitudes.cantidadarecibir,solicitudes.cantidadaenviar,operaciones.montointercambio,operaciones.cantidadusdt,tasas.decimalestasa FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro LEFT JOIN tasas ON tasas.monedaventa=solicitudes.monedadestino AND tasas.paisdestino=solicitudes.paisdestino AND tasas.monedacompra=solicitudes.monedaorigen AND  tasas.paisorigen=solicitudes.paisorigen WHERE solicitudes.monedadestino='".$solicitudes[0]."' AND solicitudes.monedaorigen='".$solicitudes["monedaorigen"]."' AND registro<='".$momento."' AND moneda='USDT' ORDER BY registro DESC LIMIT 1");
 							if($inicial = $this->Conexion->Recorrido($consultatasainicial)){
-								$tasa = number_format($inicial[0]/$inicial[1],$inicial[4],".","");
-								$cantidadrecibir = $inicial[1]*$tasa;
+								 $tasa = number_format($inicial[0]/$inicial[1],$inicial[4],".","");
+								
+								 $cantidadrecibir = $inicial[1]*$tasa;
 								$tasainicial = number_format($cantidadrecibir/$inicial[3],2,".","");
 							}
 						}
 						$tasausd = $tasainicial;
 
 					}
+
+					if($tasausd==""){
+						$tasausd = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(anuncioventa) FROM tasas WHERE monedaventa='".$solicitudes[0]."' LIMIT 1"))[0];
+					}
 					$usdt = number_format($solicitudes[3]/$tasausd,2,".","");
 					$tasausdt =  number_format($solicitudes[2]/$usdt,2,".","");
 					
-					echo $solicitudes[1]."  ".$solicitudes[2]."  ".$cantidad."<br>";
-
-					//$preciobtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(venta) FROM precios WHERE momento BETWEEN '".$solicitudes["momento"]."' AND '".$momento."'"))[0];
-
-					//echo $tasausdt."  ".$solicitudes[1]."  ".$solicitudes[2]."   ".$usdt."  ".$solicitudes["momento"]."  ".$momento." ".$cantidad. "<br>";
+					$preciobtc = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT AVG(venta) FROM precios WHERE moneda='BTC' AND momento BETWEEN '".$solicitudes["momento"]."' AND '".$momento."'"))[0];
+					$tasaventa = 0;
+					$montoventa = 0;
+					if($preciobtc==null){
+						$tasaventa = $tasausdt;
+						$montoventa = $usdt;
+					}else{
+						$preciobtc =  number_format($preciobtc,2,".","");
+						$tasaventa =  number_format($preciobtc,2,".","");
+						$montoventa = number_format($usdt/$tasaventa,8,".","");
+					}
+					echo $tasaventa."  ".$solicitudes[1]."  ".$solicitudes[2]."   ".$usdt."  ".$solicitudes["monedadestino"]."  ".$solicitudes["momento"]." ".$montoventa."  ".$preciobtc."  ".$tasausdt ."<br>";
 					
-
 					//
 					//$cantidadusd = number_format($solicitudes["cantidadarecibir"]/$tasausd,2,".","");
 					//echo $solicitudes[0]." ".number_format($tasausd,$solicitudes["decimalesmoneda"],".","")."   ".$cantidadusd."<br>";
