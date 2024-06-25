@@ -4,7 +4,7 @@
 		function __construct(){
 			include("../../php/conexion.php");
 			 $this->Conexion = new Conexion();
-			 echo $this->repararintercambio();
+			 echo $this->compras();
 			// echo $this->operaciones();
 			//echo $this->intercambios();
 			$this->Conexion->CerrarConexion();
@@ -308,7 +308,7 @@
 		}
 		private function finalizarsolicitudes(){
 			try{
-				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL LIMIT 45");
+				$consultar = $this->Conexion->Consultar("SELECT * FROM solicitudes LEFT JOIN paises ON paises.iso2=solicitudes.paisdestino WHERE estado IS NULL LIMIT 20");
 				$cantidad =0;
 				$retorno ="";
 				while($solicitudes = $this->Conexion->Recorrido($consultar)){
@@ -323,7 +323,7 @@
 						
 						$tasainicial = $this->Conexion->Recorrido($this->Conexion->Consultar("SELECT venta FROM precios WHERE moneda='".$solicitudes[0]."' AND momento<='".$momento."' LIMIT 1"))[0];
 						if($tasainicial==null){
-							$consultatasainicial = $this->Conexion->Consultar("SELECT solicitudes.cantidadarecibir,solicitudes.cantidadaenviar,operaciones.montointercambio,operaciones.cantidadusdt,tasas.decimalestasa FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro LEFT JOIN tasas ON tasas.monedaventa=solicitudes.monedadestino AND tasas.paisdestino=solicitudes.paisdestino AND tasas.monedacompra=solicitudes.monedaorigen AND  tasas.paisorigen=solicitudes.paisorigen WHERE solicitudes.monedadestino='".$solicitudes[0]."' AND solicitudes.monedaorigen='".$solicitudes["monedaorigen"]."' AND registro<='".$momento."' AND moneda='USDT' ORDER BY registro DESC LIMIT 1");
+							$consultatasainicial = $this->Conexion->Consultar("SELECT solicitudes.cantidadarecibir,solicitudes.cantidadaenviar,operaciones.montointercambio,operaciones.cantidadusdt,tasas.decimalestasa FROM operaciones LEFT JOIN solicitudes ON solicitudes.momento=operaciones.registro LEFT JOIN tasas ON tasas.monedaventa=solicitudes.monedadestino AND tasas.paisdestino=solicitudes.paisdestino AND tasas.monedacompra=solicitudes.monedaorigen AND  tasas.paisorigen=solicitudes.paisorigen WHERE solicitudes.monedadestino='".$solicitudes[0]."' AND solicitudes.monedaorigen='".$solicitudes["monedaorigen"]."' AND operaciones.registro<='".$momento."' AND moneda='USDT' AND oepreaciones.tipo='envios' AND operaciones.operacion='venta' ORDER BY registro DESC LIMIT 1");
 							if($inicial = $this->Conexion->Recorrido($consultatasainicial)){
 								 $tasa = number_format($inicial[0]/$inicial[1],$inicial[4],".","");
 								
